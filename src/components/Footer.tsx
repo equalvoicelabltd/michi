@@ -90,7 +90,7 @@ export default function Footer() {
       <div className="border-t border-white/5 px-8 py-5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-[9px] text-stone-600 uppercase tracking-widest">
-            © {year} Michi · All Rights Reserved
+            © {year} Michi Project · All Rights Reserved
           </p>
           <p className="text-[9px] text-stone-700 text-center max-w-xl">
             Michi 為資訊索引平台，不對任何買手的服務質素、交易安全或商品真偽作出保證。所有交易由買賣雙方自行承擔責任。
