@@ -24,6 +24,7 @@ export default function Footer() {
     {
       heading: '支援',
       links: [
+        { href: '/about',         label: '關於我們' },
         { href: 'mailto:hello@michi.jp', label: '聯絡我們', external: true },
       ],
     },
@@ -92,7 +93,7 @@ export default function Footer() {
             © {year} Michi Project · All Rights Reserved
           </p>
           <p className="text-[9px] text-stone-700 text-center max-w-xl">
-            Michi 為資訊索引平台，不對任何買手的服務質素、交易安全或商品真偽作出保證。所有交易由買賣雙方自行承擔責任。
+            Michi Project 為資訊索引平台，不對任何買手的服務質素、交易安全或商品真偽作出保證。所有交易由買賣雙方自行承擔責任。
           </p>
           <div className="flex gap-4 text-[9px] text-stone-600 uppercase tracking-widest">
             <span>私隱政策</span>
