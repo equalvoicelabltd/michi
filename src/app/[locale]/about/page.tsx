@@ -74,13 +74,13 @@ const TIMELINE = [
     icon: '📱',
   },
   {
-    year: '2014',
+    year: '2012',
     title: '正式成立公司',
     desc: '成立 Global EZshop，由個人代購升級為正式公司，開始服務中小型零售商。',
     icon: '🏢',
   },
   {
-    year: '2016',
+    year: '2014',
     title: '開設實體辦公室',
     desc: '於香港租用辦公室及倉儲空間，提供批發整箱服務，每月處理大量訂單。',
     icon: '📦',
@@ -92,7 +92,7 @@ const TIMELINE = [
     icon: '🗾',
   },
   {
-    year: '2024',
+    year: '2026',
     title: '創立 Michi',
     desc: '將多年代購資源開放予大眾，成立 Michi 平台，連接全球買家與日本在地買手。',
     icon: '道',
