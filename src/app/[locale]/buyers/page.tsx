@@ -511,7 +511,6 @@ export default function BuyersPage() {
             <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
               <a href={`/${locale}#market`} className="hover:text-[#1A237E] transition-colors">買手名錄</a>
               <a href={'/products'} className="hover:text-[#1A237E] transition-colors">最新商品</a>
-              <a href={`/${locale}#philosophy`} className="hover:text-[#1A237E] transition-colors">平台理念</a>
               <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
             </div>
             <button onClick={() => setShowApply(true)}
