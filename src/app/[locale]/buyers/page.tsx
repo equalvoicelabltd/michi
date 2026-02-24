@@ -512,6 +512,7 @@ export default function BuyersPage() {
               <a href={`/${locale}#market`} className="hover:text-[#1A237E] transition-colors">買手名錄</a>
               <a href={`/${locale}/products`} className="hover:text-[#1A237E] transition-colors">最新商品</a>
               <a href={`/${locale}#philosophy`} className="hover:text-[#1A237E] transition-colors">平台理念</a>
+              <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
             </div>
             <button onClick={() => setShowApply(true)}
               className="text-[10px] font-black uppercase tracking-[0.3em] bg-[#1A237E] text-white px-5 py-2.5 hover:bg-[#B22222] transition-all">
@@ -825,6 +826,7 @@ export default function BuyersPage() {
             <div className="flex gap-6 text-[9px] font-bold uppercase tracking-[0.3em] text-stone-500">
               <a href={`/${locale}`} className="hover:text-white transition-colors">首頁</a>
               <a href={`/${locale}/products`} className="hover:text-white transition-colors">商品</a>
+              <a href={`/${locale}/about`} className="hover:text-white transition-colors">關於我們</a>
               <a href="mailto:hello@michi.jp" className="hover:text-white transition-colors">聯絡</a>
             </div>
             <p className="text-[9px] text-stone-600 uppercase tracking-widest">© {new Date().getFullYear()} Michi.</p>

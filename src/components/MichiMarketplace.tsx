@@ -150,7 +150,7 @@ export default function MichiMarketplace() {
           <div className="hidden lg:flex items-center space-x-12 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
             <a href="#market" className="hover:text-[#1A237E] transition-colors">專家名錄</a>
             <a href="#products" className="hover:text-[#1A237E] transition-colors">最新商品</a>
-            <a href="#philosophy" className="hover:text-[#1A237E] transition-colors">平台理念</a>
+            <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
           </div>
 
           {/* ✅ "發布需求" — links to a contact/request page */}
