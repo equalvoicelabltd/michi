@@ -142,7 +142,7 @@ export default function AboutPage() {
               <a href={`/${locale}/products`} className="hover:text-[#1A237E] transition-colors">最新商品</a>
               <span className="text-[#1A237E] border-b border-[#1A237E]">關於我們</span>
             </div>
-            <a href={`/${locale}`} className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-[#1C1C1C] pb-0.5 hover:text-stone-400 transition-colors">
+            <a href={`/${locale}/products`} className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-[#1C1C1C] pb-0.5 hover:text-stone-400 transition-colors">
               ← 返回首頁
             </a>
           </div>
