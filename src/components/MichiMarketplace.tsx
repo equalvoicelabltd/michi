@@ -512,7 +512,6 @@ export default function MichiMarketplace() {
                 {[
                   { label: '代購職人', href: url('/buyers') },
                   { label: '最新商品', href: url('/products') },
-                  { label: '平台理念', href: '#philosophy' },
                   { label: '發布需求', href: url('/buyers') },
                   { label: '關於我們', href: url('/about') },
                 ].map(({ label, href }) => (
