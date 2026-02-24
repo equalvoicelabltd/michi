@@ -184,7 +184,7 @@ export default function MichiMarketplace() {
             </div>
 
             <p className="text-stone-500 text-lg font-light leading-relaxed max-w-xl">
-              Michi JP 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人與最新商品情報。
+              Michi Project 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人與最新商品情報。
             </p>
 
             {/* ✅ Hero CTA buttons — proper <a> links */}
@@ -216,7 +216,7 @@ export default function MichiMarketplace() {
         <div className="absolute bottom-0 left-0 right-0 bg-[#FFD700] py-3 overflow-hidden rotate-[-0.5deg] scale-x-110">
           <div className="flex whitespace-nowrap animate-marquee text-black font-black text-[9px] tracking-[0.4em] uppercase">
             {[...Array(6)].map((_, i) => (
-              <span key={i} className="mx-12">Michi JP: Connecting Personal Buyers to Professional Shoppers •</span>
+              <span key={i} className="mx-12">Michi Project: Connecting Personal Buyers to Professional Shoppers •</span>
             ))}
           </div>
         </div>
@@ -558,7 +558,7 @@ export default function MichiMarketplace() {
           {/* Bottom bar */}
           <div className="border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-[9px] text-stone-500 uppercase tracking-widest">
-              © {new Date().getFullYear()} Michi. All Rights Reserved.
+              © {new Date().getFullYear()} Michi Project. All Rights Reserved.
             </p>
             <p className="text-[9px] text-stone-600 uppercase tracking-widest">
               Your Path to Japan's Best

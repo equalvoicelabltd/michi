@@ -27,7 +27,7 @@ export default function HeroSection() {
           </div>
 
           <p className="text-stone-500 text-lg md:text-xl font-light leading-relaxed max-w-xl">
-            Michi JP 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人。
+            Michi Project 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人。
           </p>
 
           <div className="flex flex-wrap gap-6 pt-6">
@@ -40,9 +40,9 @@ export default function HeroSection() {
       {/* 修正後的跑馬燈 */}
       <div className="bg-[#FFD700] py-4 border-y border-black/5 overflow-hidden z-20 absolute bottom-12 left-[-5%] w-[110%] rotate-[-1.5deg]">
         <div className="flex whitespace-nowrap animate-marquee text-black font-black text-[10px] tracking-[0.4em] uppercase">
-          <span className="mx-8">Michi JP: Connecting Personal Buyers to Professional Shoppers • </span>
-          <span className="mx-8">Michi JP: Connecting Personal Buyers to Professional Shoppers • </span>
-          <span className="mx-8">Michi JP: Connecting Personal Buyers to Professional Shoppers • </span>
+          <span className="mx-8">Michi Project: Connecting Personal Buyers to Professional Shoppers • </span>
+          <span className="mx-8">Michi Project: Connecting Personal Buyers to Professional Shoppers • </span>
+          <span className="mx-8">Michi Project: Connecting Personal Buyers to Professional Shoppers • </span>
         </div>
       </div>
     </section>
