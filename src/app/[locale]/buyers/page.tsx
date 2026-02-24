@@ -858,7 +858,7 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
     photoVideoRate: '',
     offersQueueing: false,
     queueingRate: '',
-    queueingUnit: 'hourly' as 'hourly' | 'daily',
+    queueingUnit: 'hourly' as 'hourly' | 'daily' | 'both',
     offersShipping: false,
     shippingMethods: [] as string[],
     paymentTerms: '' as string,
