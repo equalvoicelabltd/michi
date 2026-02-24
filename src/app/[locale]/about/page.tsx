@@ -139,7 +139,7 @@ export default function AboutPage() {
             </a>
             <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
               <a href={`/${locale}/buyers`} className="hover:text-[#1A237E] transition-colors">找買手</a>
-              <a href={`/${locale}/products`} className="hover:text-[#1A237E] transition-colors">最新商品</a>
+              <a href={'/products'} className="hover:text-[#1A237E] transition-colors">最新商品</a>
               <span className="text-[#1A237E] border-b border-[#1A237E]">關於我們</span>
             </div>
             <a href={`/${locale}/products`} className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-[#1C1C1C] pb-0.5 hover:text-stone-400 transition-colors">
