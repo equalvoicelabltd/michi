@@ -1,15 +1,19 @@
 {
-  "home": {
-    "hero": {
-      "tagline": "The Japanese Way",
-      "title": "尋覓日本",
-      "subtitle": "Authenticity",
-      "description": "Michi JP 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人。直接對話，無需中介，回歸最誠實的物資交換。",
-      "cta_primary": "瀏覽專家名錄",
-      "cta_secondary": "探索最新商品"
+  "products": {
+    "title": "日本最新商品",
+    "search": "搜尋商品...",
+    "filter": "按類別篩選",
+    "viewDetails": "查看詳情",
+    "noProducts": "目前沒有找到相關商品",
+    "categories": {
+      "fashion": "流行時尚",
+      "vintage": "中古精品",
+      "anime": "動漫週邊",
+      "food": "在地美食"
     },
-    "marquee": {
-      "text": "Michi JP: Connecting Personal Buyers to Professional Shoppers • A Pure Information Platform • Transparent • Direct • Honorable •"
+    "productCard": {
+      "aiGenerated": "AI 智能發現",
+      "readMore": "查看詳情 / Read More"
     }
   }
 }

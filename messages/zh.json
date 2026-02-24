@@ -1,19 +1,17 @@
 {
-  "products": {
-    "title": "日本最新商品",
-    "search": "搜尋商品...",
-    "filter": "按類別篩選",
-    "viewDetails": "查看詳情",
-    "noProducts": "目前沒有找到相關商品",
+  "buyers": {
+    "pageTitle": "代購職人市場",
+    "pageSubtitle": "尋找最適合您的日本買手，提供一站式代購與配送服務。",
+    "verifiedList": "已驗證的職人列表",
+    "buyerCard": {
+      "commission": "代購手續費",
+      "viewProfile": "查看個人檔案"
+    },
     "categories": {
       "fashion": "流行時尚",
       "vintage": "中古精品",
       "anime": "動漫週邊",
       "food": "在地美食"
-    },
-    "productCard": {
-      "aiGenerated": "AI 智能發現",
-      "readMore": "查看詳情 / Read More"
     }
   }
 }
