@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import('tailwind-config').Config} */
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,30 +8,30 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Michi Brand Colors
         michi: {
-          primary: '#003366',    // 深藍 - 信任、專業
-          secondary: '#FF69B4',  // 粉紅 - 溫暖、親切
-          accent: '#FFD700',     // 金色 - 品質、精選
-          light: '#F8F9FA',      // 淺灰 - 背景
-          dark: '#666666',       // 深灰 - 次要文字
-          border: '#E8E8E8',     // 邊框色
-          success: '#4CAF50',    // 綠色 - 成功
-          error: '#FF6B6B',      // 紅色 - 錯誤
-        },
-        // Alias for backward compatibility
-        primary: '#FF69B4',      // Michi pink as default
-        secondary: '#003366',    // Michi blue as secondary
-        dark: '#003366',
-        light: '#F8F9FA',
+          kachi: '#1A237E',    // 勝色 - 深靛藍
+          red: '#B22222',      // 朱砂紅
+          washi: '#F9F7F2',    // 和紙白
+          sumi: '#1C1C1C',     // 墨黑
+          gold: '#C5A059',     // 古銅金
+          tape: '#FFD700',     // 封條黃
+        }
       },
       fontFamily: {
-        sans: ['system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Noto Sans JP', 'sans-serif'],
+        serif: ['Noto Serif JP', 'serif'],
+        playfair: ['Playfair Display', 'serif'],
       },
-      gradients: {
-        'michi': 'linear-gradient(135deg, #003366 0%, #FF69B4 100%)',
+      animation: {
+        'marquee': 'marquee 45s linear infinite',
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        }
+      }
     },
   },
   plugins: [],
-};
+}
