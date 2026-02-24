@@ -1,36 +1,37 @@
-'use client';
-
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { SessionProvider } from './providers';
 import './globals.css';
-import { ReactNode } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { SessionProvider } from 'next-auth/react';
-import { Toaster } from 'react-hot-toast';
 
-export default function RootLayout({
+const locales = ['zh', 'zh-CN', 'en', 'ja', 'th'];
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
   children,
-  params: { locale },
+  params: { locale }
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
   params: { locale: string };
 }) {
+  // 驗證 locale
+  if (!locales.includes(locale as any)) {
+    notFound();
+  }
+
+  // 獲取翻譯訊息
+  const messages = await getMessages();
+
   return (
     <html lang={locale}>
-      <head>
-        <title>JP Daigou - 日本代購平台</title>
-        <meta name="description" content="尋找可信任的日本代購買手，最新日本商品情報" />
-      </head>
-      <body className="bg-white text-gray-900">
+      <body>
         <SessionProvider>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
-          <Toaster position="top-right" />
+          <NextIntlClientProvider messages={messages}>
+            {children}
+          </NextIntlClientProvider>
         </SessionProvider>
       </body>
     </html>

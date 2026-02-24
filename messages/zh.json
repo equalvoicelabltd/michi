@@ -1,212 +1,77 @@
 {
-  "brand": {
-    "name": "Michi",
-    "slogan": "你的日本代購之道",
-    "tagline": "在代購的世界裡，我們是那道引導光線",
-    "story": "過去10年，我走遍日本各地。現在，我想帶你找到最值得的。"
-  },
   "nav": {
-    "buyers": "Michi 代購商",
-    "products": "Michi 發現",
-    "dashboard": "我的 Michi",
+    "tagline": "通往日本的道路",
+    "home": "首頁",
+    "buyers": "尋找代購",
+    "products": "探索商品",
+    "dashboard": "控制台",
+    "chat": "訊息",
+    "login": "登入",
     "logout": "登出",
-    "becomeBuyer": "成為 Michi 代購商"
+    "language": "語言"
+  },
+  "footer": {
+    "tagline": "通往日本的道路",
+    "description": "Michi 連接全球買家與日本代購商，讓你輕鬆購買日本最優質的商品。我們提供安全、便捷的跨境購物體驗。",
+    "quickLinks": "快速連結",
+    "findBuyers": "尋找代購",
+    "discoverProducts": "探索商品",
+    "aboutUs": "關於我們",
+    "contact": "聯絡我們",
+    "support": "客戶支援",
+    "helpCenter": "幫助中心",
+    "faq": "常見問題",
+    "privacy": "隱私政策",
+    "terms": "服務條款",
+    "rights": "保留所有權利",
+    "paymentMethods": "支付方式"
+  },
+  "home": {
+    "hero": {
+      "title": "你值得信賴的日本代購平台",
+      "subtitle": "與經過驗證的日本代購商聯繫，獲取正品商品",
+      "cta": "開始你的 Michi 之旅"
+    },
+    "features": {
+      "title": "為什麼選擇 Michi？",
+      "trusted": "認證代購",
+      "trustedDesc": "所有代購商均經過專業驗證",
+      "multilingual": "5 種語言",
+      "multilingualDesc": "使用你偏好的語言溝通",
+      "ai": "AI 智能發現",
+      "aiDesc": "即時發現最新日本商品"
+    }
+  },
+  "buyers": {
+    "title": "尋找你的完美代購商",
+    "search": "搜尋代購...",
+    "filter": "篩選",
+    "location": "位置",
+    "category": "類別",
+    "rating": "評分",
+    "commission": "佣金率"
+  },
+  "products": {
+    "title": "日本最新商品",
+    "search": "搜尋商品...",
+    "filter": "按類別篩選",
+    "viewDetails": "查看詳情"
   },
   "common": {
-    "loading": "加載中...",
+    "loading": "載入中...",
     "error": "發生錯誤",
-    "success": "成功",
-    "cancel": "取消",
-    "confirm": "確認",
-    "save": "儲存",
-    "delete": "刪除",
-    "edit": "編輯",
+    "retry": "重試",
     "search": "搜尋",
     "filter": "篩選",
     "sort": "排序",
-    "noResults": "未找到結果"
-  },
-  "hero": {
-    "title": "歡迎進入 Michi",
-    "subtitle": "在代購的世界裡，有很多路。\n有的路通往詐騙，有的路通往品質。\nMichi，就是那條通往最好商品的道路。",
-    "cta": "開始你的 Michi 之旅"
-  },
-  "buyers": {
-    "title": "探索 Michi 代購商社區",
-    "description": "遇見那些用心的日本代購商",
-    "findBuyer": "找到你的 Michi 代購商",
-    "filters": {
-      "location": "位置",
-      "category": "專長",
-      "rating": "評分",
-      "commission": "佣金率",
-      "language": "語言"
-    },
-    "locations": {
-      "tokyo": "東京",
-      "osaka": "大阪",
-      "kyoto": "京都",
-      "fukuoka": "福岡",
-      "yokohama": "橫濱",
-      "kobe": "神戶",
-      "nagoya": "名古屋"
-    },
-    "categories": {
-      "cosmetics": "彩妝保養",
-      "fashion": "服裝時尚",
-      "electronics": "電子產品",
-      "home": "家居生活",
-      "food": "食品飲料",
-      "accessories": "配飾",
-      "books": "書籍",
-      "toys": "玩具"
-    },
-    "buyerCard": {
-      "rating": "評分",
-      "reviews": "評價",
-      "commission": "佣金率",
-      "responseTime": "回應時間",
-      "languages": "語言",
-      "countries": "服務國家",
-      "contact": "聯繫代購商",
-      "viewProfile": "查看 Michi 檔案",
-      "verified": "✓ Michi 認證"
-    },
-    "requestForm": {
-      "title": "發起購物請求",
-      "productName": "商品名稱",
-      "productDescription": "商品描述",
-      "budget": "預算",
-      "deadline": "截止日期",
-      "specialRequirements": "特殊要求",
-      "submit": "提交請求",
-      "successMessage": "購物請求已提交"
-    }
-  },
-  "products": {
-    "title": "Michi 發現 - 日本最新商品",
-    "subtitle": "每日更新，AI 精選，多語言摘要",
-    "lastUpdated": "最後更新: {time}",
-    "featured": "🌟 Michi 發現",
-    "categories": {
-      "cosmetics": "彩妝保養",
-      "fashion": "服裝時尚",
-      "electronics": "電子產品",
-      "home": "家居生活",
-      "food": "食品飲料",
-      "accessories": "配飾",
-      "books": "書籍",
-      "toys": "玩具"
-    },
-    "productCard": {
-      "price": "參考價格",
-      "jpy": "日圓",
-      "readMore": "查看詳情",
-      "sourceLink": "查看原文",
-      "aiGenerated": "🤖 AI 摘要",
-      "publishedDate": "發佈日期",
-      "momiichSelected": "✨ Michi 精選"
-    },
-    "noProducts": "暫無商品信息"
-  },
-  "chat": {
-    "title": "Michi 對話",
-    "subtitle": "直接連接，實時翻譯，無平台介入",
-    "translate": "翻譯訊息",
-    "sendMessage": "發送訊息",
-    "message": "輸入訊息...",
-    "contactInfo": "交換聯絡方式後自行溝通",
-    "disclaimer": "⚠️ Michi 原則\nMichi 提供翻譯和通訊服務。買家和賣家應自行確認商品、價格和交易條款。Michi 不介入任何商業交易。",
-    "languages": {
-      "zh": "繁體中文",
-      "zh-CN": "簡體中文",
-      "en": "English",
-      "ja": "日本語",
-      "th": "ไทย"
-    },
-    "sourceLanguage": "原始語言",
-    "targetLanguage": "目標語言",
-    "translation": "翻譯",
-    "original": "原始訊息",
-    "translated": "翻譯訊息"
-  },
-  "dashboard": {
-    "title": "我的 Michi",
-    "subtitle": "你的代購之旅",
-    "profile": "個人資料",
-    "requests": "我的請求",
-    "listings": "我的代購",
-    "conversations": "聊天記錄",
-    "reviews": "評價",
-    "settings": "設定",
-    "noRequests": "你還沒有購物請求",
-    "noListings": "你還沒有代購列表",
-    "myProfile": "我的 Michi 檔案",
-    "editProfile": "編輯檔案",
-    "changePassword": "更改密碼",
-    "logout": "登出",
-    "journey": "我的 Michi 之旅"
-  },
-  "auth": {
-    "signIn": "登入",
-    "signUp": "加入 Michi",
-    "signOut": "登出",
-    "email": "電郵",
-    "password": "密碼",
-    "confirmPassword": "確認密碼",
-    "fullName": "全名",
-    "phone": "電話",
-    "country": "國家",
-    "googleSignIn": "使用 Google 登入",
-    "agreeTerms": "我同意 Michi 服務條款和隱私政策",
-    "alreadyHaveAccount": "已有 Michi 帳戶？",
-    "noAccount": "還沒有 Michi 帳戶？",
-    "invalidEmail": "請輸入有效的電郵",
-    "passwordTooShort": "密碼至少需要 8 個字符",
-    "passwordsNotMatch": "密碼不匹配",
-    "resetPassword": "重置密碼",
-    "checkEmail": "請檢查您的郵箱",
-    "startJourney": "開始你的 Michi 之旅"
-  },
-  "countries": {
-    "hk": "香港",
-    "tw": "台灣",
-    "my": "馬來西亞",
-    "th": "泰國",
-    "jp": "日本",
-    "sg": "新加坡",
-    "cn": "中國"
-  },
-  "payment": {
-    "bank_transfer": "銀行轉帳",
-    "wechat": "微信支付",
-    "alipay": "支付寶",
-    "line_pay": "LINE Pay",
-    "tng": "Touch 'n Go",
-    "promptpay": "PromptPay",
-    "paypal": "PayPal",
-    "credit_card": "信用卡"
-  },
-  "validation": {
-    "required": "此欄位為必填",
-    "invalidEmail": "請輸入有效的電郵",
-    "invalidPhone": "請輸入有效的電話號碼",
-    "minLength": "至少需要 {length} 個字符",
-    "maxLength": "最多 {length} 個字符"
-  },
-  "errors": {
-    "notFound": "未找到",
-    "unauthorized": "未授權",
-    "forbidden": "禁止訪問",
-    "serverError": "伺服器錯誤",
-    "networkError": "網絡錯誤",
-    "tryAgain": "請重試"
-  },
-  "footer": {
-    "about": "關於 Michi",
-    "contact": "聯繫我們",
-    "terms": "服務條款",
-    "privacy": "隱私政策",
-    "copyright": "© 2025 Michi. 版權所有。"
+    "close": "關閉",
+    "save": "儲存",
+    "cancel": "取消",
+    "confirm": "確認",
+    "delete": "刪除",
+    "edit": "編輯",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步"
   }
 }

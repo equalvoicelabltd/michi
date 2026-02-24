@@ -1,24 +1,17 @@
 import { getRequestConfig } from 'next-intl/server';
-import { notFound } from 'next/navigation';
+import { routing } from './routing';
 
-const locales = ['zh', 'zh-CN', 'en', 'ja', 'th'];
+export default getRequestConfig(async ({ requestLocale }) => {
+  // 使用新的 requestLocale API
+  let locale = await requestLocale;
 
-export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as any)) notFound();
+  // 如果沒有 locale 或不在支持列表中，使用默認值
+  if (!locale || !routing.locales.includes(locale as any)) {
+    locale = routing.defaultLocale;
+  }
 
   return {
-    messages: (await import(`../messages/${locale}.json`)).default,
-    timeZone: getTimeZoneForLocale(locale),
+    locale,
+    messages: (await import(`../messages/${locale}.json`)).default
   };
 });
-
-function getTimeZoneForLocale(locale: string): string {
-  const timeZones: Record<string, string> = {
-    'zh': 'Asia/Hong_Kong',
-    'zh-CN': 'Asia/Shanghai',
-    'en': 'Asia/Tokyo',
-    'ja': 'Asia/Tokyo',
-    'th': 'Asia/Bangkok',
-  };
-  return timeZones[locale] || 'UTC';
-}

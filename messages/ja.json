@@ -1,212 +1,77 @@
 {
-  "brand": {
-    "name": "Michi",
-    "slogan": "あなたの日本代購の道",
-    "tagline": "代購の世界では、私たちはあなたの指南の光",
-    "story": "10年間、日本各地を歩き回りました。今、私はあなたを本当に価値のあるものへ導きたい。"
-  },
   "nav": {
-    "buyers": "Michi 代購商",
-    "products": "Michi 発見",
-    "dashboard": "私の Michi",
+    "tagline": "日本への道",
+    "home": "ホーム",
+    "buyers": "バイヤーを探す",
+    "products": "商品を探す",
+    "dashboard": "ダッシュボード",
+    "chat": "メッセージ",
+    "login": "ログイン",
     "logout": "ログアウト",
-    "becomeBuyer": "Michi 代購商になる"
+    "language": "言語"
+  },
+  "footer": {
+    "tagline": "日本最高の商品への道",
+    "description": "Michiは世界中のバイヤーと日本のショッパーを繋ぎ、日本の最高品質な商品の購入を簡単にします。安全で便利な越境ショッピング体験を提供します。",
+    "quickLinks": "クイックリンク",
+    "findBuyers": "バイヤーを探す",
+    "discoverProducts": "商品を探す",
+    "aboutUs": "会社概要",
+    "contact": "お問い合わせ",
+    "support": "カスタマーサポート",
+    "helpCenter": "ヘルプセンター",
+    "faq": "よくある質問",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "rights": "全著作権所有",
+    "paymentMethods": "お支払い方法"
+  },
+  "home": {
+    "hero": {
+      "title": "信頼できる日本代購プラットフォーム",
+      "subtitle": "認証済みの日本人バイヤーと繋がり、本物の商品を入手",
+      "cta": "Michi の旅を始める"
+    },
+    "features": {
+      "title": "Michi を選ぶ理由",
+      "trusted": "認証済みバイヤー",
+      "trustedDesc": "すべてのバイヤーはプロフェッショナルとして認証されています",
+      "multilingual": "5つの言語",
+      "multilingualDesc": "お好みの言語でコミュニケーション",
+      "ai": "AI搭載の発見",
+      "aiDesc": "最新の日本商品を即座に発見"
+    }
+  },
+  "buyers": {
+    "title": "あなたにぴったりのバイヤーを見つける",
+    "search": "バイヤーを検索...",
+    "filter": "フィルター",
+    "location": "場所",
+    "category": "カテゴリー",
+    "rating": "評価",
+    "commission": "手数料率"
+  },
+  "products": {
+    "title": "日本の最新商品",
+    "search": "商品を検索...",
+    "filter": "カテゴリーで絞り込む",
+    "viewDetails": "詳細を見る"
   },
   "common": {
     "loading": "読み込み中...",
     "error": "エラーが発生しました",
-    "success": "成功",
-    "cancel": "キャンセル",
-    "confirm": "確認",
-    "save": "保存",
-    "delete": "削除",
-    "edit": "編集",
+    "retry": "再試行",
     "search": "検索",
     "filter": "フィルター",
-    "sort": "ソート",
-    "noResults": "結果が見つかりません"
-  },
-  "hero": {
-    "title": "Michi へようこそ",
-    "subtitle": "代購の世界では、多くの道があります。\n詐欺につながる道もあれば、品質につながる道もあります。\n\nMichi は、日本の最高の商品へ導く道です。",
-    "cta": "Michi の旅を始める"
-  },
-  "buyers": {
-    "title": "Michi 代購商コミュニティを発見",
-    "description": "心を込めた日本代購商に出会う",
-    "findBuyer": "あなたの Michi 代購商を探す",
-    "filters": {
-      "location": "場所",
-      "category": "専門分野",
-      "rating": "評価",
-      "commission": "手数料",
-      "language": "言語"
-    },
-    "locations": {
-      "tokyo": "東京",
-      "osaka": "大阪",
-      "kyoto": "京都",
-      "fukuoka": "福岡",
-      "yokohama": "横浜",
-      "kobe": "神戸",
-      "nagoya": "名古屋"
-    },
-    "categories": {
-      "cosmetics": "コスメ・スキンケア",
-      "fashion": "ファッション",
-      "electronics": "電子製品",
-      "home": "ホーム・リビング",
-      "food": "食品・飲料",
-      "accessories": "アクセサリー",
-      "books": "書籍",
-      "toys": "おもちゃ・コレクティブル"
-    },
-    "buyerCard": {
-      "rating": "評価",
-      "reviews": "レビュー",
-      "commission": "手数料",
-      "responseTime": "応答時間",
-      "languages": "言語",
-      "countries": "サービス提供国",
-      "contact": "代購商に連絡",
-      "viewProfile": "Michi プロフィール表示",
-      "verified": "✓ Michi 認証済"
-    },
-    "requestForm": {
-      "title": "買い物リクエスト作成",
-      "productName": "商品名",
-      "productDescription": "商品説明",
-      "budget": "予算",
-      "deadline": "期限",
-      "specialRequirements": "特殊要件",
-      "submit": "リクエスト送信",
-      "successMessage": "買い物リクエストが送信されました"
-    }
-  },
-  "products": {
-    "title": "Michi 発見 - 日本最新商品",
-    "subtitle": "毎日更新、AI 精選、多言語サマリー",
-    "lastUpdated": "最終更新：{time}",
-    "featured": "🌟 Michi 発見",
-    "categories": {
-      "cosmetics": "コスメ・スキンケア",
-      "fashion": "ファッション",
-      "electronics": "電子製品",
-      "home": "ホーム・リビング",
-      "food": "食品・飲料",
-      "accessories": "アクセサリー",
-      "books": "書籍",
-      "toys": "おもちゃ・コレクティブル"
-    },
-    "productCard": {
-      "price": "参考価格",
-      "jpy": "JPY",
-      "readMore": "詳細表示",
-      "sourceLink": "ソース表示",
-      "aiGenerated": "🤖 AI サマリー",
-      "publishedDate": "公開日",
-      "michiSelected": "✨ Michi 精選"
-    },
-    "noProducts": "利用可能な商品がありません"
-  },
-  "chat": {
-    "title": "Michi チャット",
-    "subtitle": "直接接続、リアルタイム翻訳、仲介なし",
-    "translate": "メッセージを翻訳",
-    "sendMessage": "メッセージ送信",
-    "message": "メッセージを入力...",
-    "contactInfo": "連絡先を交換して直接コミュニケーション",
-    "disclaimer": "⚠️ Michi の原則\nMichi は翻訳とコミュニケーションサービスのみを提供します。買い手と売り手は商品の詳細、価格、取引条件の確認に責任があります。Michi は商業取引には干渉しません。",
-    "languages": {
-      "zh": "繁體中文",
-      "zh-CN": "簡体中文",
-      "en": "English",
-      "ja": "日本語",
-      "th": "ไทย"
-    },
-    "sourceLanguage": "から",
-    "targetLanguage": "へ",
-    "translation": "翻訳",
-    "original": "オリジナル",
-    "translated": "翻訳済み"
-  },
-  "dashboard": {
-    "title": "私の Michi",
-    "subtitle": "あなたのショッピング旅",
-    "profile": "プロフィール",
-    "requests": "私のリクエスト",
-    "listings": "私のリスティング",
-    "conversations": "会話",
-    "reviews": "レビュー",
-    "settings": "設定",
-    "noRequests": "買い物リクエストがまだありません",
-    "noListings": "リスティングがまだありません",
-    "myProfile": "私の Michi プロフィール",
-    "editProfile": "プロフィール編集",
-    "changePassword": "パスワード変更",
-    "logout": "ログアウト",
-    "journey": "私の Michi の旅"
-  },
-  "auth": {
-    "signIn": "サインイン",
-    "signUp": "Michi に参加",
-    "signOut": "サインアウト",
-    "email": "メール",
-    "password": "パスワード",
-    "confirmPassword": "パスワード確認",
-    "fullName": "名前",
-    "phone": "電話",
-    "country": "国",
-    "googleSignIn": "Google でサインイン",
-    "agreeTerms": "Michi の利用規約とプライバシーポリシーに同意します",
-    "alreadyHaveAccount": "既に Michi アカウントをお持ちですか？",
-    "noAccount": "Michi アカウントをお持ちでませんか？",
-    "invalidEmail": "有効なメールアドレスを入力してください",
-    "passwordTooShort": "パスワードは少なくとも 8 文字である必要があります",
-    "passwordsNotMatch": "パスワードが一致しません",
-    "resetPassword": "パスワードをリセット",
-    "checkEmail": "メールを確認してください",
-    "startJourney": "Michi の旅を始める"
-  },
-  "countries": {
-    "hk": "香港",
-    "tw": "台湾",
-    "my": "マレーシア",
-    "th": "タイ",
-    "jp": "日本",
-    "sg": "シンガポール",
-    "cn": "中国"
-  },
-  "payment": {
-    "bank_transfer": "銀行振込",
-    "wechat": "WeChat ペイ",
-    "alipay": "Alipay",
-    "line_pay": "LINE Pay",
-    "tng": "Touch 'n Go",
-    "promptpay": "PromptPay",
-    "paypal": "PayPal",
-    "credit_card": "クレジットカード"
-  },
-  "validation": {
-    "required": "このフィールドは必須です",
-    "invalidEmail": "有効なメールアドレスを入力してください",
-    "invalidPhone": "有効な電話番号を入力してください",
-    "minLength": "少なくとも {length} 文字である必要があります",
-    "maxLength": "{length} 文字以下である必要があります"
-  },
-  "errors": {
-    "notFound": "見つかりません",
-    "unauthorized": "認可されていません",
-    "forbidden": "禁止",
-    "serverError": "サーバーエラー",
-    "networkError": "ネットワークエラー",
-    "tryAgain": "もう一度お試しください"
-  },
-  "footer": {
-    "about": "Michi について",
-    "contact": "お問い合わせ",
-    "terms": "利用規約",
-    "privacy": "プライバシーポリシー",
-    "copyright": "© 2025 Michi. すべての権利を保有します。"
+    "sort": "並び替え",
+    "close": "閉じる",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "delete": "削除",
+    "edit": "編集",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ"
   }
 }

@@ -2,174 +2,205 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Michi Brand Colors */
-:root {
-  --michi-primary: #003366;      /* 深藍 - 信任 */
-  --michi-secondary: #FF69B4;    /* 粉紅 - 溫暖 */
-  --michi-accent: #FFD700;       /* 金色 - 品質 */
-  --michi-light: #F8F9FA;        /* 淺灰背景 */
-  --michi-dark: #666666;         /* 深灰文字 */
-  --michi-border: #E8E8E8;       /* 邊框 */
-  --michi-success: #4CAF50;      /* 綠色 */
-  --michi-error: #FF6B6B;        /* 紅色 */
+/* Michi 品牌自定義樣式 */
+
+@layer base {
+  :root {
+    --michi-primary: #003366;
+    --michi-secondary: #FF69B4;
+    --michi-accent: #FFD700;
+    --michi-light: #F8F9FA;
+    --michi-dark: #666666;
+    --michi-border: #E8E8E8;
+  }
+
+  body {
+    @apply bg-michi-light text-gray-900;
+  }
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer components {
+  /* Michi 按鈕樣式 */
+  .btn-michi {
+    @apply bg-michi-secondary text-white px-6 py-3 rounded-lg
+           font-semibold transition-all duration-300
+           hover:opacity-90 hover:shadow-lg
+           active:scale-95;
+  }
+
+  .btn-michi-outline {
+    @apply border-2 border-michi-secondary text-michi-secondary
+           px-6 py-3 rounded-lg font-semibold
+           transition-all duration-300
+           hover:bg-michi-secondary hover:text-white;
+  }
+
+  .btn-michi-primary {
+    @apply bg-michi-primary text-white px-6 py-3 rounded-lg
+           font-semibold transition-all duration-300
+           hover:opacity-90 hover:shadow-lg;
+  }
+
+  /* Michi 卡片樣式 */
+  .card-michi {
+    @apply bg-white p-6 rounded-xl shadow-md
+           border border-michi-border
+           transition-all duration-300
+           hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .card-michi-featured {
+    @apply bg-gradient-to-br from-michi-primary to-michi-secondary
+           text-white p-6 rounded-xl shadow-lg
+           transition-all duration-300
+           hover:shadow-2xl hover:-translate-y-1;
+  }
+
+  /* Michi 徽章樣式 */
+  .badge-michi {
+    @apply inline-flex items-center px-3 py-1
+           rounded-full text-xs font-semibold
+           bg-michi-accent text-michi-primary;
+  }
+
+  .badge-michi-verified {
+    @apply inline-flex items-center px-3 py-1
+           rounded-full text-xs font-semibold
+           bg-michi-primary text-white;
+  }
+
+  .badge-michi-new {
+    @apply inline-flex items-center px-3 py-1
+           rounded-full text-xs font-semibold
+           bg-michi-secondary text-white;
+  }
+
+  /* Michi 輸入框樣式 */
+  .input-michi {
+    @apply w-full px-4 py-2 rounded-lg
+           border border-michi-border
+           focus:outline-none focus:ring-2
+           focus:ring-michi-secondary
+           transition-all duration-300;
+  }
+
+  /* Michi 標題樣式 */
+  .heading-michi {
+    @apply text-michi-primary font-bold;
+  }
+
+  .heading-michi-gradient {
+    @apply bg-gradient-to-r from-michi-primary to-michi-secondary
+           bg-clip-text text-transparent font-bold;
+  }
+
+  /* Michi 分隔線 */
+  .divider-michi {
+    @apply border-t border-michi-border my-8;
+  }
+
+  /* Michi 容器 */
+  .container-michi {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Michi 導航鏈接 */
+  .nav-link-michi {
+    @apply text-gray-700 hover:text-michi-primary
+           transition-colors duration-300
+           font-medium;
+  }
+
+  .nav-link-michi-active {
+    @apply text-michi-primary font-semibold
+           border-b-2 border-michi-secondary;
+  }
+
+  /* Michi 評分星星 */
+  .rating-star-michi {
+    @apply text-michi-accent;
+  }
+
+  /* Michi 加載動畫 */
+  .loading-michi {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  /* Michi 標籤 */
+  .tag-michi {
+    @apply inline-block px-3 py-1
+           bg-michi-light text-michi-dark
+           rounded-full text-sm
+           border border-michi-border
+           hover:bg-michi-primary hover:text-white
+           transition-all duration-300
+           cursor-pointer;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  color-scheme: light;
+@layer utilities {
+  /* 文字漸變 */
+  .text-gradient-michi {
+    @apply bg-gradient-to-r from-michi-primary to-michi-secondary
+           bg-clip-text text-transparent;
+  }
+
+  /* 背景漸變 */
+  .bg-gradient-michi {
+    @apply bg-gradient-to-br from-michi-primary to-michi-secondary;
+  }
+
+  /* 陰影效果 */
+  .shadow-michi {
+    box-shadow: 0 4px 20px rgba(0, 51, 102, 0.1);
+  }
+
+  .shadow-michi-lg {
+    box-shadow: 0 8px 30px rgba(0, 51, 102, 0.15);
+  }
+
+  /* 平滑滾動 */
+  .scroll-smooth-michi {
+    scroll-behavior: smooth;
+  }
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--michi-light);
-  color: var(--michi-dark);
+/* 響應式字體大小 */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
 }
 
-/* Custom scrollbar - Michi Brand */
+/* 暗色模式支持（未來擴展） */
+@media (prefers-color-scheme: dark) {
+  /* 可以在這裡添加暗色模式樣式 */
+}
+
+/* 自定義滾動條 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--michi-light);
+  @apply bg-gray-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--michi-secondary);
-  border-radius: 4px;
+  @apply bg-michi-primary rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--michi-primary);
+  @apply bg-michi-secondary;
 }
 
-/* Selection color */
+/* 選中文字樣式 */
 ::selection {
-  background-color: var(--michi-secondary);
-  color: white;
+  @apply bg-michi-secondary text-white;
 }
 
-/* Button styles - Michi Brand */
-@layer components {
-  /* CTA Button - Pink (主要行動) */
-  .btn-primary {
-    @apply px-6 py-3 bg-michi-secondary text-white rounded-lg font-semibold 
-           hover:bg-pink-500 active:bg-pink-600
-           transition-all duration-200 shadow-sm hover:shadow-md;
-  }
-
-  /* Secondary Button - Blue (次要行動) */
-  .btn-secondary {
-    @apply px-6 py-3 bg-michi-primary text-white rounded-lg font-semibold 
-           hover:bg-blue-900 active:bg-blue-950
-           transition-all duration-200 shadow-sm hover:shadow-md;
-  }
-
-  /* Outline Button - Blue */
-  .btn-outline {
-    @apply px-6 py-3 border-2 border-michi-primary text-michi-primary rounded-lg font-semibold
-           hover:bg-michi-primary hover:text-white
-           transition-all duration-200;
-  }
-
-  /* Accent Button - Gold */
-  .btn-accent {
-    @apply px-6 py-3 bg-michi-accent text-michi-primary rounded-lg font-semibold
-           hover:bg-yellow-500 active:bg-yellow-600
-           transition-all duration-200;
-  }
-
-  /* Card - Michi Style */
-  .card {
-    @apply bg-white border border-michi-border rounded-lg shadow-sm 
-           hover:shadow-md transition-shadow duration-200;
-  }
-
-  /* Premium Card - with pink border */
-  .card-premium {
-    @apply bg-white border-2 border-michi-secondary rounded-lg shadow-sm 
-           hover:shadow-md transition-shadow duration-200;
-  }
-
-  /* Badge - Default Gray */
-  .badge {
-    @apply inline-block px-3 py-1 bg-gray-100 text-michi-dark rounded-full text-sm font-medium;
-  }
-
-  /* Badge - Pink (特殊推薦) */
-  .badge-pink {
-    @apply inline-block px-3 py-1 bg-pink-100 text-michi-secondary rounded-full text-sm font-medium;
-  }
-
-  /* Badge - Gold (精選) */
-  .badge-gold {
-    @apply inline-block px-3 py-1 bg-yellow-100 text-michi-accent rounded-full text-sm font-medium;
-  }
-
-  /* Badge - Blue (認證) */
-  .badge-blue {
-    @apply inline-block px-3 py-1 bg-blue-100 text-michi-primary rounded-full text-sm font-medium;
-  }
-
-  /* Input Field - Michi Style */
-  .input-field {
-    @apply w-full px-4 py-2 border border-michi-border rounded-lg 
-           focus:outline-none focus:border-michi-secondary focus:ring-1 focus:ring-michi-secondary
-           transition-colors bg-white text-michi-dark placeholder-gray-400;
-  }
-
-  /* Section Header */
-  .section-header {
-    @apply text-center mb-12;
-  }
-
-  .section-title {
-    @apply text-4xl font-bold text-michi-primary mb-4;
-  }
-
-  .section-subtitle {
-    @apply text-xl text-michi-dark mb-8;
-  }
-
-  /* Divider */
-  .divider {
-    @apply h-1 bg-gradient-to-r from-transparent via-michi-secondary to-transparent;
-  }
-
-  /* Star Rating - Gold */
-  .star-rating {
-    @apply text-michi-accent;
-  }
-
-  /* Verified Badge */
-  .verified-badge {
-    @apply inline-flex items-center gap-1 px-2 py-1 bg-blue-50 rounded text-sm;
-  }
-
-  .verified-badge::before {
-    content: '✓';
-    color: var(--michi-primary);
-    font-weight: bold;
-  }
-
-  /* Link - Michi Style */
-  a {
-    @apply text-michi-secondary hover:text-pink-500 transition-colors;
-  }
-
-  /* Heading - Michi Style */
-  h1, h2, h3, h4, h5, h6 {
-    @apply text-michi-primary font-semibold;
-  }
+/* Focus 可見性改進 */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-michi-secondary;
 }

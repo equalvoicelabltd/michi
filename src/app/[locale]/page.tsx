@@ -1,53 +1,24 @@
-'use client';
-
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import HeroSection from '@/components/HeroSection';
-import BuyersSection from '@/components/sections/BuyersSection';
-import ProductsSection from '@/components/sections/ProductsSection';
+import MichiMarketplace from '@/components/MichiMarketplace';
+
+// 設置元數據
+export const metadata = {
+  title: 'Michi JP | 日本代購平台 - 連接全球買家與日本專家',
+  description: '發現日本最新商品，連接可信任的代購職人。支持繁體中文、簡體中文、英文、日文和泰文。',
+  openGraph: {
+    title: 'Michi JP - Your Path to Japan\'s Best',
+    description: '日本代購平台 - 代購職人市場 + AI 商品情報',
+    type: 'website',
+  },
+};
 
 export default function Home() {
   const t = useTranslations();
 
   return (
-    <>
-      {/* Hero Section */}
-      <HeroSection />
-
-      {/* Buyers Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">{t('buyers.title')}</h2>
-            <p className="text-xl text-gray-600">{t('buyers.description')}</p>
-          </div>
-          <BuyersSection />
-        </div>
-      </section>
-
-      {/* Products Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">{t('products.title')}</h2>
-            <p className="text-xl text-gray-600">{t('products.subtitle')}</p>
-          </div>
-          <ProductsSection />
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">{t('nav.becomeBuyer')}</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join our community of trusted buyers from Japan
-          </p>
-          <Link href="/buyer-signup" className="btn-secondary px-8 py-3 text-lg">
-            {t('nav.becomeBuyer')}
-          </Link>
-        </div>
-      </section>
-    </>
+    <main className="bg-[#F9F7F2] min-h-screen">
+      {/* Michi 代購平台組件 - 包含所有 Section */}
+      <MichiMarketplace />
+    </main>
   );
 }
