@@ -24,7 +24,6 @@ export default function Footer() {
     {
       heading: '支援',
       links: [
-        { href: '/about',         label: '平台理念' },
         { href: 'mailto:hello@michi.jp', label: '聯絡我們', external: true },
       ],
     },
