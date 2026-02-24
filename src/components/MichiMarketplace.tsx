@@ -153,12 +153,12 @@ export default function MichiMarketplace() {
             <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
           </div>
 
-          {/* ✅ "發布需求" — links to a contact/request page */}
+          {/* ✅ "申請成為買手" — links to a contact/request page */}
           <a
             href={url('/buyers')}
             className="font-serif text-sm italic border-b border-[#1C1C1C] pb-1 hover:text-stone-400 transition-all font-black"
           >
-            發布需求
+            申請成為買手
           </a>
         </div>
       </nav>
@@ -512,7 +512,7 @@ export default function MichiMarketplace() {
                 {[
                   { label: '代購職人', href: url('/buyers') },
                   { label: '最新商品', href: url('/products') },
-                  { label: '發布需求', href: url('/buyers') },
+                  { label: '申請成為買手', href: url('/buyers') },
                   { label: '關於我們', href: url('/about') },
                 ].map(({ label, href }) => (
                   <a key={label} href={href} className="block text-[10px] text-stone-400 hover:text-white transition-colors uppercase tracking-wider font-bold">
