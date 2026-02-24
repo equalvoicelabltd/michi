@@ -1,0 +1,43 @@
+# .github/workflows/refresh-products.yml
+# Runs daily at 8AM UTC — triggers the AI product scraper on your Vercel deployment
+# Cost: FREE (GitHub Actions free tier)
+
+name: 🤖 Daily AI Product Refresh
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # Every day at 8:00 AM UTC
+  workflow_dispatch:        # Allow manual trigger from GitHub UI
+
+jobs:
+  refresh-products:
+    name: Trigger AI Scrape
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 🌸 Trigger Michi Product Scraper
+        run: |
+          echo "Triggering AI product scrape at $(date)..."
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X GET \
+            "${{ secrets.PRODUCTION_URL }}/api/products?action=scrape" \
+            -H "x-api-key: ${{ secrets.INTERNAL_API_KEY }}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+          
+          echo "Response: $BODY"
+          echo "HTTP Status: $HTTP_CODE"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Scrape failed with status $HTTP_CODE"
+            exit 1
+          fi
+          
+          echo "✅ Scrape triggered successfully"
+
+      - name: 📊 Report Result
+        if: always()
+        run: echo "Workflow completed at $(date)"

@@ -1,323 +1,211 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// ── Supabase client (server-side) ──────────────────────────
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
-interface Product {
+// ── OpenAI client ──────────────────────────────────────────
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// ── Search queries for Japanese product news ───────────────
+const SEARCH_QUERIES = [
+  { q: '日本 新商品 発売 2025', category: 'general' },
+  { q: 'Japan new product launch fashion 2025', category: 'fashion' },
+  { q: '日本 コスメ 新作 発売', category: 'beauty' },
+  { q: 'Japan anime limited edition figure 2025', category: 'anime' },
+  { q: '日本 電子製品 新発売 2025', category: 'electronics' },
+  { q: 'Japan new food snack limited 2025', category: 'food' },
+];
+
+interface RawSearchItem {
   title: string;
-  description: string;
-  category: string;
-  source: string;
-  ai_summary: string;
-  published_at: string;
+  snippet: string;
+  link: string;
+  pagemap?: { cse_image?: { src: string }[] };
 }
 
-/**
- * GET /api/products
- * 獲取最新商品或觸發爬蟲
- * ?action=scrape - 觸發爬蟲搜索新商品
- */
+// ============================================================
+// GET /api/products
+// Returns saved products, or triggers scrape if ?action=scrape
+// ============================================================
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
 
-    // 驗證內部 API 密鑰（可選）
-    const apiKey = request.headers.get('x-api-key');
-    if (process.env.INTERNAL_API_KEY && apiKey !== process.env.INTERNAL_API_KEY) {
-      // 不強制驗證，允許公開訪問
-    }
-
     if (action === 'scrape') {
-      // 觸發爬蟲
-      const result = await scrapeJapaneseProducts();
-      return NextResponse.json({
-        success: true,
-        message: `Found ${result.count} products`,
-        productsCount: result.count,
-      });
+      const count = await runScrape();
+      return NextResponse.json({ success: true, message: `Scraped ${count} new products`, count });
     }
 
-    // 默認：返回已保存的商品
+    // Default: return stored products
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .order('published_at', { ascending: false })
-      .limit(6);
+      .limit(9);
 
     if (error) {
-      console.error('Supabase error:', error);
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
+      console.error('[products/GET] Supabase error:', error);
+      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({
-      success: true,
-      products: data || [],
-    });
-  } catch (error) {
-    console.error('API error:', error);
+    return NextResponse.json({ success: true, products: data ?? [] });
+  } catch (err) {
+    console.error('[products/GET] Unexpected error:', err);
     return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { success: false, error: err instanceof Error ? err.message : 'Unknown error' },
       { status: 500 }
     );
   }
 }
 
-/**
- * POST /api/products
- * 手動觸發商品更新
- */
+// ============================================================
+// POST /api/products
+// Manual trigger: { "action": "refresh" }
+// ============================================================
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { action } = body;
+    const { action } = await request.json();
 
     if (action === 'refresh') {
-      const result = await scrapeJapaneseProducts();
-      return NextResponse.json({
-        success: true,
-        message: 'Products refreshed successfully',
-        productsCount: result.count,
-      });
+      const count = await runScrape();
+      return NextResponse.json({ success: true, message: `Refreshed ${count} new products`, count });
     }
 
+    return NextResponse.json({ success: false, error: 'Unknown action' }, { status: 400 });
+  } catch (err) {
+    console.error('[products/POST] Error:', err);
     return NextResponse.json(
-      { error: 'Invalid action' },
-      { status: 400 }
-    );
-  } catch (error) {
-    console.error('API error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { success: false, error: err instanceof Error ? err.message : 'Unknown error' },
       { status: 500 }
     );
   }
 }
 
-/**
- * 搜索日本最新商品
- * 使用 Google Custom Search API
- */
-async function searchJapaneseProducts(
-  query: string,
-  category: string
-): Promise<Product[]> {
-  try {
-    const searchQuery = `${query} ${category} 2024 2025 新作 發售 新商品`;
+// ============================================================
+// Core scrape logic
+// ============================================================
+async function runScrape(): Promise<number> {
+  const allProducts: {
+    title: string;
+    description: string;
+    category: string;
+    source: string;
+    source_url: string;
+    image_url: string | null;
+    ai_summary: string;
+    published_at: string;
+    ai_generated: boolean;
+  }[] = [];
 
-    // 調用 Google Custom Search API
-    const response = await fetch(
-      `https://www.googleapis.com/customsearch/v1?` +
-      `q=${encodeURIComponent(searchQuery)}` +
-      `&cx=${process.env.GOOGLE_SEARCH_ENGINE_ID}` +
-      `&key=${process.env.GOOGLE_SEARCH_API_KEY}` +
-      `&sort=date`,
-      { method: 'GET' }
-    );
+  const googleApiKey = process.env.GOOGLE_SEARCH_API_KEY;
+  const cseId = process.env.GOOGLE_SEARCH_ENGINE_ID;
 
-    if (!response.ok) {
-      console.warn(`Google Search API warning: ${response.statusText}`);
-      return [];
-    }
+  for (const { q, category } of SEARCH_QUERIES) {
+    let items: RawSearchItem[] = [];
 
-    const data = await response.json();
-    const items = data.items?.slice(0, 3) || [];
-
-    // 為每個搜索結果生成 AI 摘要
-    const products: Product[] = [];
-
-    for (const item of items) {
+    // ── Try Google Custom Search ──────────────────────────
+    if (googleApiKey && cseId) {
       try {
-        const aiSummary = await generateAISummary(
-          item.title,
-          item.snippet,
-          category
-        );
-
-        products.push({
-          title: item.title,
-          description: item.snippet,
-          category: category,
-          source: new URL(item.link).hostname,
-          ai_summary: aiSummary,
-          published_at: new Date().toISOString(),
-        });
-      } catch (err) {
-        console.error('Error generating AI summary:', err);
-        // 即使失敗，仍然添加產品
-        products.push({
-          title: item.title,
-          description: item.snippet,
-          category: category,
-          source: new URL(item.link).hostname,
-          ai_summary: item.snippet,
-          published_at: new Date().toISOString(),
-        });
+        const url =
+          `https://www.googleapis.com/customsearch/v1` +
+          `?q=${encodeURIComponent(q)}` +
+          `&cx=${cseId}` +
+          `&key=${googleApiKey}` +
+          `&num=3` +
+          `&sort=date`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          items = (data.items ?? []) as RawSearchItem[];
+        } else {
+          console.warn(`[scrape] Google Search non-200: ${res.status} for "${q}"`);
+        }
+      } catch (e) {
+        console.warn(`[scrape] Google Search error for "${q}":`, e);
       }
+    } else {
+      console.warn('[scrape] GOOGLE_SEARCH_API_KEY or GOOGLE_SEARCH_ENGINE_ID not set — skipping Google search');
     }
 
-    return products;
-  } catch (error) {
-    console.error('Error searching Japanese products:', error);
-    return [];
-  }
-}
+    // ── Generate AI summaries ─────────────────────────────
+    for (const item of items.slice(0, 2)) {
+      let hostname = 'Japan News';
+      try {
+        hostname = new URL(item.link).hostname.replace('www.', '');
+      } catch {}
 
-/**
- * 使用 OpenAI 生成中文摘要
- */
-async function generateAISummary(
-  title: string,
-  snippet: string,
-  category: string
-): Promise<string> {
-  try {
-    const prompt = `
-作為日本商品評論專家，為以下商品生成簡潔的中文摘要（最多 150 字）：
+      const imageUrl =
+        item.pagemap?.cse_image?.[0]?.src ?? null;
 
-商品標題：${title}
-商品介紹：${snippet}
-商品分類：${category}
+      let aiSummary = item.snippet;
+      if (process.env.OPENAI_API_KEY) {
+        try {
+          const resp = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [
+              {
+                role: 'system',
+                content:
+                  '你是日本商品情報專家。請用繁體中文撰寫一段簡潔、吸引人的商品摘要（100字以內），' +
+                  '重點突出產品特色、適合人群及購買價值。直接輸出摘要，無需前置說明。',
+              },
+              {
+                role: 'user',
+                content: `商品標題：${item.title}\n商品描述：${item.snippet}\n分類：${category}`,
+              },
+            ],
+            max_tokens: 180,
+            temperature: 0.65,
+          });
+          aiSummary = resp.choices[0]?.message?.content ?? item.snippet;
+        } catch (e) {
+          console.warn('[scrape] OpenAI error:', e);
+        }
+      }
 
-摘要要求：
-- 強調產品的獨特之處
-- 提及材料、工藝或設計元素
-- 提供購買建議或適用場景
-- 簡潔、優雅的語氣
-
-直接輸出摘要，不需要前置說明。
-    `;
-
-    const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      max_tokens: 200,
-      temperature: 0.7,
-    });
-
-    return (
-      response.choices[0]?.message?.content ||
-      snippet.substring(0, 150)
-    );
-  } catch (error) {
-    console.error('Error calling OpenAI:', error);
-    return snippet.substring(0, 150);
-  }
-}
-
-/**
- * 保存商品到 Supabase
- */
-async function saveProductsToSupabase(
-  products: Product[]
-): Promise<number> {
-  try {
-    if (products.length === 0) {
-      console.log('No new products to save');
-      return 0;
-    }
-
-    // 檢查重複
-    const existingTitles = await supabase
-      .from('products')
-      .select('title')
-      .in(
-        'title',
-        products.map((p) => p.title)
-      );
-
-    const existingSet = new Set(
-      existingTitles.data?.map((p: any) => p.title) || []
-    );
-
-    // 過濾重複
-    const newProducts = products.filter((p) => !existingSet.has(p.title));
-
-    if (newProducts.length === 0) {
-      console.log('All products already exist');
-      return 0;
-    }
-
-    // 插入新商品
-    const { error } = await supabase.from('products').insert(
-      newProducts.map((p) => ({
-        title: p.title,
-        description: p.description,
-        category: p.category,
-        source: p.source,
+      allProducts.push({
+        title: item.title,
+        description: item.snippet,
+        category,
+        source: hostname,
+        source_url: item.link,
+        image_url: imageUrl,
+        ai_summary: aiSummary,
+        published_at: new Date().toISOString(),
         ai_generated: true,
-        ai_summary: p.ai_summary,
-        published_at: p.published_at,
-        tags: [p.category.toLowerCase()],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }))
-    );
-
-    if (error) {
-      throw error;
+      });
     }
+  }
 
-    console.log(`Saved ${newProducts.length} new products to Supabase`);
-    return newProducts.length;
-  } catch (error) {
-    console.error('Error saving products to Supabase:', error);
+  if (allProducts.length === 0) {
     return 0;
   }
-}
 
-/**
- * 爬蟲主函數
- */
-async function scrapeJapaneseProducts() {
-  try {
-    // 定義搜索類別
-    const categories = [
-      { name: 'Fashion', query: 'Uniqlo MUJI 新作' },
-      { name: 'Home', query: '家具 インテリア 新商品' },
-      { name: 'Craft', query: '工藝 職人 新作' },
-    ];
+  // ── Deduplicate against existing titles ────────────────
+  const { data: existingRows } = await supabase
+    .from('products')
+    .select('title')
+    .in('title', allProducts.map((p) => p.title));
 
-    const allProducts: Product[] = [];
+  const existingTitles = new Set((existingRows ?? []).map((r: { title: string }) => r.title));
+  const newProducts = allProducts.filter((p) => !existingTitles.has(p.title));
 
-    // 搜索每個類別
-    for (const category of categories) {
-      const products = await searchJapaneseProducts(
-        category.query,
-        category.name
-      );
-      allProducts.push(...products);
-    }
-
-    // 保存到 Supabase
-    const saved = await saveProductsToSupabase(allProducts);
-
-    return {
-      count: saved,
-      total: allProducts.length,
-    };
-  } catch (error) {
-    console.error('Error in scrapeJapaneseProducts:', error);
-    return {
-      count: 0,
-      total: 0,
-    };
+  if (newProducts.length === 0) {
+    return 0;
   }
+
+  // ── Insert to Supabase ─────────────────────────────────
+  const { error } = await supabase.from('products').insert(newProducts);
+  if (error) {
+    console.error('[scrape] Supabase insert error:', error);
+    return 0;
+  }
+
+  return newProducts.length;
 }
