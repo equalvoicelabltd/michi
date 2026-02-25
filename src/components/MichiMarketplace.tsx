@@ -295,9 +295,9 @@ export default function MichiMarketplace() {
 
                 {/* ✅ FIX: "聯繫" button → <a href="mailto:"> */}
                 <a
-                  href={`mailto:hello@michi.jp?subject=代購諮詢 - ${shopper.name}`}
-                  className="block w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all text-center"
-                >
+                  href={url('/buyers')}
+  className="block w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all text-center"
+>
                   聯繫
                 </a>
               </div>
