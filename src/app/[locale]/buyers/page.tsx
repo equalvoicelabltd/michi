@@ -4,16 +4,16 @@ import { useState, useMemo } from 'react';
 import { useLocale } from 'next-intl';
 
 // ─────────────────────────────────────────────────────────────
-// SERVICE TYPES — 新增服務類型定義
+// SERVICE TYPES
 // ─────────────────────────────────────────────────────────────
 interface BuyerServices {
-  livestream: boolean;          // 現場直播
-  photoVideo: boolean;          // 現場拍照/影片
-  queueing: boolean;            // 排隊限定商品
-  queueRate: string;            // 排隊收費方式
-  shipping: boolean;            // 代寄服務
-  paymentTerms: string;         // 付款條件
-  depositRate: string;          // 訂金比例（如需要）
+  livestream: boolean;
+  photoVideo: boolean;
+  queueing: boolean;
+  queueRate: string;
+  shipping: boolean;
+  paymentTerms: string;
+  depositRate: string;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -284,26 +284,25 @@ const BUYERS = [
 ];
 
 const FILTERS = [
-  { key: 'all',      label: 'All',       icon: '◉' },
-  { key: 'fashion',  label: 'Fashion',   icon: '👔' },
-  { key: 'anime',    label: 'Anime',     icon: '⚡' },
-  { key: 'vintage',  label: 'Vintage',   icon: '🏺' },
-  { key: 'beauty',   label: 'Beauty',    icon: '🌿' },
-  { key: 'tech',     label: 'Tech',      icon: '📷' },
-  { key: 'food',     label: 'Food',      icon: '☕' },
-  { key: 'lifestyle',label: 'Lifestyle', icon: '🎋' },
+  { key: 'all',       label: 'All',       icon: '◉' },
+  { key: 'fashion',   label: 'Fashion',   icon: '👔' },
+  { key: 'anime',     label: 'Anime',     icon: '⚡' },
+  { key: 'vintage',   label: 'Vintage',   icon: '🏺' },
+  { key: 'beauty',    label: 'Beauty',    icon: '🌿' },
+  { key: 'tech',      label: 'Tech',      icon: '📷' },
+  { key: 'food',      label: 'Food',      icon: '☕' },
+  { key: 'lifestyle', label: 'Lifestyle', icon: '🎋' },
 ];
 
 const AREAS = [
-  { key: 'all',     label: '全部地區' },
-  { key: 'tokyo',   label: '東京' },
-  { key: 'osaka',   label: '大阪' },
-  { key: 'kyoto',   label: '京都' },
-  { key: 'fukuoka', label: '福岡' },
-  { key: 'nagoya',  label: '名古屋' },
+  { key: 'all',      label: '全部地區' },
+  { key: 'tokyo',    label: '東京' },
+  { key: 'osaka',    label: '大阪' },
+  { key: 'kyoto',    label: '京都' },
+  { key: 'fukuoka',  label: '福岡' },
+  { key: 'nagoya',   label: '名古屋' },
 ];
 
-// Service filter
 const SERVICE_FILTERS = [
   { key: 'all',        label: '全部' },
   { key: 'livestream', label: '📹 直播' },
@@ -312,14 +311,14 @@ const SERVICE_FILTERS = [
 ];
 
 const LEVEL_STYLES: Record<number, { bg: string; text: string; border: string }> = {
-  1: { bg: 'bg-stone-100', text: 'text-stone-500', border: 'border-stone-300' },
-  2: { bg: 'bg-blue-50',   text: 'text-[#1A237E]', border: 'border-[#1A237E]/30' },
-  3: { bg: 'bg-pink-50',   text: 'text-[#B22222]', border: 'border-[#B22222]/30' },
-  4: { bg: 'bg-amber-50',  text: 'text-[#C5A059]', border: 'border-[#C5A059]/50' },
+  1: { bg: 'bg-stone-100', text: 'text-stone-500',  border: 'border-stone-300' },
+  2: { bg: 'bg-blue-50',   text: 'text-[#1A237E]',  border: 'border-[#1A237E]/30' },
+  3: { bg: 'bg-pink-50',   text: 'text-[#B22222]',  border: 'border-[#B22222]/30' },
+  4: { bg: 'bg-amber-50',  text: 'text-[#C5A059]',  border: 'border-[#C5A059]/50' },
 };
 
 // ─────────────────────────────────────────────────────────────
-// SERVICE BADGE helper
+// SERVICE BADGE
 // ─────────────────────────────────────────────────────────────
 function ServiceBadge({ active, label, sub }: { active: boolean; label: string; sub?: string }) {
   if (!active) return (
@@ -374,68 +373,62 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
         {sent ? (
           <div className="p-10 text-center space-y-4">
             <div className="text-5xl">✓</div>
-            <h4 className="text-xl font-serif font-black">訊息已發送</h4>
-            <p className="text-stone-500 text-sm">預計回覆時間：<span className="font-bold text-[#1A237E]">{buyer.responseTime}</span></p>
-            <button onClick={onClose} className="mt-2 border border-[#1C1C1C] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#1C1C1C] hover:text-white transition-all">
+            <h4 className="text-xl font-serif font-black text-[#1C1C1C]">詢問已送出</h4>
+            <p className="text-stone-400 text-sm">買手將盡快與您聯絡，請留意 WhatsApp / LINE / WeChat 訊息。</p>
+            <button onClick={onClose}
+              className="mt-4 border border-stone-200 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] transition-all">
               關閉
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-7 space-y-5">
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">你的名字 *</label>
-                <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} placeholder="姓名" />
+              <div>
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">您的姓名 *</label>
+                <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
+                  className={inputCls} placeholder="Hong Tai Ming" />
               </div>
-              <div className="space-y-1">
-                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">電郵 *</label>
-                <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} placeholder="email@example.com" />
+              <div>
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">聯絡電郵 *</label>
+                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                  className={inputCls} placeholder="you@email.com" />
               </div>
             </div>
 
-            {/* 額外服務選擇 */}
-            <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">需要的額外服務</label>
-              <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">所需服務</label>
+              <div className="grid grid-cols-4 gap-2">
                 {[
-                  { key: 'needLivestream', label: '📹 現場直播', rate: buyer.livestreamRate, avail: buyer.services.livestream },
-                  { key: 'needPhoto',      label: '📸 拍照/影片', rate: buyer.photoVideoRate, avail: buyer.services.photoVideo },
-                  { key: 'needQueueing',   label: '⏳ 排隊代購', rate: buyer.services.queueRate, avail: buyer.services.queueing },
-                  { key: 'needShipping',   label: '📦 代寄服務',  rate: '另議', avail: buyer.services.shipping },
-                ].map(({ key, label, rate, avail }) => (
-                  <label key={key}
-                    className={`flex items-start gap-2.5 p-3 border cursor-pointer transition-all ${
-                      !avail ? 'opacity-30 cursor-not-allowed bg-stone-50' :
-                      (form as any)[key] ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200 hover:border-stone-300'
+                  { key: 'needLivestream', label: '📹 直播' },
+                  { key: 'needPhoto',      label: '📸 拍照' },
+                  { key: 'needQueueing',   label: '⏳ 排隊' },
+                  { key: 'needShipping',   label: '📦 代寄' },
+                ].map(({ key, label }) => (
+                  <button key={key} type="button"
+                    onClick={() => setForm({ ...form, [key]: !form[key as keyof typeof form] })}
+                    className={`py-2 text-[9px] font-black border transition-all ${
+                      form[key as keyof typeof form]
+                        ? 'bg-[#1A237E] text-white border-[#1A237E]'
+                        : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
                     }`}>
-                    <input type="checkbox" disabled={!avail}
-                      checked={(form as any)[key]}
-                      onChange={e => avail && setForm({ ...form, [key]: e.target.checked })}
-                      className="mt-0.5 accent-[#1A237E]" />
-                    <div>
-                      <p className="text-[9px] font-black text-[#1C1C1C]">{label}</p>
-                      <p className="text-[8px] text-[#C5A059] font-bold mt-0.5">{avail ? rate : '此買手不提供'}</p>
-                    </div>
-                  </label>
+                    {label}
+                  </button>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購需求 *</label>
-              <textarea required rows={3} value={form.message}
-                onChange={e => setForm({ ...form, message: e.target.value })}
-                className={`${inputCls} resize-none`}
-                placeholder="描述商品、預算、時間要求…" />
+            <div>
+              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">代購需求詳情 *</label>
+              <textarea required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
+                rows={4} className={inputCls}
+                placeholder="請描述想購買的商品、預算、數量及任何特殊要求…" />
             </div>
 
-            {/* Payment terms info */}
-            <div className="bg-amber-50 border border-amber-200 p-3 space-y-1">
-              <p className="text-[9px] font-black text-amber-700 uppercase tracking-widest">此買手付款條件</p>
-              <p className="text-[10px] text-amber-900 font-bold">
-                {buyer.services.paymentTerms === '全額先付'
-                  ? `💳 全額先付 — 確認訂單後須支付全數貨款及服務費`
-                  : `💳 訂金制 — 確認後先付 ${buyer.services.depositRate} 訂金，收貨後付尾數`}
+            <div className="bg-stone-50 p-4 text-[9px] text-stone-500 leading-relaxed">
+              <p className="font-black text-stone-400 uppercase tracking-widest mb-1">付款條件</p>
+              <p>{buyer.services.paymentTerms === '全額先付'
+                ? `💳 全額先付 — 確認訂單後須支付全數貨款及服務費`
+                : `💳 訂金制 — 確認後先付 ${buyer.services.depositRate} 訂金，收貨後付尾數`}
               </p>
             </div>
 
@@ -443,6 +436,289 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
               className="w-full py-4 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
               發送詢問
             </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// APPLY MODAL
+// ─────────────────────────────────────────────────────────────
+function ApplyModal({ onClose }: { onClose: () => void }) {
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: '', nameJp: '', email: '',
+    whatsapp: '', wechat: '', line: '',
+    city: '', cityOther: '', residency: '',
+    specialties: [] as string[],
+    otherSpecialty: '',
+    languages: [] as string[],
+    commission: '', minOrder: '', responseTime: '',
+    bio: '', experience: '', highlight: '',
+    offersLivestream: false,
+    livestreamRate: '',
+    livestreamUnit: '30分鐘',
+    offersPhotoVideo: false,
+    photoVideoRate: '',
+    offersQueueing: false,
+    queueingRate: '',
+    queueingUnit: 'hourly' as 'hourly' | 'daily' | 'both',
+    offersShipping: false,
+    shippingMethods: [] as string[],
+    paymentTerms: '' as string,
+    depositRate: '',
+    agreeTerms: false,
+    agreeDisclaimer: false,
+  });
+
+  const toggle = (arr: string[], val: string) =>
+    arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
+
+  const SPECIALTY_OPTIONS = ['時尚服飾','動漫周邊','古董工藝','電子科技','美妝藥粧','遊戲卡牌','食品零食','精品名錶','生活雜貨','其他'];
+  const LANGUAGE_OPTIONS  = ['繁體中文','簡體中文','English','日本語','ภาษาไทย'];
+  const CITY_OPTIONS      = ['東京','大阪','京都','福岡','名古屋','札幌','仙台','廣島','其他'];
+  const SHIPPING_OPTIONS  = ['EMS','DHL/FedEx','日本郵便','Sea Mail（船運）','自取（東京/大阪）'];
+
+  const inputCls = "w-full border border-stone-200 bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E] text-[#1C1C1C] placeholder-stone-300";
+
+  const Field = ({ label, req, children }: { label: string; req?: boolean; children: React.ReactNode }) => (
+    <div className="space-y-1.5">
+      <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block">
+        {label}{req && <span className="text-[#B22222] ml-1">*</span>}
+      </label>
+      {children}
+    </div>
+  );
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step < 3) { setStep(step + 1); return; }
+    setLoading(true);
+    await new Promise(r => setTimeout(r, 1500));
+    setLoading(false);
+    setStep(4);
+  };
+
+  const STEPS = ['基本資料', '服務設定', '確認提交'];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white w-full max-w-2xl shadow-2xl my-8">
+
+        {/* Header */}
+        <div className="bg-[#1C1C1C] text-white p-6 flex items-center justify-between">
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 mb-1">Michi Project</p>
+            <h3 className="text-lg font-serif font-black">申請成為買手</h3>
+          </div>
+          <button onClick={onClose} className="text-white/40 hover:text-white text-2xl leading-none">×</button>
+        </div>
+
+        {step < 4 && (
+          <div className="flex border-b border-stone-200">
+            {STEPS.map((s, i) => (
+              <div key={s} className={`flex-1 py-3 text-center text-[9px] font-black uppercase tracking-widest transition-colors ${
+                i + 1 === step ? 'text-[#1A237E] border-b-2 border-[#1A237E]' :
+                i + 1 < step  ? 'text-[#C5A059]' : 'text-stone-300'
+              }`}>
+                {i + 1 < step ? '✓ ' : `${i + 1}. `}{s}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {step === 4 ? (
+          <div className="p-12 text-center space-y-4">
+            <div className="text-6xl">🌸</div>
+            <h4 className="text-2xl font-serif font-black text-[#1C1C1C]">申請已送出！</h4>
+            <p className="text-stone-400 text-sm max-w-sm mx-auto">我們將在 3-5 個工作天內審核您的申請，並通過電郵通知您結果。</p>
+            <button onClick={onClose}
+              className="mt-4 bg-[#1A237E] text-white px-10 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
+              關閉
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="p-7 space-y-5 max-h-[70vh] overflow-y-auto">
+
+            {step === 1 && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field label="英文姓名" req>
+                    <input required value={form.name} onChange={e => setForm({...form, name: e.target.value})}
+                      className={inputCls} placeholder="Tanaka Yuki" />
+                  </Field>
+                  <Field label="日文姓名">
+                    <input value={form.nameJp} onChange={e => setForm({...form, nameJp: e.target.value})}
+                      className={inputCls} placeholder="田中雪" />
+                  </Field>
+                </div>
+                <Field label="電郵地址" req>
+                  <input required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+                    className={inputCls} placeholder="you@email.com" />
+                </Field>
+                <div className="grid grid-cols-3 gap-3">
+                  <Field label="WhatsApp">
+                    <input value={form.whatsapp} onChange={e => setForm({...form, whatsapp: e.target.value})}
+                      className={inputCls} placeholder="+852 XXXX XXXX" />
+                  </Field>
+                  <Field label="WeChat">
+                    <input value={form.wechat} onChange={e => setForm({...form, wechat: e.target.value})}
+                      className={inputCls} placeholder="WeChat ID" />
+                  </Field>
+                  <Field label="LINE">
+                    <input value={form.line} onChange={e => setForm({...form, line: e.target.value})}
+                      className={inputCls} placeholder="LINE ID" />
+                  </Field>
+                </div>
+                <Field label="現居城市" req>
+                  <div className="flex flex-wrap gap-2">
+                    {CITY_OPTIONS.map(c => (
+                      <button key={c} type="button" onClick={() => setForm({...form, city: c})}
+                        className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
+                          form.city === c ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                        }`}>{c}</button>
+                    ))}
+                  </div>
+                </Field>
+                <Field label="專長類別" req>
+                  <div className="flex flex-wrap gap-2">
+                    {SPECIALTY_OPTIONS.map(s => (
+                      <button key={s} type="button"
+                        onClick={() => setForm({...form, specialties: toggle(form.specialties, s)})}
+                        className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
+                          form.specialties.includes(s) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                        }`}>{s}</button>
+                    ))}
+                  </div>
+                </Field>
+                <Field label="溝通語言" req>
+                  <div className="flex flex-wrap gap-2">
+                    {LANGUAGE_OPTIONS.map(l => (
+                      <button key={l} type="button"
+                        onClick={() => setForm({...form, languages: toggle(form.languages, l)})}
+                        className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
+                          form.languages.includes(l) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                        }`}>{l}</button>
+                    ))}
+                  </div>
+                </Field>
+                <Field label="個人簡介" req>
+                  <textarea required rows={3} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})}
+                    className={inputCls} placeholder="介紹您的代購經驗、專長及服務特色…" />
+                </Field>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <div className="grid grid-cols-3 gap-4">
+                  <Field label="佣金率" req>
+                    <input required value={form.commission} onChange={e => setForm({...form, commission: e.target.value})}
+                      className={inputCls} placeholder="e.g. 5-8%" />
+                  </Field>
+                  <Field label="最低訂單">
+                    <input value={form.minOrder} onChange={e => setForm({...form, minOrder: e.target.value})}
+                      className={inputCls} placeholder="e.g. ¥3,000" />
+                  </Field>
+                  <Field label="平均回覆時間">
+                    <input value={form.responseTime} onChange={e => setForm({...form, responseTime: e.target.value})}
+                      className={inputCls} placeholder="e.g. < 2小時" />
+                  </Field>
+                </div>
+
+                <Field label="付款條件" req>
+                  <div className="flex gap-3">
+                    {['全額先付', '訂金制'].map(t => (
+                      <button key={t} type="button" onClick={() => setForm({...form, paymentTerms: t})}
+                        className={`flex-1 py-3 text-[10px] font-black border transition-all ${
+                          form.paymentTerms === t ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                        }`}>{t}</button>
+                    ))}
+                  </div>
+                </Field>
+
+                <div className="space-y-3 border border-stone-200 p-4">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-stone-400">提供服務</p>
+                  {[
+                    { key: 'offersLivestream', label: '📹 現場直播' },
+                    { key: 'offersPhotoVideo', label: '📸 現場拍照/影片' },
+                    { key: 'offersQueueing',   label: '⏳ 排隊代購' },
+                    { key: 'offersShipping',   label: '📦 代寄服務' },
+                  ].map(({ key, label }) => (
+                    <label key={key} className="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox"
+                        checked={form[key as keyof typeof form] as boolean}
+                        onChange={e => setForm({...form, [key]: e.target.checked})}
+                        className="w-4 h-4 accent-[#1A237E]" />
+                      <span className="text-sm font-bold text-[#1C1C1C]">{label}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {form.offersShipping && (
+                  <Field label="代寄方式">
+                    <div className="flex flex-wrap gap-2">
+                      {SHIPPING_OPTIONS.map(s => (
+                        <button key={s} type="button"
+                          onClick={() => setForm({...form, shippingMethods: toggle(form.shippingMethods, s)})}
+                          className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
+                            form.shippingMethods.includes(s) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                          }`}>{s}</button>
+                      ))}
+                    </div>
+                  </Field>
+                )}
+              </>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-4">
+                <div className="bg-stone-50 p-5 space-y-3 text-sm">
+                  <p className="font-black text-[#1C1C1C]">申請確認</p>
+                  {[
+                    ['姓名', form.name],
+                    ['城市', form.city],
+                    ['佣金', form.commission],
+                    ['語言', form.languages.join(', ')],
+                    ['專長', form.specialties.join(', ')],
+                  ].map(([label, value]) => (
+                    <div key={label} className="flex justify-between text-[11px]">
+                      <span className="text-stone-400 font-bold uppercase tracking-widest">{label}</span>
+                      <span className="text-[#1C1C1C] font-bold">{value || '—'}</span>
+                    </div>
+                  ))}
+                </div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input type="checkbox" required checked={form.agreeTerms}
+                    onChange={e => setForm({...form, agreeTerms: e.target.checked})}
+                    className="w-4 h-4 mt-0.5 accent-[#1A237E]" />
+                  <span className="text-[11px] text-stone-500">我同意 Michi Project 的使用條款及隱私政策，並確認所提供的資料真實準確。</span>
+                </label>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input type="checkbox" required checked={form.agreeDisclaimer}
+                    onChange={e => setForm({...form, agreeDisclaimer: e.target.checked})}
+                    className="w-4 h-4 mt-0.5 accent-[#1A237E]" />
+                  <span className="text-[11px] text-stone-500">我明白 Michi 為資訊平台，不參與任何交易，所有交易責任由買手自行承擔。</span>
+                </label>
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              {step > 1 && (
+                <button type="button" onClick={() => setStep(step - 1)}
+                  className="flex-1 py-3 border border-stone-200 text-stone-500 text-[10px] font-black uppercase tracking-[0.3em] hover:border-stone-400 transition-all">
+                  上一步
+                </button>
+              )}
+              <button type="submit" disabled={loading}
+                className="flex-1 py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all disabled:opacity-50">
+                {loading ? '提交中…' : step < 3 ? '下一步 →' : '提交申請'}
+              </button>
+            </div>
           </form>
         )}
       </div>
@@ -465,11 +741,11 @@ export default function BuyersPage() {
 
   const displayed = useMemo(() => {
     let list = BUYERS;
-    if (activeFilter !== 'all')   list = list.filter(b => b.filter === activeFilter);
-    if (activeArea !== 'all')     list = list.filter(b => b.area === activeArea);
-    if (activeService === 'livestream') list = list.filter(b => b.services.livestream);
-    if (activeService === 'queueing')   list = list.filter(b => b.services.queueing);
-    if (activeService === 'shipping')   list = list.filter(b => b.services.shipping);
+    if (activeFilter !== 'all')          list = list.filter(b => b.filter === activeFilter);
+    if (activeArea !== 'all')            list = list.filter(b => b.area === activeArea);
+    if (activeService === 'livestream')  list = list.filter(b => b.services.livestream);
+    if (activeService === 'queueing')    list = list.filter(b => b.services.queueing);
+    if (activeService === 'shipping')    list = list.filter(b => b.services.shipping);
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter(b =>
@@ -480,8 +756,8 @@ export default function BuyersPage() {
       );
     }
     return [...list].sort((a, b) => {
-      if (sortBy === 'score')    return b.score - a.score;
-      if (sortBy === 'reviews')  return b.reviews - a.reviews;
+      if (sortBy === 'score')   return b.score - a.score;
+      if (sortBy === 'reviews') return b.reviews - a.reviews;
       return parseInt(b.experience) - parseInt(a.experience);
     });
   }, [search, activeFilter, activeArea, activeService, sortBy]);
@@ -493,12 +769,12 @@ export default function BuyersPage() {
 
       <main className="min-h-screen bg-[#F9F7F2]">
 
-        {/* TOP BAR */}
+        {/* ── TOP BAR ── */}
         <div className="bg-[#1C1C1C] text-[#F9F7F2]/50 py-2 px-6 text-[9px] tracking-[0.4em] text-center uppercase font-bold">
           MICHI • 代購買手資訊平台 • 平台不參與任何交易 • 透明直接
         </div>
 
-        {/* NAV */}
+        {/* ── NAV ── */}
         <nav className="sticky top-0 z-40 bg-[#F9F7F2]/90 backdrop-blur-md border-b border-stone-200">
           <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             <a href={`/${locale}`} className="flex items-center space-x-4 group">
@@ -509,8 +785,8 @@ export default function BuyersPage() {
               </div>
             </a>
             <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
-              <a href={`/${locale}#market`} className="hover:text-[#1A237E] transition-colors">買手名錄</a>
-              <a href={'/products'} className="hover:text-[#1A237E] transition-colors">最新商品</a>
+              <a href={`/${locale}/buyers`} className="text-[#1A237E] border-b border-[#1A237E] pb-0.5 transition-colors">買手名錄</a>
+              <a href={`/${locale}/products`} className="hover:text-[#1A237E] transition-colors">最新商品</a>
               <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
             </div>
             <button onClick={() => setShowApply(true)}
@@ -520,110 +796,29 @@ export default function BuyersPage() {
           </div>
         </nav>
 
-        {/* HERO */}
-        <section className="bg-[#1A237E] text-white py-20 px-8 relative overflow-hidden">
-          <div className="absolute right-0 top-0 bottom-0 flex items-center pointer-events-none select-none">
-            <span className="text-[18rem] font-serif text-white/5 leading-none">人</span>
-          </div>
-          <div className="max-w-7xl mx-auto relative z-10 space-y-8">
-            <div className="space-y-2">
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">Michi — 代購買手名錄</p>
-              <h1 className="text-5xl md:text-6xl font-serif font-black leading-tight">
-                尋覓你的<br />
-                <span className="italic font-serif font-normal text-[#C5A059]">專屬日本買手</span>
-              </h1>
-            </div>
-            <p className="text-white/50 max-w-xl text-sm font-light leading-relaxed">
-              Michi 是資訊平台，連接有代購需求的買家與在日本的買手。
-              各買手獨立提供服務，所有交易由雙方自行協議，Michi 不介入、不擔保。
+        {/* ── HERO ── */}
+        <section className="bg-[#1A237E] text-white py-16 px-8 relative overflow-hidden">
+          <div className="absolute right-0 top-0 text-[20rem] font-serif text-white/5 pointer-events-none select-none leading-none">道</div>
+          <div className="max-w-7xl mx-auto relative z-10">
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40 mb-4">Michi Project · 代購買手資訊平台</p>
+            <h1 className="text-4xl md:text-5xl font-serif font-black leading-tight mb-4">
+              探索代購買手<br />
+              <span className="italic font-normal text-[#C5A059]">Find Your Shopper</span>
+            </h1>
+            <p className="text-white/60 text-sm max-w-xl leading-relaxed">
+              瀏覽來自日本各地的認證代購買手，比較服務、評分與專長，找到最適合您的購物夥伴。
             </p>
-
-            {/* Service highlight pills */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              {[
-                { icon: '📹', label: '現場直播', desc: '實時觀看選購' },
-                { icon: '📸', label: '拍照/影片', desc: '確認商品細節' },
-                { icon: '⏳', label: '排隊代購', desc: '小時制或日計' },
-                { icon: '📦', label: '代寄服務', desc: '直送到你家' },
-              ].map(({ icon, label, desc }) => (
-                <div key={label} className="bg-white/10 px-4 py-2.5 flex items-center gap-2.5">
-                  <span className="text-lg">{icon}</span>
-                  <div>
-                    <p className="text-[10px] font-black text-white">{label}</p>
-                    <p className="text-[9px] text-white/40">{desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-10 pt-2">
-              {[['9+', '平台買手'], ['5', '日本城市'], ['4.8★', '平均評分'], ['9,700+', '完成紀錄']].map(([n, label]) => (
-                <div key={label}>
-                  <p className="text-2xl font-serif italic text-[#C5A059] font-black">{n}</p>
-                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40 mt-1">{label}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
-        {/* DISCLAIMER */}
-        <div className="bg-stone-100 border-b border-stone-200 py-3 px-8">
-          <p className="max-w-7xl mx-auto text-[10px] text-stone-400 font-bold uppercase tracking-widest text-center">
-            ⚠️ Michi 為資訊索引平台，不對買手的服務質素、交易安全或商品真偽作出任何保證。請買家自行審慎評估。
-          </p>
-        </div>
-
-        {/* SERVICE INFO STRIP */}
-        <div className="bg-white border-b border-stone-200 py-6 px-8">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              {
-                icon: '📹',
-                title: '現場直播',
-                desc: '買手進行店內直播，讓你實時選購、確認商品狀態',
-                note: '各買手自訂收費，以 30 分鐘為單位計算',
-                color: 'border-[#1A237E]',
-              },
-              {
-                icon: '📸',
-                title: '現場拍照/影片',
-                desc: '買手為你拍攝商品細節照或短片，確認後才落單',
-                note: '以每組（1個商品）計費，費用另計於佣金之外',
-                color: 'border-[#B22222]',
-              },
-              {
-                icon: '⏳',
-                title: '排隊限定商品',
-                desc: '買手代你排隊搶購限量版，可選小時制或全日計',
-                note: '小時制適合短時排隊；全日計（約8小時）適合超長龍活動',
-                color: 'border-[#C5A059]',
-              },
-              {
-                icon: '📦',
-                title: '代寄服務',
-                desc: '買手購入商品後，代為整理並寄往你指定地址',
-                note: '運費及包裝費另計，建議出發前確認買手接受的運送方式',
-                color: 'border-stone-400',
-              },
-            ].map(({ icon, title, desc, note, color }) => (
-              <div key={title} className={`border-l-2 ${color} pl-4 py-1`}>
-                <p className="text-base font-black text-[#1C1C1C] mb-1">{icon} {title}</p>
-                <p className="text-[10px] text-stone-500 leading-relaxed mb-2">{desc}</p>
-                <p className="text-[9px] text-stone-400 italic">{note}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* PAYMENT INFO STRIP */}
+        {/* ── PAYMENT INFO ── */}
         <div className="bg-[#1C1C1C] text-white py-5 px-8">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-8">
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 flex-shrink-0">付款條件說明</p>
             <div className="flex flex-wrap gap-6">
               {[
                 { label: '💳 全額先付', desc: '確認訂單後即付全數。買手購入商品風險較低，多用於搶手限定款。' },
-                { label: '💳 訂金制', desc: '先付訂金（通常30-50%），買手入手商品後付尾數。適合大額訂單。' },
+                { label: '💳 訂金制',   desc: '先付訂金（通常30-50%），買手入手商品後付尾數。適合大額訂單。' },
               ].map(({ label, desc }) => (
                 <div key={label} className="flex items-start gap-3 max-w-sm">
                   <span className="text-[10px] font-black text-[#C5A059] flex-shrink-0 mt-0.5">{label}</span>
@@ -634,19 +829,16 @@ export default function BuyersPage() {
           </div>
         </div>
 
-        {/* SEARCH + FILTERS */}
+        {/* ── FILTERS ── */}
         <section className="bg-white border-b border-stone-200 sticky top-[81px] z-30">
           <div className="max-w-7xl mx-auto px-8 py-5 space-y-4">
             <div className="flex flex-wrap items-center gap-4">
-              {/* Search */}
               <div className="relative flex-1 min-w-[200px] max-w-sm">
                 <input type="text" value={search} onChange={e => setSearch(e.target.value)}
                   placeholder="搜尋買手、城市、專長…"
                   className="w-full border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm pr-8 focus:outline-none focus:border-[#1A237E] placeholder-stone-400" />
                 <span className="absolute right-3 top-2.5 text-stone-400 text-sm pointer-events-none">🔍</span>
               </div>
-
-              {/* Category */}
               <div className="flex flex-wrap gap-1">
                 {FILTERS.map(({ key, label, icon }) => (
                   <button key={key} onClick={() => setActiveFilter(key)}
@@ -660,7 +852,6 @@ export default function BuyersPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              {/* Service filter */}
               <div className="flex gap-1">
                 {SERVICE_FILTERS.map(({ key, label }) => (
                   <button key={key} onClick={() => setActiveService(key)}
@@ -695,7 +886,7 @@ export default function BuyersPage() {
           </div>
         </section>
 
-        {/* BUYER GRID */}
+        {/* ── BUYER GRID ── */}
         <section className="max-w-7xl mx-auto px-8 py-14">
           {displayed.length === 0 ? (
             <div className="text-center py-28 space-y-4">
@@ -712,45 +903,49 @@ export default function BuyersPage() {
                 const lvl = LEVEL_STYLES[buyer.levelNum];
                 return (
                   <div key={buyer.id} className="group flex flex-col">
+
                     {/* Avatar */}
                     <div className="aspect-[4/3] bg-stone-100 border border-stone-200 flex items-center justify-center relative overflow-hidden">
                       <span className="text-7xl z-10">{buyer.icon}</span>
-                      <div className="absolute inset-0 bg-[#1A237E]/0 group-hover:bg-[#1A237E]/5 transition-all duration-300" />
-                      <div className="absolute top-4 left-4 bg-white border border-stone-200 px-2 py-1 text-[8px] font-black uppercase tracking-widest text-stone-500">
-                        {buyer.specialtyLabel}
-                      </div>
-                      <div className="absolute top-4 right-4 bg-[#1C1C1C] text-white px-2 py-1 text-[9px] font-black">
-                        ★ {buyer.score}
-                      </div>
-                      {/* Service quick icons */}
-                      <div className="absolute bottom-3 left-3 flex gap-1">
-                        {buyer.services.livestream && <span className="bg-[#1A237E] text-white text-[8px] px-1.5 py-0.5 font-black">📹 直播</span>}
-                        {buyer.services.queueing && <span className="bg-[#B22222] text-white text-[8px] px-1.5 py-0.5 font-black">⏳ 排隊</span>}
-                        {buyer.services.shipping && <span className="bg-stone-700 text-white text-[8px] px-1.5 py-0.5 font-black">📦 代寄</span>}
-                      </div>
-                    </div>
-
-                    {/* Body */}
-                    <div className="flex flex-col flex-grow border border-stone-200 border-t-0 bg-white p-5 space-y-4">
-
-                      {/* Name + level */}
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="text-lg font-serif font-black text-[#1C1C1C] group-hover:text-[#B22222] transition-colors leading-tight">
-                            {buyer.name}
-                          </h3>
-                          <p className="text-[10px] text-stone-400 font-bold tracking-wider mt-0.5">
-                            {buyer.nameJp} · {buyer.location}
-                          </p>
-                        </div>
-                        <span className={`flex-shrink-0 text-[8px] font-black uppercase tracking-wider px-2 py-1 border ${lvl.bg} ${lvl.text} ${lvl.border}`}>
+                      <div className="absolute inset-0 bg-[#1A237E]/0 group-hover:bg-[#1A237E]/5 transition-all" />
+                      <div className="absolute top-3 left-3">
+                        <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-1 border ${lvl.bg} ${lvl.text} ${lvl.border}`}>
                           {buyer.level}
                         </span>
                       </div>
+                      <div className="absolute top-3 right-3 bg-white px-2 py-1 text-[8px] font-black uppercase tracking-widest text-stone-400 border border-stone-200">
+                        {buyer.specialty}
+                      </div>
+                      <div className="absolute bottom-3 right-3 bg-white/90 px-2 py-1 text-[10px] font-black text-[#1C1C1C]">
+                        ★ {buyer.score}
+                      </div>
+                    </div>
 
-                      <p className="text-xs text-stone-500 leading-relaxed line-clamp-2">{buyer.description}</p>
+                    {/* Info Card */}
+                    <div className="flex-1 bg-white p-5 border border-stone-200 border-t-0 space-y-4">
 
-                      {/* Service grid — 4 cells */}
+                      {/* Name + Location */}
+                      <div className="border-b border-stone-100 pb-3">
+                        <h4 className="text-xl font-serif font-black text-[#1C1C1C] group-hover:text-[#B22222] transition-colors">{buyer.name}</h4>
+                        <p className="text-[10px] text-stone-400 font-bold mt-0.5">{buyer.nameJp} · {buyer.location} · {buyer.experience}</p>
+                      </div>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-1.5">
+                        {buyer.tags.map(tag => (
+                          <span key={tag} className="text-[8px] font-bold text-stone-500 border border-stone-100 px-2 py-0.5 uppercase tracking-tighter">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-[11px] text-stone-500 leading-relaxed line-clamp-2">{buyer.description}</p>
+
+                      {/* Highlight */}
+                      <p className="text-[9px] font-black text-[#C5A059] uppercase tracking-wider">✦ {buyer.highlight}</p>
+
+                      {/* Services */}
                       <div className="grid grid-cols-4 gap-1.5">
                         <ServiceBadge active={buyer.services.livestream} label="直播" sub={buyer.livestreamRate !== '—' ? buyer.livestreamRate : undefined} />
                         <ServiceBadge active={buyer.services.photoVideo} label="拍照" sub={buyer.photoVideoRate !== '—' ? buyer.photoVideoRate : undefined} />
@@ -780,10 +975,11 @@ export default function BuyersPage() {
                         <span className="ml-auto text-[9px] text-stone-400">{buyer.completedOrders.toLocaleString()} 紀錄</span>
                       </div>
 
-                      <button onClick={() => setContactBuyer(buyer)}
-                        className="w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
-                        聯絡買手
-                      </button>
+                      {/* ✅ 聯繫按鈕 → 導向 /[locale]/buyers 頁面，不再使用 email */}
+                      <a href={`/${locale}/buyers`}
+                        className="block w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all text-center">
+                        聯繫
+                      </a>
                     </div>
                   </div>
                 );
@@ -792,445 +988,29 @@ export default function BuyersPage() {
           )}
         </section>
 
-        {/* JOIN CTA */}
-        <section className="bg-[#1C1C1C] text-white py-20 px-8">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-10">
-            <div className="space-y-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">加入平台</p>
-              <h2 className="text-3xl font-serif font-black leading-tight">
-                在日本？加入 Michi<br />
-                <span className="text-[#C5A059] italic font-serif font-normal">成為平台買手</span>
-              </h2>
-              <p className="text-white/40 text-sm max-w-md leading-relaxed">
-                免費建立個人資料頁，展示你的服務詳情及收費標準，讓全球買家找到你。Michi 不收上架費，不介入任何交易。
-              </p>
-            </div>
-            <button onClick={() => setShowApply(true)}
-              className="flex-shrink-0 bg-[#C5A059] text-[#1C1C1C] px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all">
-              立即申請 →
-            </button>
-          </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer className="bg-[#111] text-white py-14 px-8">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-white text-[#1C1C1C] flex items-center justify-center font-serif text-lg font-black">道</div>
+        {/* ── FOOTER ── */}
+        <footer className="bg-[#1C1C1C] text-white py-12 px-8 mt-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-8 pb-8 border-b border-stone-800">
               <div>
-                <p className="font-black tracking-tighter">みち</p>
-                <p className="text-[8px] text-stone-500 uppercase tracking-[0.4em]">Information Hub</p>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 bg-[#B22222] flex items-center justify-center text-white font-serif text-lg font-black">道</div>
+                  <span className="text-lg font-black tracking-tighter">みち</span>
+                </div>
+                <p className="text-[10px] text-stone-500 max-w-xs leading-relaxed">日本代購職人資訊平台，連結買手與代購專家。平台不參與任何交易。</p>
+              </div>
+              <div className="flex gap-12 text-[10px] font-bold uppercase tracking-[0.3em] text-stone-500">
+                <a href={`/${locale}`} className="hover:text-white transition-colors">首頁</a>
+                <a href={`/${locale}/products`} className="hover:text-white transition-colors">商品</a>
+                <a href={`/${locale}/about`} className="hover:text-white transition-colors">關於我們</a>
+                <a href="mailto:hello@michi.jp" className="hover:text-white transition-colors">聯絡</a>
               </div>
             </div>
-            <div className="flex gap-6 text-[9px] font-bold uppercase tracking-[0.3em] text-stone-500">
-              <a href={`/${locale}`} className="hover:text-white transition-colors">首頁</a>
-              <a href={`/${locale}/products`} className="hover:text-white transition-colors">商品</a>
-              <a href={`/${locale}/about`} className="hover:text-white transition-colors">關於我們</a>
-              <a href="mailto:hello@michi.jp" className="hover:text-white transition-colors">聯絡</a>
-            </div>
-            <p className="text-[9px] text-stone-600 uppercase tracking-widest">© {new Date().getFullYear()} Michi.</p>
+            <p className="text-[9px] text-stone-600 uppercase tracking-widest mt-8">© {new Date().getFullYear()} Michi Project. All Rights Reserved.</p>
           </div>
         </footer>
+
       </main>
     </>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// APPLY MODAL
-// ─────────────────────────────────────────────────────────────
-function ApplyModal({ onClose }: { onClose: () => void }) {
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    name: '', nameJp: '', email: '',
-    whatsapp: '', wechat: '', line: '',
-    city: '', cityOther: '', residency: '',
-    specialties: [] as string[],
-    otherSpecialty: '',
-    languages: [] as string[],
-    commission: '', minOrder: '', responseTime: '',
-    bio: '', experience: '', highlight: '',
-    // 新增服務選項
-    offersLivestream: false,
-    livestreamRate: '',
-    livestreamUnit: '30分鐘',
-    offersPhotoVideo: false,
-    photoVideoRate: '',
-    offersQueueing: false,
-    queueingRate: '',
-    queueingUnit: 'hourly' as 'hourly' | 'daily' | 'both',
-    offersShipping: false,
-    shippingMethods: [] as string[],
-    paymentTerms: '' as string,
-    depositRate: '',
-    agreeTerms: false,
-    agreeDisclaimer: false,
-  });
-
-  const toggle = (arr: string[], val: string) =>
-    arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
-
-  const SPECIALTY_OPTIONS = ['時尚服飾','動漫周邊','古董工藝','電子科技','美妝藥粧','遊戲卡牌','食品零食','精品名錶','生活雜貨','其他'];
-  const LANGUAGE_OPTIONS  = ['繁體中文','簡體中文','English','日本語','ภาษาไทย'];
-  const CITY_OPTIONS      = ['東京','大阪','京都','福岡','名古屋','札幌','仙台','廣島','其他'];
-  const SHIPPING_OPTIONS  = ['EMS','DHL/FedEx','日本郵便','Sea Mail（船運）','自取（東京/大阪）'];
-
-  const inputCls = "w-full border border-stone-200 bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E] text-[#1C1C1C] placeholder-stone-300";
-  const Field = ({ label, req, children }: { label: string; req?: boolean; children: React.ReactNode }) => (
-    <div className="space-y-1.5">
-      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
-        {label}{req && <span className="text-[#B22222] ml-1">*</span>}
-      </label>
-      {children}
-    </div>
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await fetch('/api/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-    } catch {}
-    setLoading(false);
-    setStep(2);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white w-full max-w-2xl shadow-2xl my-auto">
-
-        {/* Header */}
-        <div className="bg-[#1A237E] text-white px-8 py-6 flex items-start justify-between">
-          <div className="space-y-1">
-            <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">Michi Platform</p>
-            <h2 className="text-xl font-serif font-black">申請成為 Michi 買手</h2>
-            <p className="text-white/40 text-xs">加入平台，讓全球買家找到你 · 免費上架</p>
-          </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white text-2xl leading-none mt-1">×</button>
-        </div>
-
-        {step === 2 ? (
-          <div className="p-12 text-center space-y-6">
-            <div className="w-14 h-14 bg-[#1A237E] text-white flex items-center justify-center text-2xl mx-auto font-serif">道</div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-serif font-black">申請已收到！</h3>
-              <p className="text-stone-500 text-sm max-w-sm mx-auto leading-relaxed">
-                我們的團隊會在 <span className="font-bold text-[#1A237E]">3–5 個工作天</span> 內通過電郵與你聯絡，
-                商討建立個人頁面的詳情。
-              </p>
-            </div>
-            <div className="bg-stone-50 p-4 text-left space-y-2 text-[10px] max-w-xs mx-auto">
-              <p className="text-stone-400 uppercase tracking-widest font-black mb-2">申請摘要</p>
-              {[['姓名', form.name], ['城市', form.city === '其他' ? form.cityOther : form.city], ['電郵', form.email]].map(([k, v]) => (
-                <div key={k} className="flex justify-between">
-                  <span className="text-stone-400">{k}</span>
-                  <span className="font-bold">{v}</span>
-                </div>
-              ))}
-            </div>
-            <button onClick={onClose} className="border border-[#1C1C1C] px-10 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#1C1C1C] hover:text-white transition-all">
-              關閉
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="divide-y divide-stone-100">
-
-            {/* 01 基本資料 */}
-            <div className="px-8 py-6 space-y-4">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">01 — 基本資料</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="姓名（英文）" req><input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} placeholder="Tanaka Yuki" /></Field>
-                <Field label="姓名（日文）"><input type="text" value={form.nameJp} onChange={e => setForm({ ...form, nameJp: e.target.value })} className={inputCls} placeholder="田中雪" /></Field>
-              </div>
-              <Field label="聯絡電郵" req><input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} placeholder="your@email.com" /></Field>
-              <div className="grid grid-cols-3 gap-3">
-                <Field label="WhatsApp"><input type="text" value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })} className={inputCls} placeholder="+81..." /></Field>
-                <Field label="WeChat ID"><input type="text" value={form.wechat} onChange={e => setForm({ ...form, wechat: e.target.value })} className={inputCls} placeholder="ID" /></Field>
-                <Field label="LINE ID"><input type="text" value={form.line} onChange={e => setForm({ ...form, line: e.target.value })} className={inputCls} placeholder="ID" /></Field>
-              </div>
-            </div>
-
-            {/* 02 在日資訊 */}
-            <div className="px-8 py-6 space-y-4">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">02 — 在日資訊</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="所在城市" req>
-                  <select required value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} className={inputCls}>
-                    <option value="">請選擇</option>
-                    {CITY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </Field>
-                {form.city === '其他' && (
-                  <Field label="請填寫城市"><input type="text" value={form.cityOther} onChange={e => setForm({ ...form, cityOther: e.target.value })} className={inputCls} /></Field>
-                )}
-                <Field label="在日身份" req>
-                  <select required value={form.residency} onChange={e => setForm({ ...form, residency: e.target.value })} className={inputCls}>
-                    <option value="">請選擇</option>
-                    <option value="citizen">日本公民</option>
-                    <option value="pr">永久居民</option>
-                    <option value="working">工作簽證</option>
-                    <option value="student">學生簽證</option>
-                    <option value="other">其他長期居留</option>
-                  </select>
-                </Field>
-              </div>
-            </div>
-
-            {/* 03 專長 */}
-            <div className="px-8 py-6 space-y-4">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">03 — 專長 & 語言</h3>
-              <Field label="專長類別（可多選）" req>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {SPECIALTY_OPTIONS.map(s => (
-                    <button key={s} type="button" onClick={() => setForm({ ...form, specialties: toggle(form.specialties, s) })}
-                      className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-wider border transition-all ${form.specialties.includes(s) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-[#1A237E]'}`}>
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </Field>
-              <Field label="溝通語言（可多選）" req>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {LANGUAGE_OPTIONS.map(l => (
-                    <button key={l} type="button" onClick={() => setForm({ ...form, languages: toggle(form.languages, l) })}
-                      className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-wider border transition-all ${form.languages.includes(l) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-[#1A237E]'}`}>
-                      {l}
-                    </button>
-                  ))}
-                </div>
-              </Field>
-            </div>
-
-            {/* 04 附加服務 ← NEW */}
-            <div className="px-8 py-6 space-y-5">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">04 — 附加服務 & 收費</h3>
-              <p className="text-[10px] text-stone-400">勾選你提供的服務並填寫收費標準（費用以日圓 ¥ 計）</p>
-
-              {/* 直播 */}
-              <div className={`border p-4 space-y-3 transition-all ${form.offersLivestream ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200'}`}>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="checkbox" checked={form.offersLivestream} onChange={e => setForm({ ...form, offersLivestream: e.target.checked })} className="accent-[#1A237E] w-4 h-4" />
-                  <div>
-                    <p className="text-[10px] font-black text-[#1C1C1C]">📹 提供現場直播服務</p>
-                    <p className="text-[9px] text-stone-400">在店鋪或活動現場進行直播，讓買家實時選購</p>
-                  </div>
-                </label>
-                {form.offersLivestream && (
-                  <div className="grid grid-cols-2 gap-3 pl-7">
-                    <Field label="收費（¥）" req>
-                      <input type="number" value={form.livestreamRate} onChange={e => setForm({ ...form, livestreamRate: e.target.value })}
-                        className={inputCls} placeholder="e.g. 5000" />
-                    </Field>
-                    <Field label="計費單位" req>
-                      <select value={form.livestreamUnit} onChange={e => setForm({ ...form, livestreamUnit: e.target.value })} className={inputCls}>
-                        <option value="30分鐘">每 30 分鐘</option>
-                        <option value="1小時">每 1 小時</option>
-                        <option value="半日">每半日（約4小時）</option>
-                        <option value="全日">每全日（約8小時）</option>
-                      </select>
-                    </Field>
-                  </div>
-                )}
-              </div>
-
-              {/* 拍照/影片 */}
-              <div className={`border p-4 space-y-3 transition-all ${form.offersPhotoVideo ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200'}`}>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="checkbox" checked={form.offersPhotoVideo} onChange={e => setForm({ ...form, offersPhotoVideo: e.target.checked })} className="accent-[#1A237E] w-4 h-4" />
-                  <div>
-                    <p className="text-[10px] font-black text-[#1C1C1C]">📸 提供現場拍照 / 影片服務</p>
-                    <p className="text-[9px] text-stone-400">為商品拍攝細節照片或短片，確認後才落單</p>
-                  </div>
-                </label>
-                {form.offersPhotoVideo && (
-                  <div className="pl-7">
-                    <Field label="收費（¥ / 每組商品）" req>
-                      <input type="number" value={form.photoVideoRate} onChange={e => setForm({ ...form, photoVideoRate: e.target.value })}
-                        className={inputCls} placeholder="e.g. 1500" />
-                    </Field>
-                  </div>
-                )}
-              </div>
-
-              {/* 排隊 */}
-              <div className={`border p-4 space-y-3 transition-all ${form.offersQueueing ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200'}`}>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="checkbox" checked={form.offersQueueing} onChange={e => setForm({ ...form, offersQueueing: e.target.checked })} className="accent-[#1A237E] w-4 h-4" />
-                  <div>
-                    <p className="text-[10px] font-black text-[#1C1C1C]">⏳ 提供排隊代購服務</p>
-                    <p className="text-[9px] text-stone-400">代你排隊搶購限量版商品</p>
-                  </div>
-                </label>
-                {form.offersQueueing && (
-                  <div className="grid grid-cols-2 gap-3 pl-7">
-                    <Field label="收費（¥）" req>
-                      <input type="number" value={form.queueingRate} onChange={e => setForm({ ...form, queueingRate: e.target.value })}
-                        className={inputCls} placeholder="e.g. 3000" />
-                    </Field>
-                    <Field label="計費方式" req>
-                      <select value={form.queueingUnit} onChange={e => setForm({ ...form, queueingUnit: e.target.value as any })} className={inputCls}>
-                        <option value="hourly">小時計（每小時）</option>
-                        <option value="daily">日計（全日 ~8小時）</option>
-                        <option value="both">兩者皆提供</option>
-                      </select>
-                    </Field>
-                    {form.queueingUnit === 'both' && (
-                      <div className="col-span-2 bg-amber-50 border border-amber-200 p-3 text-[9px] text-amber-700">
-                        💡 請在個人簡介中說明小時及日計的各自收費，方便買家比較。
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* 代寄 */}
-              <div className={`border p-4 space-y-3 transition-all ${form.offersShipping ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200'}`}>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="checkbox" checked={form.offersShipping} onChange={e => setForm({ ...form, offersShipping: e.target.checked })} className="accent-[#1A237E] w-4 h-4" />
-                  <div>
-                    <p className="text-[10px] font-black text-[#1C1C1C]">📦 提供代寄服務</p>
-                    <p className="text-[9px] text-stone-400">購入商品後代為整理並寄往買家指定地址</p>
-                  </div>
-                </label>
-                {form.offersShipping && (
-                  <div className="pl-7 space-y-3">
-                    <Field label="接受的運送方式（可多選）" req>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        {SHIPPING_OPTIONS.map(s => (
-                          <button key={s} type="button" onClick={() => setForm({ ...form, shippingMethods: toggle(form.shippingMethods, s) })}
-                            className={`px-3 py-1.5 text-[9px] font-black border transition-all ${form.shippingMethods.includes(s) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-[#1A237E]'}`}>
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                    </Field>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* 05 付款條件 */}
-            <div className="px-8 py-6 space-y-4">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">05 — 付款條件</h3>
-              <Field label="付款方式" req>
-                <div className="grid grid-cols-1 gap-2">
-                  {[
-                    { val: 'full', label: '💳 全額先付', desc: '確認訂單後買家須付全數貨款及服務費，才開始代購' },
-                    { val: 'deposit', label: '💳 訂金制', desc: '確認後先付訂金，買手入手商品後買家付清尾數' },
-                    { val: 'negotiate', label: '💬 面議', desc: '按每次訂單情況與買家協商' },
-                  ].map(({ val, label, desc }) => (
-                    <label key={val} className={`flex items-start gap-3 p-3 border cursor-pointer transition-all ${form.paymentTerms === val ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200 hover:border-stone-300'}`}>
-                      <input type="radio" name="paymentTerms" value={val} checked={form.paymentTerms === val} onChange={() => setForm({ ...form, paymentTerms: val })} className="mt-0.5 accent-[#1A237E]" required />
-                      <div>
-                        <p className="text-[10px] font-black text-[#1C1C1C]">{label}</p>
-                        <p className="text-[9px] text-stone-400 mt-0.5">{desc}</p>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </Field>
-              {form.paymentTerms === 'deposit' && (
-                <Field label="訂金比例" req>
-                  <select required value={form.depositRate} onChange={e => setForm({ ...form, depositRate: e.target.value })} className={inputCls}>
-                    <option value="">請選擇</option>
-                    <option value="20%">20%</option>
-                    <option value="30%">30%</option>
-                    <option value="50%">50%</option>
-                    <option value="70%">70%</option>
-                  </select>
-                </Field>
-              )}
-            </div>
-
-            {/* 06 服務詳情 */}
-            <div className="px-8 py-6 space-y-4">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">06 — 服務詳情</h3>
-              <div className="grid grid-cols-3 gap-4">
-                <Field label="佣金範圍" req>
-                  <select required value={form.commission} onChange={e => setForm({ ...form, commission: e.target.value })} className={inputCls}>
-                    <option value="">請選擇</option>
-                    <option value="3-5%">3–5%</option>
-                    <option value="5-8%">5–8%</option>
-                    <option value="8-12%">8–12%</option>
-                    <option value="12%+">12% 以上</option>
-                    <option value="negotiate">面議</option>
-                  </select>
-                </Field>
-                <Field label="最低訂單（¥）">
-                  <input type="number" value={form.minOrder} onChange={e => setForm({ ...form, minOrder: e.target.value })} className={inputCls} placeholder="e.g. 3000" />
-                </Field>
-                <Field label="平均回覆時間" req>
-                  <select required value={form.responseTime} onChange={e => setForm({ ...form, responseTime: e.target.value })} className={inputCls}>
-                    <option value="">請選擇</option>
-                    <option value="< 1小時">1 小時內</option>
-                    <option value="< 4小時">4 小時內</option>
-                    <option value="< 12小時">12 小時內</option>
-                    <option value="< 24小時">24 小時內</option>
-                    <option value="1-3天">1–3 天</option>
-                  </select>
-                </Field>
-              </div>
-            </div>
-
-            {/* 07 自我介紹 */}
-            <div className="px-8 py-6 space-y-4">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A237E]">07 — 自我介紹</h3>
-              <Field label="個人簡介" req>
-                <textarea required rows={3} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })}
-                  className={`${inputCls} resize-none`} maxLength={150}
-                  placeholder="簡介你的代購背景、服務特色（150字以內）" />
-                <p className="text-[9px] text-stone-400 text-right">{form.bio.length}/150</p>
-              </Field>
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="代購年資" req>
-                  <select required value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} className={inputCls}>
-                    <option value="">請選擇</option>
-                    <option value="< 1年">不足 1 年</option>
-                    <option value="1-3年">1–3 年</option>
-                    <option value="3-5年">3–5 年</option>
-                    <option value="5-10年">5–10 年</option>
-                    <option value="10年+">10 年以上</option>
-                  </select>
-                </Field>
-                <Field label="個人亮點（展示於卡片）">
-                  <input type="text" value={form.highlight} onChange={e => setForm({ ...form, highlight: e.target.value })}
-                    className={inputCls} maxLength={60} placeholder="e.g. Pokemon Center 每日探貨" />
-                </Field>
-              </div>
-            </div>
-
-            {/* 08 聲明條款 */}
-            <div className="px-8 py-6 space-y-4 bg-stone-50">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">08 — 聲明與條款</h3>
-              {[
-                { key: 'agreeTerms' as const, text: '我明白 Michi 是資訊索引平台，不保證任何交易、不介入買賣雙方糾紛，亦不對買手服務質素、商品真偽作出任何保證或背書。' },
-                { key: 'agreeDisclaimer' as const, text: '我確認所填資料屬實，同意以個人身份在 Michi 展示資料頁面。所有交易責任由本人與買家自行承擔，與 Michi 無關。' },
-              ].map(({ key, text }) => (
-                <label key={key} className="flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" checked={form[key]} onChange={e => setForm({ ...form, [key]: e.target.checked })}
-                    className="mt-0.5 flex-shrink-0 accent-[#1A237E] w-4 h-4" />
-                  <span className="text-[10px] text-stone-500 leading-relaxed">{text}</span>
-                </label>
-              ))}
-              <button type="submit" disabled={!form.agreeTerms || !form.agreeDisclaimer || loading}
-                className={`w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] transition-all mt-2 ${
-                  form.agreeTerms && form.agreeDisclaimer && !loading
-                    ? 'bg-[#1A237E] text-white hover:bg-[#B22222]'
-                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                }`}>
-                {loading ? '提交中…' : '提交申請 →'}
-              </button>
-              <p className="text-[9px] text-stone-400 text-center">提交後 3–5 個工作天內以電郵回覆</p>
-            </div>
-          </form>
-        )}
-      </div>
-    </div>
   );
 }
