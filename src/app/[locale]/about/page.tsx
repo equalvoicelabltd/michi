@@ -2,6 +2,8 @@
 
 import { useLocale } from 'next-intl';
 import { useState } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 // ─────────────────────────────────────────────────────────────
 // Real photos from Global EZshop / founder's history
@@ -450,4 +452,4 @@ export default function AboutPage() {
       </main>
     </>
   );
-}
+}  
