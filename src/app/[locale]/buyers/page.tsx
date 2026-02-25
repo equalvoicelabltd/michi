@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { useLocale } from 'next-intl';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 // ─────────────────────────────────────────────────────────────
 // SERVICE TYPES
