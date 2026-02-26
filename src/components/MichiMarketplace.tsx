@@ -1,9 +1,16 @@
 'use client';
 
+/**
+ * src/components/MichiMarketplace.tsx
+ *
+ * 首頁主組件：代購買手目錄 + AI 日本商品情報
+ *
+ * ⚠️  TopBar / Navbar / Footer 已由 src/app/[locale]/layout.tsx 統一提供
+ *     此組件不可重複渲染這些元素
+ */
+
 import { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 // ─────────────────────────────────────────────────────────────
 // TYPES
@@ -56,7 +63,7 @@ const SHOPPERS = [
   },
   {
     id: 6, name: 'Kenji', icon: '🎮', location: '名古屋', experience: '9年',
-    specialty: 'ANIME', score: '3', reviews: 334,
+    specialty: 'ANIME', score: '4.3', reviews: 334,
     tags: ['遊戲', 'Pokemon', '卡牌'], filter: 'anime',
     description: '專注卡牌遊戲及電子遊戲周邊，熟悉各地中古市場。',
   },
@@ -78,7 +85,7 @@ export default function MichiMarketplace() {
   const [productError, setProductError] = useState<string | null>(null);
   const [scraping, setScraping] = useState(false);
 
-  // Fetch products
+  // ── Fetch products ───────────────────────────────────────────
   const fetchProducts = async () => {
     try {
       setLoadingProducts(true);
@@ -99,13 +106,13 @@ export default function MichiMarketplace() {
 
   useEffect(() => { fetchProducts(); }, []);
 
-  // Filter shoppers
+  // ── Filter shoppers ──────────────────────────────────────────
   const filterShoppers = (f: string) => {
     setActiveFilter(f);
     setFilteredShoppers(f === 'all' ? SHOPPERS : SHOPPERS.filter(s => s.filter === f));
   };
 
-  // Trigger AI scrape
+  // ── Trigger AI scrape ────────────────────────────────────────
   const handleScrape = async () => {
     setScraping(true);
     try {
@@ -125,45 +132,11 @@ export default function MichiMarketplace() {
   // Locale-aware URL helper
   const url = (path: string) => `/${locale}${path}`;
 
-  // ───────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  // RENDER — no TopBar / Navbar / Footer here
+  // ─────────────────────────────────────────────────────────────
   return (
-    <main className="bg-[#F9F7F2] min-h-screen">
-
-      {/* ══ TOP DISCLAIMER BAR ══════════════════════════════ */}
-      <div className="bg-[#1C1C1C] text-[#F9F7F2]/60 py-2 px-6 text-[9px] tracking-[0.4em] text-center uppercase font-bold">
-        MICHI • 代購職人資訊平台 • 非交易提供方 • 透明直接
-      </div>
-
-      {/* ══ NAVIGATION ══════════════════════════════════════ */}
-      <nav className="sticky top-0 z-50 bg-[#F9F7F2]/90 backdrop-blur-md border-b border-stone-200">
-        <div className="max-w-7xl mx-auto px-8 h-24 flex items-center justify-between">
-          {/* Logo */}
-          <a href={url('/')} className="flex items-center space-x-6 group">
-            <div className="w-10 h-10 bg-[#B22222] flex items-center justify-center text-white font-serif text-2xl font-black transition-transform group-hover:rotate-6">
-              道
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black tracking-tighter text-[#1C1C1C]">みち</span>
-              <span className="text-[8px] font-bold text-stone-400 tracking-[0.4em] uppercase">Michi Project</span>
-            </div>
-          </a>
-
-          {/* Nav links */}
-          <div className="hidden lg:flex items-center space-x-12 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
-            <a href="#market" className="hover:text-[#1A237E] transition-colors">專家名錄</a>
-            <a href="#products" className="hover:text-[#1A237E] transition-colors">最新商品</a>
-            <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
-          </div>
-
-          {/* ✅ "申請成為買手" — links to a contact/request page */}
-          <a
-            href={url('/buyers')}
-            className="font-serif text-sm italic border-b border-[#1C1C1C] pb-1 hover:text-stone-400 transition-all font-black"
-          >
-            申請成為買手
-          </a>
-        </div>
-      </nav>
+    <div className="bg-[#F9F7F2] min-h-screen">
 
       {/* ══ HERO SECTION ════════════════════════════════════ */}
       <section className="relative bg-white pt-24 pb-32 overflow-hidden">
@@ -176,7 +149,9 @@ export default function MichiMarketplace() {
           <div className="lg:col-span-7 space-y-12">
             <div className="space-y-6">
               <div className="flex items-center space-x-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#B22222]">The Japanese Way</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#B22222]">
+                  The Japanese Way
+                </span>
                 <div className="h-px w-24 bg-stone-200" />
               </div>
               <h1 className="text-6xl md:text-8xl font-serif text-[#1C1C1C] leading-[1] font-black">
@@ -186,16 +161,16 @@ export default function MichiMarketplace() {
             </div>
 
             <p className="text-stone-500 text-lg font-light leading-relaxed max-w-xl">
-              Michi Project 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人與最新商品情報。
+              Michi 轉化為精緻的資訊索引，為追求生活品質的用戶連結日本各地的代購職人與最新商品情報。
             </p>
 
-            {/* ✅ Hero CTA buttons — proper <a> links */}
+            {/* Hero CTA buttons */}
             <div className="flex items-center space-x-8 pt-6">
               <a
                 href="#market"
                 className="bg-[#1A237E] text-white px-12 py-5 text-xs font-bold uppercase tracking-[0.3em] hover:bg-[#1C1C1C] transition-all"
               >
-                瀏覽專家名錄
+                瀏覽買手名錄
               </a>
               <a
                 href="#products"
@@ -209,210 +184,289 @@ export default function MichiMarketplace() {
           <div className="lg:col-span-5 relative">
             <div className="text-center">
               <div className="text-9xl opacity-10 font-serif select-none leading-none text-[#1C1C1C]">道</div>
-              <p className="text-stone-400 text-sm mt-4 tracking-widest uppercase text-[10px]">Information Platform</p>
+              <p className="text-stone-400 text-sm mt-4 tracking-widest uppercase text-[10px]">
+                Information Platform
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Marquee bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-[#FFD700] py-3 overflow-hidden rotate-[-0.5deg] scale-x-110">
-          <div className="flex whitespace-nowrap animate-marquee text-black font-black text-[9px] tracking-[0.4em] uppercase">
-            {[...Array(6)].map((_, i) => (
-              <span key={i} className="mx-12">Michi Project: Connecting Personal Buyers to Professional Shoppers •</span>
+        {/* Marquee strip */}
+        <div className="absolute bottom-0 left-0 right-0 bg-[#1C1C1C] py-3 overflow-hidden">
+          <div className="flex whitespace-nowrap animate-marquee text-[#F9F7F2]/30 font-black text-[9px] tracking-[0.4em] uppercase">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <span key={i} className="mx-8">
+                MICHI · 代購職人資訊平台 · 非交易提供方 · 透明直接 ·&nbsp;
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══ SECTION 1 — 代購職人市場 ══════════════════════════ */}
-      <section id="market" className="max-w-7xl mx-auto px-8 py-32 space-y-20">
-
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12">
-          <div className="space-y-4">
-            <h2 className="text-5xl font-serif text-[#1C1C1C] font-black">探索代購職人</h2>
-            <p className="text-stone-400 font-bold tracking-[0.2em] uppercase text-[10px]">
-              認識日本各地的專業代購員
-            </p>
-          </div>
-
-          {/* Filter tabs */}
-          <div className="flex flex-wrap gap-6 border-b border-stone-200 pb-2">
-            {[
-              { key: 'all', label: 'All' },
-              { key: 'vintage', label: 'Vintage' },
-              { key: 'anime', label: 'Anime' },
-              { key: 'fashion', label: 'Fashion' },
-            ].map(({ key, label }) => (
-              <button
-                key={key}
-                onClick={() => filterShoppers(key)}
-                className={`text-[10px] font-black uppercase tracking-[0.3em] pb-2 transition-colors ${
-                  activeFilter === key
-                    ? 'text-[#1A237E] border-b-2 border-[#1A237E] -mb-[2px]'
-                    : 'text-stone-400 hover:text-stone-900'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Shopper grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-          {filteredShoppers.map((shopper) => (
-            <div key={shopper.id} className="group">
-              {/* Avatar card */}
-              <div className="aspect-[4/5] bg-stone-100 flex items-center justify-center text-6xl relative overflow-hidden border border-stone-200">
-                <span className="z-10 text-7xl">{shopper.icon}</span>
-                <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/5 transition-all" />
-                <div className="absolute top-4 right-4 bg-white px-2 py-1 text-[8px] font-black uppercase tracking-widest text-stone-400 border border-stone-200">
-                  {shopper.specialty}
-                </div>
-              </div>
-
-              {/* Info */}
-              <div className="mt-8 space-y-4 bg-white p-6 border border-stone-200 border-t-0">
-                <div className="flex justify-between items-end border-b border-stone-100 pb-2">
-                  <h4 className="text-2xl font-serif text-[#1C1C1C] font-black group-hover:text-[#B22222] transition-colors">
-                    {shopper.name}
-                  </h4>
-                  <span className="font-serif italic text-xl text-[#C5A059]">{shopper.score}</span>
-                </div>
-
-                <div className="flex justify-between items-center text-[9px] font-bold text-stone-400 uppercase tracking-widest">
-                  <span>{shopper.location} / {shopper.experience}</span>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {shopper.tags.map((tag) => (
-                    <span key={tag} className="text-[9px] font-bold text-stone-500 border border-stone-100 px-2 py-1 uppercase tracking-tighter">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="pt-4 text-[9px] text-stone-400">{shopper.reviews} 評價</div>
-
-                {/* ✅ FIX: "聯繫" button → <a href="mailto:"> */}
-                <a
-                  href={url('/buyers')}
-  className="block w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all text-center"
->
-                  聯繫
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══ SECTION 2 — 日本最新商品情報 ═══════════════════════ */}
-      <section id="products" className="bg-[#1C1C1C] text-white py-32">
-        <div className="max-w-7xl mx-auto px-8 space-y-20">
+      {/* ══ MARKET SECTION ══════════════════════════════════ */}
+      <section id="market" className="py-32 px-8 bg-[#F9F7F2]">
+        <div className="max-w-7xl mx-auto space-y-16">
 
           {/* Header */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="space-y-4">
-              <h2 className="text-5xl font-serif font-black leading-tight">
-                日本最新商品情報<br />
-                <span className="text-[#C5A059] italic font-serif font-normal text-3xl">Latest Japanese Releases</span>
+              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B22222]">
+                Buyer Directory
+              </p>
+              <h2 className="text-5xl font-serif font-black text-[#1C1C1C] leading-tight">
+                代購買手<br />
+                <span className="italic font-serif font-normal text-[#C5A059] text-4xl">名錄</span>
               </h2>
-              <p className="text-stone-400 font-light leading-relaxed max-w-2xl text-sm">
-                AI 實時監測日本官方發布的最新商品、聯名系列與工藝佳作，每日更新資訊要點。
+              <p className="text-stone-500 text-sm max-w-md leading-relaxed">
+                由真實業者嚴選，每位買手均提供詳盡服務資訊。
+                Michi 不介入交易，直接聯絡買手安排代購。
               </p>
             </div>
 
-            {/* AI refresh — this IS a button (triggers JS action, not navigation) */}
+            {/* Filters */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { key: 'all',     label: '全部' },
+                { key: 'fashion', label: '時尚服飾' },
+                { key: 'anime',   label: '動漫周邊' },
+                { key: 'vintage', label: '古著職藝' },
+              ].map(({ key, label }) => (
+                <button
+                  key={key}
+                  onClick={() => filterShoppers(key)}
+                  className={`px-5 py-2 text-[9px] font-black uppercase tracking-[0.3em] transition-all ${
+                    activeFilter === key
+                      ? 'bg-[#1A237E] text-white'
+                      : 'border border-stone-300 text-stone-500 hover:border-[#1A237E] hover:text-[#1A237E]'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Shopper grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredShoppers.map((shopper) => (
+              <div
+                key={shopper.id}
+                className="group bg-white border border-stone-200 hover:border-[#1A237E] transition-all duration-300 flex flex-col"
+              >
+                {/* Card header */}
+                <div className="p-8 space-y-6 flex-1">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-14 h-14 bg-stone-100 flex items-center justify-center text-3xl flex-shrink-0">
+                        {shopper.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-black text-[#1C1C1C] tracking-tight">{shopper.name}</h3>
+                        <p className="text-[9px] font-bold text-stone-400 uppercase tracking-[0.3em]">
+                          {shopper.location} · {shopper.experience}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-serif italic text-[#C5A059] font-black">{shopper.score}</p>
+                      <p className="text-[8px] text-stone-400">{shopper.reviews} 評價</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[8px] font-black uppercase tracking-[0.4em] bg-[#1A237E] text-white px-2 py-1">
+                      {shopper.specialty}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-stone-500 leading-relaxed">{shopper.description}</p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {shopper.tags.map(tag => (
+                      <span
+                        key={tag}
+                        className="text-[8px] font-bold uppercase tracking-wider border border-stone-200 text-stone-400 px-2 py-1"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Card footer */}
+                <div className="border-t border-stone-100 p-6">
+                  <a
+                    href={url('/buyers')}
+                    className="block w-full text-center text-[9px] font-black uppercase tracking-[0.3em] border border-[#1C1C1C] text-[#1C1C1C] py-3 hover:bg-[#1A237E] hover:text-white hover:border-[#1A237E] transition-all"
+                  >
+                    查看詳情 →
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* View all buyers */}
+          <div className="text-center pt-8">
+            <a
+              href={url('/buyers')}
+              className="inline-block border border-[#1C1C1C] text-[#1C1C1C] px-16 py-5 text-xs font-bold uppercase tracking-[0.3em] hover:bg-[#1C1C1C] hover:text-white transition-all"
+            >
+              查看全部買手 →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ PRODUCTS SECTION ════════════════════════════════ */}
+      <section id="products" className="bg-[#1C1C1C] text-white py-32 px-8">
+        <div className="max-w-7xl mx-auto space-y-16">
+
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="space-y-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">
+                AI · 日本最新情報
+              </p>
+              <h2 className="text-5xl font-serif font-black leading-tight">
+                最新商品<br />
+                <span className="italic font-serif font-normal text-[#C5A059] text-4xl">情報</span>
+              </h2>
+              <p className="text-white/40 text-sm max-w-md leading-relaxed">
+                由 AI 每日自動搜尋日本最新商品發布，涵蓋時尚、美妝、動漫、電子、食品及工藝文化。
+              </p>
+            </div>
+
             <button
               onClick={handleScrape}
               disabled={scraping}
-              className="self-start lg:self-end flex items-center gap-2 border border-stone-600 text-stone-400 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-white hover:text-white transition-all disabled:opacity-40"
+              className="flex-shrink-0 flex items-center gap-3 border border-white/20 text-white px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-[#1C1C1C] transition-all disabled:opacity-40"
             >
-              {scraping
-                ? <><span className="animate-spin inline-block">⟳</span> AI 搜尋中…</>
-                : <>⟳ AI 更新商品</>}
+              <span className={scraping ? 'animate-spin inline-block' : ''}>✦</span>
+              {scraping ? 'AI 搜尋中…' : 'AI 更新情報'}
             </button>
           </div>
 
-          {/* Products */}
-          {loadingProducts ? (
+          {/* Products grid */}
+          {loadingProducts && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="bg-white border border-stone-200 p-8 space-y-6 animate-pulse">
-                  <div className="h-4 bg-stone-100 w-1/3" />
-                  <div className="h-6 bg-stone-100 w-full" />
-                  <div className="h-16 bg-stone-50 w-full" />
-                </div>
-              ))}
-            </div>
-          ) : productError ? (
-            <div className="text-center py-16 space-y-4">
-              <p className="text-stone-400 text-sm">{productError}</p>
-              <button onClick={fetchProducts} className="border border-stone-600 text-stone-400 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-white hover:text-white transition-all">
-                重試
-              </button>
-            </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-16 space-y-4">
-              <p className="text-stone-400 text-sm">暫無商品資訊。點擊「AI 更新商品」搜尋最新情報。</p>
-              <button onClick={handleScrape} disabled={scraping} className="border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all disabled:opacity-40">
-                {scraping ? 'AI 搜尋中…' : '🤖 立即 AI 搜尋'}
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product) => (
-                <div key={product.id} className="bg-white border border-stone-200 p-8 space-y-6 group hover:border-stone-400 transition-all">
-
-                  {product.category && (
-                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-[#B22222] border border-[#B22222]/20 px-2 py-1 inline-block">
-                      {product.category}
-                    </div>
-                  )}
-
-                  <h3 className="font-serif font-black text-xl text-[#1C1C1C] leading-tight line-clamp-2">
-                    {product.title}
-                  </h3>
-
-                  {product.ai_summary ? (
-                    <div className="border-l-2 border-[#C5A059] pl-4">
-                      <p className="text-[9px] font-black uppercase tracking-widest text-[#C5A059] mb-1">AI 摘要</p>
-                      <p className="text-xs text-stone-700 leading-relaxed line-clamp-4">{product.ai_summary}</p>
-                    </div>
-                  ) : product.description ? (
-                    <p className="text-xs text-stone-500 leading-relaxed line-clamp-4">{product.description}</p>
-                  ) : null}
-
-                  <div className="flex justify-between items-center text-[9px] font-bold text-stone-400 uppercase tracking-widest pt-4 border-t border-stone-100">
-                    <span>{product.source ?? 'Japan'} · {formatDate(product.published_at)}</span>
-
-                    {/* ✅ FIX: "了解更多" → <a> with real href */}
-                    {product.source_url ? (
-                      <a
-                        href={product.source_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#1A237E] hover:text-[#B22222] transition-colors cursor-pointer"
-                      >
-                        了解更多 ↗
-                      </a>
-                    ) : (
-                      <a
-                        href={url(`/products/${product.id}`)}
-                        className="text-[#1A237E] hover:text-[#B22222] transition-colors cursor-pointer"
-                      >
-                        了解更多 →
-                      </a>
-                    )}
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="border border-white/10 animate-pulse">
+                  <div className="aspect-[4/3] bg-white/5" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-3 bg-white/10 rounded w-1/3" />
+                    <div className="h-4 bg-white/20 rounded w-3/4" />
+                    <div className="h-3 bg-white/10 rounded w-full" />
                   </div>
                 </div>
               ))}
             </div>
           )}
 
-          {/* ✅ FIX: "查看所有商品" → <a> link to /products */}
+          {!loadingProducts && productError && (
+            <div className="text-center py-20 space-y-4">
+              <p className="text-white/40 text-sm">{productError}</p>
+              <button
+                onClick={fetchProducts}
+                className="border border-white/20 text-white/60 px-8 py-3 text-[9px] font-black uppercase tracking-[0.3em] hover:border-white hover:text-white transition-all"
+              >
+                重試
+              </button>
+            </div>
+          )}
+
+          {!loadingProducts && !productError && products.length === 0 && (
+            <div className="text-center py-20 space-y-6">
+              <p className="text-4xl">🌿</p>
+              <p className="text-white/40 text-sm">尚未有商品情報</p>
+              <button
+                onClick={handleScrape}
+                disabled={scraping}
+                className="border border-[#C5A059] text-[#C5A059] px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all disabled:opacity-50"
+              >
+                {scraping ? '搜尋中…' : '✦ AI 搜尋最新商品'}
+              </button>
+            </div>
+          )}
+
+          {!loadingProducts && !productError && products.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.slice(0, 6).map((product) => (
+                <div
+                  key={product.id}
+                  className="group border border-white/10 hover:border-[#C5A059] transition-all duration-300 flex flex-col bg-white/5"
+                >
+                  {/* Placeholder image area */}
+                  <div className="aspect-[4/3] bg-white/5 border-b border-white/10 flex items-center justify-center relative overflow-hidden">
+                    {product.image_url ? (
+                      <img
+                        src={product.image_url}
+                        alt={product.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <span className="text-5xl opacity-30">
+                        {product.category === 'fashion' ? '👕' :
+                         product.category === 'beauty' ? '💄' :
+                         product.category === 'anime' ? '🎌' :
+                         product.category === 'food' ? '🍡' :
+                         product.category === 'electronics' ? '📱' : '🏮'}
+                      </span>
+                    )}
+                    {/* AI badge */}
+                    <div className="absolute top-3 right-3 bg-[#C5A059] text-[#1C1C1C] text-[7px] font-black uppercase tracking-[0.3em] px-2 py-1">
+                      AI 情報
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 flex flex-col flex-1 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/40">
+                        {product.source ?? 'Japan'}
+                      </span>
+                      <span className="text-[8px] text-white/20 font-bold">
+                        {formatDate(product.published_at)}
+                      </span>
+                    </div>
+
+                    <h3 className="text-sm font-black text-white leading-tight group-hover:text-[#C5A059] transition-colors line-clamp-2">
+                      {product.title}
+                    </h3>
+
+                    {product.ai_summary && (
+                      <div className="border-l-2 border-[#C5A059] pl-4">
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[#C5A059] mb-1">AI 摘要</p>
+                        <p className="text-xs text-white/50 leading-relaxed line-clamp-4">{product.ai_summary}</p>
+                      </div>
+                    )}
+
+                    {/* Source link */}
+                    <div className="flex justify-between items-center text-[9px] font-bold text-white/30 uppercase tracking-widest pt-4 border-t border-white/10 mt-auto">
+                      <span>{product.source ?? 'Japan'} · {formatDate(product.published_at)}</span>
+                      {product.source_url ? (
+                        <a
+                          href={product.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#C5A059] hover:text-white transition-colors"
+                        >
+                          了解更多 ↗
+                        </a>
+                      ) : (
+                        <a href={url(`/products/${product.id}`)} className="text-[#C5A059] hover:text-white transition-colors">
+                          了解更多 →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* View all products */}
           <div className="text-center pt-8">
             <a
               href={url('/products')}
@@ -434,18 +488,21 @@ export default function MichiMarketplace() {
                 <span className="text-[#C5A059] italic font-serif font-normal text-3xl">Our Philosophy</span>
               </h2>
               <p className="text-stone-500 text-lg font-light leading-relaxed">
-                Michi 不只是代購平台，而是一條通往日本真實好物的道路。我們相信，在透明、信任與專業之間，
-                代購可以成為一種藝術。
+                Michi 不只是代購平台，而是一條通往日本真實好物的道路。
+                我們相信，在透明、信任與專業之間，代購可以成為一種藝術。
               </p>
             </div>
 
             <div className="space-y-8">
               {[
-                { num: '01', title: '自主指導', desc: '深入了解文化根源，讓每次推薦都有意義。' },
+                { num: '01', title: '自主導向', desc: '深入了解文化根源，讓每次推薦都有意義。' },
                 { num: '02', title: '資訊共享篩選', desc: '只分享通過嚴格篩選的職人，確保品質一致。' },
                 { num: '03', title: 'AI 輔助情報', desc: '以人工智慧輔助，以人文關懷把關，兩者缺一不可。' },
               ].map((item) => (
-                <div key={item.num} className="flex gap-8 items-start border-l-2 border-stone-100 pl-6 hover:border-[#1A237E] transition-colors">
+                <div
+                  key={item.num}
+                  className="flex gap-8 items-start border-l-2 border-stone-100 pl-6 hover:border-[#1A237E] transition-colors"
+                >
                   <span className="text-[10px] font-black text-stone-300 tracking-widest mt-1">{item.num}</span>
                   <div>
                     <h4 className="font-black text-[#1C1C1C] mb-1">{item.title}</h4>
@@ -477,96 +534,17 @@ export default function MichiMarketplace() {
                 — Michi 核心理念
               </div>
             </div>
+
+            <a
+              href={url('/about')}
+              className="inline-block border border-[#1C1C1C] text-[#1C1C1C] px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#1C1C1C] hover:text-white transition-all"
+            >
+              了解更多關於我們 →
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ══ FOOTER ══════════════════════════════════════════ */}
-      <footer className="bg-[#1C1C1C] text-white py-24 px-8 border-t border-stone-700">
-        <div className="max-w-7xl mx-auto space-y-16">
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {/* Brand */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-white text-[#1C1C1C] flex items-center justify-center font-serif text-xl font-black">
-                  道
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xl font-black tracking-tighter">みち</span>
-                  <span className="text-[8px] font-bold text-stone-400 tracking-[0.5em] uppercase">Information Hub</span>
-                </div>
-              </div>
-              <p className="text-[10px] text-stone-400 leading-relaxed">
-                Build a bridge of trust between local Japanese experts and global personal buyers.
-              </p>
-              <div className="flex gap-4 pt-2">
-                {['Instagram', 'WeChat', 'LINE'].map((s) => (
-                  <a key={s} href="#" className="text-[9px] font-black uppercase tracking-widest text-stone-500 hover:text-white transition-colors">{s}</a>
-                ))}
-              </div>
-            </div>
-
-            {/* Discover */}
-            <div className="space-y-4">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">DISCOVER</h4>
-              <nav className="space-y-3">
-                {[
-                  { label: '代購職人', href: url('/buyers') },
-                  { label: '最新商品', href: url('/products') },
-                  { label: '申請成為買手', href: url('/buyers') },
-                  { label: '關於我們', href: url('/about') },
-                ].map(({ label, href }) => (
-                  <a key={label} href={href} className="block text-[10px] text-stone-400 hover:text-white transition-colors uppercase tracking-wider font-bold">
-                    {label}
-                  </a>
-                ))}
-              </nav>
-            </div>
-
-            {/* Support */}
-            <div className="space-y-4">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">SUPPORT</h4>
-              <nav className="space-y-3">
-                {[
-                  { label: 'FAQ', href: '#' },
-                  { label: '聯絡我們', href: 'mailto:hello@michi.jp' },
-                  { label: '隱私條款', href: '#' },
-                ].map(({ label, href }) => (
-                  <a key={label} href={href} className="block text-[10px] text-stone-400 hover:text-white transition-colors uppercase tracking-wider font-bold">
-                    {label}
-                  </a>
-                ))}
-              </nav>
-
-              {/* Newsletter */}
-              <div className="pt-4 space-y-2">
-                <p className="text-[9px] font-black uppercase tracking-widest text-stone-500">Newsletter</p>
-                <div className="flex">
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    className="flex-1 bg-stone-800 border border-stone-700 px-3 py-2 text-[10px] text-white placeholder-stone-500 focus:outline-none focus:border-stone-500"
-                  />
-                  <button className="bg-white text-[#1C1C1C] px-4 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-stone-200 transition-colors">
-                    訂閱
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-[9px] text-stone-500 uppercase tracking-widest">
-              © {new Date().getFullYear()} Michi Project. All Rights Reserved.
-            </p>
-            <p className="text-[9px] text-stone-600 uppercase tracking-widest">
-              Your Path to Japan's Best
-            </p>
-          </div>
-        </div>
-      </footer>
-    </main>
+    </div>
   );
 }
