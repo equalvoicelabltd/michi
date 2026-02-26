@@ -1,20 +1,15 @@
 'use client';
 
+/**
+ * src/app/[locale]/about/page.tsx
+ * Navbar & Footer are injected by src/app/[locale]/layout.tsx — do NOT add them here.
+ */
+
 import { useLocale } from 'next-intl';
 import { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 // ─────────────────────────────────────────────────────────────
-// Real photos from Global EZshop / founder's history
-// Place all 7 images in /public/about/ folder:
-//   office.jpg          → 20200410_183618__2_.jpg   (辦公室)
-//   wooden-goods.jpg    → IMG-20200916-WA0043.jpg    (木製餐具)
-//   bao-bao.jpg         → 24518.jpeg                 (Bao Bao bags)
-//   kuromi.jpg          → 24600.jpeg                 (Kuromi)
-//   miffy.jpg           → IMG_0509.jpg               (Miffy 忍者)
-//   plushies.jpg        → IMG_0567.jpg               (茶 plushies)
-//   shipping-box.jpg    → IMG-20201028-WA0012.jpg    (出貨箱)
+// DATA
 // ─────────────────────────────────────────────────────────────
 const PHOTOS = [
   {
@@ -22,50 +17,13 @@ const PHOTOS = [
     alt: 'Global EZshop 辦公室 — Michi 創辦人工作空間',
     caption: '創辦人辦公室 · 香港',
     tag: '實體辦公室',
-    span: 'lg:col-span-2 lg:row-span-2',
   },
-  {
-    src: '/about/wooden-goods.jpg',
-    alt: '日本木製餐具代購',
-    caption: '日本木製選物',
-    tag: '親赴日本選貨',
-    span: '',
-  },
-  {
-    src: '/about/bao-bao.jpg',
-    alt: 'Issey Miyake Bao Bao bags',
-    caption: 'Bao Bao Issey Miyake',
-    tag: '精品代購',
-    span: '',
-  },
-  {
-    src: '/about/miffy.jpg',
-    alt: 'Miffy 忍者限定款',
-    caption: '限定系列代購',
-    tag: '限定商品',
-    span: '',
-  },
-  {
-    src: '/about/kuromi.jpg',
-    alt: 'Kuromi × Dolly Mix 動漫限定',
-    caption: 'Sanrio 限定周邊',
-    tag: '動漫周邊',
-    span: '',
-  },
-  {
-    src: '/about/plushies.jpg',
-    alt: '京都限定玩偶',
-    caption: '京都店限定玩偶',
-    tag: '地區限定',
-    span: '',
-  },
-  {
-    src: '/about/shipping-box.jpg',
-    alt: '批發出貨箱',
-    caption: '批發整箱出貨',
-    tag: '企業批發服務',
-    span: '',
-  },
+  { src: '/about/wooden-goods.jpg', alt: '日本木製餐具代購',              caption: '日本木製選物',      tag: '親赴日本選貨' },
+  { src: '/about/bao-bao.jpg',      alt: 'Issey Miyake Bao Bao bags',     caption: 'Bao Bao Issey Miyake', tag: '精品代購' },
+  { src: '/about/miffy.jpg',        alt: 'Miffy 忍者限定款',              caption: '限定系列代購',      tag: '限定商品' },
+  { src: '/about/kuromi.jpg',       alt: 'Kuromi × Dolly Mix 動漫限定',   caption: 'Sanrio 限定周邊',   tag: '動漫周邊' },
+  { src: '/about/plushies.jpg',     alt: '京都限定玩偶',                  caption: '京都店限定玩偶',    tag: '地區限定' },
+  { src: '/about/shipping-box.jpg', alt: '批發出貨箱',                    caption: '批發整箱出貨',      tag: '企業批發服務' },
 ];
 
 const TIMELINE = [
@@ -102,12 +60,15 @@ const TIMELINE = [
 ];
 
 const STATS = [
-  { n: '13+', label: '年代購經驗' },
+  { n: '13+',    label: '年代購經驗' },
   { n: '5,000+', label: '服務過的客戶' },
-  { n: '4', label: '日本城市網絡' },
-  { n: '100%', label: '實體辦公室運營' },
+  { n: '4',      label: '日本城市網絡' },
+  { n: '100%',   label: '實體辦公室運營' },
 ];
 
+// ─────────────────────────────────────────────────────────────
+// PAGE
+// ─────────────────────────────────────────────────────────────
 export default function AboutPage() {
   const locale = useLocale();
   const [lightbox, setLightbox] = useState<string | null>(null);
@@ -116,7 +77,10 @@ export default function AboutPage() {
     <>
       {/* Lightbox */}
       {lightbox && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+          onClick={() => setLightbox(null)}
+        >
           <img src={lightbox} alt="" className="max-h-[90vh] max-w-[90vw] object-contain" />
           <button className="absolute top-6 right-8 text-white/60 hover:text-white text-3xl">×</button>
         </div>
@@ -124,62 +88,35 @@ export default function AboutPage() {
 
       <main className="min-h-screen bg-[#F9F7F2]">
 
-        {/* TOP BAR */}
-        <div className="bg-[#1C1C1C] text-[#F9F7F2]/50 py-2 px-6 text-[9px] tracking-[0.4em] text-center uppercase font-bold">
-          MICHI • 由 Global EZshop 創辦人創立 • 2011 年至今
-        </div>
-
-        {/* NAV */}
-        <nav className="sticky top-0 z-40 bg-[#F9F7F2]/90 backdrop-blur-md border-b border-stone-200">
-          <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            <a href={`/${locale}`} className="flex items-center space-x-4 group">
-              <div className="w-9 h-9 bg-[#B22222] flex items-center justify-center text-white font-serif text-xl font-black transition-transform group-hover:rotate-6">道</div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-xl font-black tracking-tighter text-[#1C1C1C]">みち</span>
-                <span className="text-[7px] font-bold text-stone-400 tracking-[0.4em] uppercase">Michi Project</span>
-              </div>
-            </a>
-            <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
-              <a href={`/${locale}/buyers`} className="hover:text-[#1A237E] transition-colors">找買手</a>
-              <a href={'/products'} className="hover:text-[#1A237E] transition-colors">最新商品</a>
-              <span className="text-[#1A237E] border-b border-[#1A237E]">關於我們</span>
+        {/* ══ HERO ══════════════════════════════════════════ */}
+        <section className="bg-[#1C1C1C] text-white">
+          <div className="max-w-7xl mx-auto px-8 py-20">
+            {/* Stats bar */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 pb-16 border-b border-white/10">
+              {STATS.map(({ n, label }) => (
+                <div key={label} className="space-y-1">
+                  <p className="text-3xl md:text-4xl font-black text-white">{n}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40">{label}</p>
+                </div>
+              ))}
             </div>
-            <a href={`/${locale}/products`} className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-[#1C1C1C] pb-0.5 hover:text-stone-400 transition-colors">
-              ← 返回首頁
-            </a>
-          </div>
-        </nav>
 
-        {/* ══ HERO ══ */}
-        <section className="bg-[#1A237E] text-white py-24 px-8 relative overflow-hidden">
-          <div className="absolute right-[-2rem] top-0 bottom-0 flex items-center pointer-events-none select-none">
-            <span className="text-[22rem] font-serif text-white/5 leading-none">道</span>
-          </div>
-          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="max-w-3xl space-y-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">Our Story</p>
-              <h1 className="text-5xl md:text-7xl font-serif font-black leading-[1.05]">
-                從 Facebook<br />
-                到 <span className="text-[#C5A059] italic font-serif font-normal">Michi</span>
+            <div className="space-y-4">
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">About Michi</p>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-none">
+                由代購人<br />
+                <span className="text-[#C5A059]">建立的代購平台</span>
               </h1>
-              <p className="text-white/60 text-base leading-relaxed max-w-xl">
-                2011 年，創辦人以一個 Facebook 專頁起步，親身赴日採購，一件一件幫客人代購。
-                13 年後，這份初心成就了 Michi——一個讓更多人找到可信任日本買手的平台。
+              <p className="text-[12px] text-white/50 max-w-xl leading-relaxed mt-6">
+                Michi（道）由 Global EZshop 創辦人建立。我們自 2011 年開始深耕日本代購，
+                積累了超過 13 年的實戰經驗。Michi 不是一個普通的平台——它是由一個真正走過代購每一步的人，
+                為同樣熱愛日本的你，建立的一條路。
               </p>
-              {/* Stats row */}
-              <div className="flex flex-wrap gap-10 pt-4 border-t border-white/10 mt-8">
-                {STATS.map(({ n, label }) => (
-                  <div key={label}>
-                    <p className="text-3xl font-serif italic text-[#C5A059] font-black">{n}</p>
-                    <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40 mt-1">{label}</p>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </section>
 
-        {/* ══ FOUNDER STORY ══ */}
+        {/* ══ FOUNDER STORY ═════════════════════════════════ */}
         <section className="max-w-7xl mx-auto px-8 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
@@ -224,7 +161,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Office photo — hero credibility shot */}
+            {/* Office photos */}
             <div className="space-y-4">
               <div
                 className="relative overflow-hidden border border-stone-200 cursor-zoom-in group"
@@ -243,7 +180,8 @@ export default function AboutPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {['/about/shipping-box.jpg', '/about/wooden-goods.jpg'].map((src, i) => (
-                  <div key={i}
+                  <div
+                    key={src}
                     className="relative overflow-hidden border border-stone-200 cursor-zoom-in group"
                     onClick={() => setLightbox(src)}
                   >
@@ -261,7 +199,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ══ TIMELINE ══ */}
+        {/* ══ TIMELINE ══════════════════════════════════════ */}
         <section className="bg-[#1C1C1C] text-white py-20 px-8">
           <div className="max-w-7xl mx-auto space-y-12">
             <div className="space-y-2">
@@ -270,13 +208,12 @@ export default function AboutPage() {
             </div>
 
             <div className="relative">
-              {/* Line */}
               <div className="absolute left-[2.25rem] top-0 bottom-0 w-px bg-white/10 hidden lg:block" />
 
               <div className="space-y-0">
                 {TIMELINE.map((item, i) => (
                   <div key={item.year} className="flex gap-8 items-start group">
-                    {/* Year marker */}
+                    {/* Year */}
                     <div className="flex-shrink-0 w-18 text-right hidden lg:block">
                       <span className="text-[10px] font-black text-[#C5A059] uppercase tracking-widest">{item.year}</span>
                     </div>
@@ -305,7 +242,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ══ PHOTO GALLERY ══ */}
+        {/* ══ PHOTO GALLERY ═════════════════════════════════ */}
         <section className="max-w-7xl mx-auto px-8 py-20">
           <div className="space-y-8 mb-10">
             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B22222]">真實採購紀錄</p>
@@ -315,14 +252,18 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Masonry-style grid */}
+          {/* Masonry grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {/* Office — big feature */}
             <div
               className="col-span-2 row-span-2 relative overflow-hidden border border-stone-200 cursor-zoom-in group"
               onClick={() => setLightbox('/about/office.jpg')}
             >
-              <img src="/about/office.jpg" alt="辦公室" className="w-full h-full object-cover min-h-[280px] group-hover:scale-105 transition-transform duration-500" />
+              <img
+                src="/about/office.jpg"
+                alt="辦公室"
+                className="w-full h-full object-cover min-h-[280px] group-hover:scale-105 transition-transform duration-500"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity space-y-1">
                 <span className="bg-[#C5A059] text-[#1C1C1C] text-[8px] font-black uppercase tracking-widest px-2 py-0.5">實體辦公室</span>
@@ -339,21 +280,28 @@ export default function AboutPage() {
               { src: '/about/wooden-goods.jpg', label: '木製選物' },
               { src: '/about/shipping-box.jpg', label: '批發出貨' },
             ].map(({ src, label }) => (
-              <div key={src}
+              <div
+                key={src}
                 className="relative overflow-hidden border border-stone-200 cursor-zoom-in group aspect-square"
                 onClick={() => setLightbox(src)}
               >
-                <img src={src} alt={label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img
+                  src={src}
+                  alt={label}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
                 <div className="absolute inset-0 bg-[#1C1C1C]/0 group-hover:bg-[#1C1C1C]/40 transition-all" />
                 <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="bg-white text-[#1C1C1C] text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5">{label}</span>
+                  <span className="bg-white text-[#1C1C1C] text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5">
+                    {label}
+                  </span>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ══ WHY MICHI ══ */}
+        {/* ══ WHY MICHI ═════════════════════════════════════ */}
         <section className="bg-stone-50 border-t border-stone-200 py-20 px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -367,89 +315,72 @@ export default function AboutPage() {
                     {
                       n: '01',
                       title: '親身走過代購每一步',
-                      desc: '從下單、排隊、打包到報關，每個環節都試過、都煩惱過。Michi 的設計是由真實經驗出發，而不是想像。',
+                      desc: '從下單、排隊、打包到報關，每個環節我們都試過。Michi 的功能設計來自真實經驗，而非假設。',
                     },
                     {
                       n: '02',
-                      title: '知道找買手有多難',
-                      desc: '信任是代購最難建立的東西。Michi 不擔保、不介入，但我們讓買手展示真實的服務資訊，由你自己判斷。',
+                      title: '13 年積累的人脈網絡',
+                      desc: '我們在日本各城市都有長期合作的在地買手。Michi 讓這個私人網絡向所有人開放。',
                     },
                     {
                       n: '03',
-                      title: '連結真實的人',
-                      desc: '科技無法取代在場的人。Michi 要做的，是讓那些真正在日本的人，被需要他們的買家找到。',
+                      title: '平台不介入、不收費',
+                      desc: 'Michi 是資訊索引平台。我們不參與任何交易，不向買家或買手抽佣。透明直接。',
                     },
                   ].map(({ n, title, desc }) => (
-                    <div key={n} className="flex gap-5 items-start">
-                      <div className="text-[10px] font-black text-[#B22222] border border-[#B22222] px-2.5 py-1.5 flex-shrink-0 mt-0.5">{n}</div>
-                      <div>
-                        <p className="font-black text-[#1C1C1C] mb-1">{title}</p>
-                        <p className="text-stone-500 text-sm leading-relaxed">{desc}</p>
+                    <div key={n} className="flex gap-6">
+                      <span className="text-[#C5A059] font-black text-xs tracking-[0.3em] flex-shrink-0 mt-0.5">{n}</span>
+                      <div className="space-y-1">
+                        <p className="font-black text-sm text-[#1C1C1C]">{title}</p>
+                        <p className="text-[11px] text-stone-500 leading-relaxed">{desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Quote block */}
-              <div className="bg-[#1A237E] text-white p-10 space-y-6">
-                <div className="text-5xl font-serif text-[#C5A059] leading-none">"</div>
-                <p className="text-xl font-serif italic leading-relaxed">
-                  代購這條路，最難的從來不是找到商品，
-                  而是找到一個你可以信任、真正在當地的人。
-                  Michi 就是為了這個而生。
-                </p>
-                <div className="border-t border-white/20 pt-4 space-y-1">
-                  <p className="font-black text-white">Global EZshop 創辦人</p>
-                  <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">2011 年起深耕日本代購</p>
-                </div>
+              {/* Right side — quote block */}
+              <div className="bg-[#1C1C1C] p-10 space-y-8">
+                <div className="text-8xl text-white/5 font-serif leading-none select-none">道</div>
+                <blockquote className="text-white text-xl font-serif italic leading-relaxed">
+                  「在代購的世界裡，<br />我們是那道引導光線。」
+                </blockquote>
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.4em]">— Michi 核心理念</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ══ CTA ══ */}
-        <section className="bg-[#1C1C1C] text-white py-20 px-8">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-10">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-serif font-black">
-                開始你的 Michi 之旅<br />
-                <span className="text-[#C5A059] italic font-serif font-normal">Find Your Path to Japan</span>
+        {/* ══ CTA ═══════════════════════════════════════════ */}
+        <section className="bg-[#1A237E] text-white py-20 px-8">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="space-y-3">
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">Start Now</p>
+              <h2 className="text-3xl md:text-4xl font-black leading-tight">
+                準備好了嗎？<br />找到你的日本買手
               </h2>
-              <p className="text-white/40 text-sm max-w-md">瀏覽在日本各城市的買手，找到最適合你代購需求的人。</p>
+              <p className="text-white/50 text-sm max-w-md">
+                瀏覽 Michi 買手名錄，找到專屬你需求的日本在地代購人，開始你的代購之旅。
+              </p>
             </div>
-            <div className="flex flex-col gap-3">
-              <a href={`/${locale}/buyers`}
-                className="bg-[#C5A059] text-[#1C1C1C] px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all text-center">
-                瀏覽買手名錄 →
+            <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
+              <a
+                href={`/${locale}/buyers`}
+                className="border border-white text-white px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-[#1A237E] transition-all text-center"
+              >
+                找買手 →
               </a>
-              <a href={`/${locale}/products`}
-                className="border border-white/20 text-white/70 px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:border-white hover:text-white transition-all text-center">
-                探索日本最新商品
+              <a
+                href={`/${locale}/products`}
+                className="border border-white/30 text-white/70 px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:border-white hover:text-white transition-all text-center"
+              >
+                最新商品情報
               </a>
             </div>
           </div>
         </section>
 
-        {/* FOOTER */}
-        <footer className="bg-[#111] text-white py-14 px-8">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-white text-[#1C1C1C] flex items-center justify-center font-serif text-lg font-black">道</div>
-              <div>
-                <p className="font-black tracking-tighter">みち</p>
-                <p className="text-[8px] text-stone-500 uppercase tracking-[0.4em]">by Global EZshop · Since 2011</p>
-              </div>
-            </div>
-            <div className="flex gap-6 text-[9px] font-bold uppercase tracking-[0.3em] text-stone-500">
-              <a href={`/${locale}/buyers`}  className="hover:text-white transition-colors">找買手</a>
-              <a href={`/${locale}/products`} className="hover:text-white transition-colors">商品</a>
-              <a href="mailto:hello@michi.jp" className="hover:text-white transition-colors">聯絡</a>
-            </div>
-            <p className="text-[9px] text-stone-600 uppercase tracking-widest">© {new Date().getFullYear()} Michi.</p>
-          </div>
-        </footer>
       </main>
     </>
   );
-}  
+}

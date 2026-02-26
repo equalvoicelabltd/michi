@@ -2,6 +2,8 @@
 
 import { useLocale } from 'next-intl';
 import { useState } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 // ─────────────────────────────────────────────────────────────
 // Real photos from Global EZshop / founder's history
@@ -74,13 +76,13 @@ const TIMELINE = [
     icon: '📱',
   },
   {
-    year: '2014',
+    year: '2012',
     title: '正式成立公司',
     desc: '成立 Global EZshop，由個人代購升級為正式公司，開始服務中小型零售商。',
     icon: '🏢',
   },
   {
-    year: '2016',
+    year: '2014',
     title: '開設實體辦公室',
     desc: '於香港租用辦公室及倉儲空間，提供批發整箱服務，每月處理大量訂單。',
     icon: '📦',
@@ -92,7 +94,7 @@ const TIMELINE = [
     icon: '🗾',
   },
   {
-    year: '2024',
+    year: '2026',
     title: '創立 Michi',
     desc: '將多年代購資源開放予大眾，成立 Michi 平台，連接全球買家與日本在地買手。',
     icon: '道',
@@ -139,10 +141,10 @@ export default function AboutPage() {
             </a>
             <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
               <a href={`/${locale}/buyers`} className="hover:text-[#1A237E] transition-colors">找買手</a>
-              <a href={`/${locale}/products`} className="hover:text-[#1A237E] transition-colors">最新商品</a>
+              <a href={'/products'} className="hover:text-[#1A237E] transition-colors">最新商品</a>
               <span className="text-[#1A237E] border-b border-[#1A237E]">關於我們</span>
             </div>
-            <a href={`/${locale}`} className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-[#1C1C1C] pb-0.5 hover:text-stone-400 transition-colors">
+            <a href={`/${locale}/products`} className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-[#1C1C1C] pb-0.5 hover:text-stone-400 transition-colors">
               ← 返回首頁
             </a>
           </div>
