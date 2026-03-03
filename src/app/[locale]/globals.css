@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    /* 使用剛才在 tailwind.config.js 定義的 michi-washi */
+    @apply bg-michi-washi text-michi-ink antialiased;
+    font-variant-ligatures: common-ligatures;
+  }
+}
+
+@layer components {
+  /* 和紙質感背景 */
+  .washi-texture {
+    position: relative;
+  }
+  .washi-texture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* 你的設計中需要的按鈕樣式 */
+  .btn-michi-primary {
+    @apply bg-michi-ink text-white px-12 py-5 text-xs font-black
+           uppercase tracking-[0.3em] hover:bg-michi-vermilion
+           transition-all shadow-xl active:scale-95;
+  }
+
+  .btn-michi-outline {
+    @apply border border-michi-ink text-michi-ink px-12 py-5
+           text-xs font-black uppercase tracking-[0.3em]
+           hover:bg-michi-ink hover:text-white transition-all;
+  }
+}
+
+/* 修復滾動條樣式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-michi-washi;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-300 rounded-full hover:bg-michi-gold;
+}
+
+/* Marquee animation for Hero section */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
