@@ -8,5 +8,5 @@ export const routing = defineRouting({
   defaultLocale: 'zh',
 
   // 路徑前綴策略
-  localePrefix: 'always'
+  localePrefix: 'as-needed'
 });
