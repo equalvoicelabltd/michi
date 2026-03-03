@@ -182,7 +182,7 @@ export async function recordDisputeResponse(params: {
       seller_contact: `感謝您的通知。您可以：\n\n1. 通過原始聯繫方式聯繫買手\n2. 要求發貨證明\n3. 若買手無回應，進行退款\n\nMichi 提供的聯繫方式：[買手信息]`,
     };
 
-    const response = responseText || templates[params.responseTemplate];
+    const response = params.responseText || templates[params.responseTemplate];
 
     const { error } = await supabase
       .from('dispute_log')
