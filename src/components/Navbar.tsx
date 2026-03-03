@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { Link, usePathname } from '@/navigation';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const locale = useLocale();
@@ -55,7 +56,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA + mobile toggle */}
+          {/* CTA + Language + mobile toggle */}
           <div className="flex items-center gap-4">
             <Link
               href="/buyers#apply"
@@ -63,6 +64,9 @@ export default function Navbar() {
             >
               申請成為買手
             </Link>
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Mobile hamburger */}
             <button
