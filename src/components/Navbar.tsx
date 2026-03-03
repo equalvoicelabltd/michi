@@ -1,107 +1,316 @@
+/**
+ * src/components/Navbar.tsx
+ *
+ * Michi 完整導航欄組件
+ * 包含：
+ * - 響應式設計（移動端友好）
+ * - 多語言支持
+ * - 法律頁面連結
+ * - 動態活動頁面指示
+ */
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Link, usePathname } from '@/navigation';
+import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 
 export default function Navbar() {
+  const t = useTranslations('nav');
   const locale = useLocale();
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLegalOpen, setIsLegalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const navLinks = [
-    { href: '/buyers',   label: '找買手' },
-    { href: '/products', label: '最新商品' },
-    { href: '/about',    label: '關於我們' },
-  ];
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+  if (!mounted) return null;
+
+  // 檢查當前頁面是否活動
+  const isActive = (path: string) => {
+    const currentPath = pathname.replace(`/${locale}`, '');
+    return currentPath === path || currentPath.startsWith(path);
+  };
+
+  // 導航連結樣式
+  const linkClass = (path: string) =>
+    `px-3 py-2 rounded-md text-sm font-medium transition ${
+      isActive(path)
+        ? 'bg-pink-100 text-pink-900'
+        : 'text-gray-700 hover:bg-gray-100'
+    }`;
+
+  const mobileLinkClass = (path: string) =>
+    `block px-3 py-2 rounded-md text-base font-medium transition ${
+      isActive(path)
+        ? 'bg-pink-100 text-pink-900'
+        : 'text-gray-700 hover:bg-gray-100'
+    }`;
 
   return (
-    <>
-      {/* Top disclaimer bar */}
-      <div className="bg-[#1C1C1C] text-[#F9F7F2]/50 py-2 px-6 text-[9px] tracking-[0.4em] text-center uppercase font-bold">
-        MICHI · 代購買手資訊平台 · 平台不參與任何交易
-      </div>
-
-      <nav className="sticky top-0 z-50 bg-[#F9F7F2]/90 backdrop-blur-md border-b border-stone-200">
-        <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-4 group flex-shrink-0">
-            <div className="w-9 h-9 bg-[#B22222] flex items-center justify-center text-white font-serif text-xl font-black transition-transform group-hover:rotate-6">
-              道
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-xl font-black tracking-tighter text-[#1C1C1C]">みち</span>
-              <span className="text-[7px] font-bold text-stone-400 tracking-[0.4em] uppercase">Michi Project</span>
-            </div>
-          </Link>
-
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em]">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`transition-colors pb-0.5 ${
-                  isActive(href)
-                    ? 'text-[#1A237E] border-b border-[#1A237E]'
-                    : 'text-stone-500 hover:text-[#1A237E]'
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
+    <nav className="bg-white shadow-lg sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Logo and Tagline */}
+          <div className="flex items-center gap-8">
+            <Link href={`/${locale}`} className="flex-shrink-0 flex items-center gap-3">
+              <div className="text-2xl font-bold text-pink-600">🌸 Michi</div>
+              <span className="hidden sm:inline text-xs text-gray-600 font-medium">
+                {t('tagline')}
+              </span>
+            </Link>
           </div>
 
-          {/* CTA + mobile toggle */}
-          <div className="flex items-center gap-4">
-            <Link
-              href="/buyers#apply"
-              className="hidden lg:block text-[10px] font-black uppercase tracking-[0.3em] bg-[#1A237E] text-white px-5 py-2.5 hover:bg-[#B22222] transition-all"
-            >
-              申請成為買手
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {/* Main Links */}
+            <Link href={`/${locale}`} className={linkClass('')}>
+              {t('home')}
             </Link>
 
-            {/* Mobile hamburger */}
+            <Link href={`/${locale}/buyers`} className={linkClass('/buyers')}>
+              {t('buyers')}
+            </Link>
+
+            <Link href={`/${locale}/products`} className={linkClass('/products')}>
+              {t('products')}
+            </Link>
+
+            <Link href={`/${locale}/disputes`} className={linkClass('/disputes')}>
+              {t('disputes')}
+            </Link>
+
+            {/* Legal Dropdown */}
+            <div className="relative group">
+              <button className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center gap-1 transition">
+                Legal
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 py-2 border border-gray-200">
+                <Link
+                  href={`/${locale}/legal/privacy`}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href={`/${locale}/legal/terms`}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Terms of Service
+                </Link>
+                <Link
+                  href={`/${locale}/legal/disclaimer`}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Disclaimer
+                </Link>
+              </div>
+            </div>
+
+            <Link href={`/${locale}/contact`} className={linkClass('/contact')}>
+              {t('contact')}
+            </Link>
+
+            {/* Language Selector */}
+            <div className="relative group">
+              <button className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center gap-2 transition">
+                <Globe className="w-4 h-4" />
+                {locale.toUpperCase()}
+              </button>
+              <div className="absolute right-0 mt-0 w-32 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 py-2 border border-gray-200">
+                <Link
+                  href={pathname.replace(`/${locale}`, '/en')}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  English
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/zh')}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  繁體中文
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/zh-CN')}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  简体中文
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/ja')}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  日本語
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/th')}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  ไทย
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center gap-4">
             <button
-              className="lg:hidden flex flex-col gap-1.5 p-2"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none transition"
             >
-              <span className={`w-5 h-0.5 bg-[#1C1C1C] transition-all ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`w-5 h-0.5 bg-[#1C1C1C] transition-all ${mobileOpen ? 'opacity-0' : ''}`} />
-              <span className={`w-5 h-0.5 bg-[#1C1C1C] transition-all ${mobileOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              {isOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile dropdown */}
-        {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-stone-200 px-8 py-6 space-y-4">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMobileOpen(false)}
-                className={`block text-[10px] font-black uppercase tracking-[0.4em] py-2 ${
-                  isActive(href) ? 'text-[#1A237E]' : 'text-stone-500'
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-t">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {/* Mobile Links */}
             <Link
-              href="/buyers#apply"
-              onClick={() => setMobileOpen(false)}
-              className="block text-center text-[10px] font-black uppercase tracking-[0.3em] bg-[#1A237E] text-white px-5 py-3 hover:bg-[#B22222] transition-all mt-2"
+              href={`/${locale}`}
+              className={mobileLinkClass('')}
+              onClick={() => setIsOpen(false)}
             >
-              申請成為買手
+              {t('home')}
             </Link>
+
+            <Link
+              href={`/${locale}/buyers`}
+              className={mobileLinkClass('/buyers')}
+              onClick={() => setIsOpen(false)}
+            >
+              {t('buyers')}
+            </Link>
+
+            <Link
+              href={`/${locale}/products`}
+              className={mobileLinkClass('/products')}
+              onClick={() => setIsOpen(false)}
+            >
+              {t('products')}
+            </Link>
+
+            <Link
+              href={`/${locale}/disputes`}
+              className={mobileLinkClass('/disputes')}
+              onClick={() => setIsOpen(false)}
+            >
+              {t('disputes')}
+            </Link>
+
+            {/* Mobile Legal Dropdown */}
+            <button
+              onClick={() => setIsLegalOpen(!isLegalOpen)}
+              className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 flex items-center justify-between transition"
+            >
+              Legal
+              <ChevronDown
+                className={`w-4 h-4 transition ${
+                  isLegalOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {isLegalOpen && (
+              <div className="pl-4 space-y-1">
+                <Link
+                  href={`/${locale}/legal/privacy`}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsLegalOpen(false);
+                  }}
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href={`/${locale}/legal/terms`}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsLegalOpen(false);
+                  }}
+                >
+                  Terms of Service
+                </Link>
+                <Link
+                  href={`/${locale}/legal/disclaimer`}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsLegalOpen(false);
+                  }}
+                >
+                  Disclaimer
+                </Link>
+              </div>
+            )}
+
+            <Link
+              href={`/${locale}/contact`}
+              className={mobileLinkClass('/contact')}
+              onClick={() => setIsOpen(false)}
+            >
+              {t('contact')}
+            </Link>
+
+            {/* Mobile Language Selector */}
+            <div className="px-3 py-2">
+              <div className="text-sm font-medium text-gray-700 mb-2">Language</div>
+              <div className="space-y-1 pl-2">
+                <Link
+                  href={pathname.replace(`/${locale}`, '/en')}
+                  className="block text-sm text-gray-600 hover:text-gray-900"
+                  onClick={() => setIsOpen(false)}
+                >
+                  English
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/zh')}
+                  className="block text-sm text-gray-600 hover:text-gray-900"
+                  onClick={() => setIsOpen(false)}
+                >
+                  繁體中文
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/zh-CN')}
+                  className="block text-sm text-gray-600 hover:text-gray-900"
+                  onClick={() => setIsOpen(false)}
+                >
+                  简体中文
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/ja')}
+                  className="block text-sm text-gray-600 hover:text-gray-900"
+                  onClick={() => setIsOpen(false)}
+                >
+                  日本語
+                </Link>
+                <Link
+                  href={pathname.replace(`/${locale}`, '/th')}
+                  className="block text-sm text-gray-600 hover:text-gray-900"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ไทย
+                </Link>
+              </div>
+            </div>
           </div>
-        )}
-      </nav>
-    </>
+        </div>
+      )}
+    </nav>
   );
 }
