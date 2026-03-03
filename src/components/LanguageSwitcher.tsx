@@ -6,11 +6,11 @@ import { useState } from 'react';
 import { Link } from '@/navigation';
 
 const languages = [
-  { code: 'zh', name: '繁體中文', flag: '🇹🇼' },
-  { code: 'zh-CN', name: '简体中文', flag: '🇨🇳' },
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'ja', name: '日本語', flag: '🇯🇵' },
-  { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+  { code: 'zh' as const, name: '繁體中文', flag: '🇹🇼' },
+  { code: 'zh-CN' as const, name: '简体中文', flag: '🇨🇳' },
+  { code: 'en' as const, name: 'English', flag: '🇺🇸' },
+  { code: 'ja' as const, name: '日本語', flag: '🇯🇵' },
+  { code: 'th' as const, name: 'ไทย', flag: '🇹🇭' },
 ];
 
 export default function LanguageSwitcher() {
