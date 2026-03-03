@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '@/navigation';
 import { useState, useTransition } from 'react';
 
 const languages = [
@@ -12,30 +12,21 @@ const languages = [
   { code: 'th',    name: 'ไทย',      flag: '🇹🇭' },
 ];
 
-// zh-CN 必須排在 zh 前面，避免前綴誤匹配
-const ALL_LOCALES = ['zh-CN', 'zh', 'en', 'ja', 'th'];
-
 export default function LanguageSwitcher() {
   const locale = useLocale();
+  const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const currentLanguage = languages.find((l) => l.code === locale);
 
-  const getTargetPath = (newLocale: string): string => {
-    let rest = '';
-    for (const loc of ALL_LOCALES) {
-      if (pathname === `/${loc}`) { rest = ''; break; }
-      if (pathname.startsWith(`/${loc}/`)) { rest = pathname.slice(`/${loc}`.length); break; }
-    }
-    return `/${newLocale}${rest}`;
-  };
-
   const handleChange = (newLocale: string) => {
     setIsOpen(false);
     if (newLocale === locale) return;
-    startTransition(() => { window.location.href = getTargetPath(newLocale); });
+    startTransition(() => {
+      router.replace(pathname, { locale: newLocale });
+    });
   };
 
   return (
@@ -47,9 +38,13 @@ export default function LanguageSwitcher() {
         aria-label="切換語言"
       >
         <span className="text-lg">{currentLanguage?.flag}</span>
-        <span className="text-sm font-medium hidden sm:inline text-stone-700">{currentLanguage?.name}</span>
-        <svg className={`w-4 h-4 transition-transform text-stone-600 ${isOpen ? 'rotate-180' : ''}`}
-          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <span className="text-sm font-medium hidden sm:inline text-stone-700">
+          {currentLanguage?.name}
+        </span>
+        <svg
+          className={`w-4 h-4 transition-transform text-stone-600 ${isOpen ? 'rotate-180' : ''}`}
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
