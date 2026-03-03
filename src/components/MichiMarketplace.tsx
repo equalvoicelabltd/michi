@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 // ─────────────────────────────────────────────────────────────
 // TYPES
@@ -16,6 +16,7 @@ interface Product {
   published_at: string;
   image_url?: string | null;
   source_url?: string | null;
+  ai_generated?: boolean;
 }
 
 interface BuyerServices {
@@ -56,7 +57,7 @@ interface Buyer {
 }
 
 // ─────────────────────────────────────────────────────────────
-// BUYERS DATA
+// BUYERS DATA (names/proper nouns stay as-is; UI labels use t())
 // ─────────────────────────────────────────────────────────────
 const BUYERS: Buyer[] = [
   {
@@ -72,7 +73,7 @@ const BUYERS: Buyer[] = [
     score: 4.9,
     reviews: 312,
     commission: '5-8%',
-    responseTime: '< 2小時',
+    responseTime: '< 2h',
     languages: ['繁中', '日文', 'English'],
     tags: ['Harajuku', 'Vintage', 'Streetwear', 'Luxury'],
     filter: 'fashion',
@@ -85,13 +86,13 @@ const BUYERS: Buyer[] = [
       livestream: true,
       photoVideo: true,
       queueing: true,
-      queueRate: '¥3,000/小時',
+      queueRate: '¥3,000/h',
       shipping: true,
       paymentTerms: '全額先付',
       depositRate: '100%',
     },
-    livestreamRate: '¥5,000/30分鐘',
-    photoVideoRate: '¥1,500/組',
+    livestreamRate: '¥5,000/30min',
+    photoVideoRate: '¥1,500',
   },
   {
     id: 2,
@@ -106,7 +107,7 @@ const BUYERS: Buyer[] = [
     score: 4.8,
     reviews: 198,
     commission: '6-10%',
-    responseTime: '< 4小時',
+    responseTime: '< 4h',
     languages: ['繁中', '簡中', '日文'],
     tags: ['Gundam', 'Figure', 'Limited', '一番賞'],
     filter: 'anime',
@@ -119,261 +120,238 @@ const BUYERS: Buyer[] = [
       livestream: true,
       photoVideo: true,
       queueing: true,
-      queueRate: '¥2,500/小時',
+      queueRate: '¥2,500/h',
       shipping: true,
-      paymentTerms: '50%訂金',
+      paymentTerms: '50% 訂金',
       depositRate: '50%',
     },
-    livestreamRate: '¥4,000/30分鐘',
-    photoVideoRate: '¥1,000/組',
+    livestreamRate: '¥3,000/30min',
+    photoVideoRate: '¥1,000',
   },
   {
     id: 3,
-    name: 'Yamamoto Saki',
-    nameJp: '山本咲',
-    icon: '✨',
-    location: '京都 Kyoto',
-    area: 'kyoto',
+    name: 'Suzuki Aoi',
+    nameJp: '鈴木葵',
+    icon: '💄',
+    location: '東京 Tokyo',
+    area: 'tokyo',
     experience: '6年',
     specialty: 'BEAUTY',
     specialtyLabel: '美容護膚',
     score: 4.9,
     reviews: 445,
-    commission: '5-7%',
-    responseTime: '< 1小時',
-    languages: ['繁中', '簡中', '日文', 'English'],
-    tags: ['SK-II', 'Shiseido', 'Cosme', '藥妝'],
+    commission: '4-7%',
+    responseTime: '< 1h',
+    languages: ['繁中', '日文', 'English', 'ไทย'],
+    tags: ['SK-II', 'Shiseido', 'Canmake', 'DHC'],
     filter: 'beauty',
-    description: '京都美容護膚達人，熟悉所有日本本土藥妝及高端護膚品牌。與多個品牌有直接聯絡，可預訂會員限定商品。',
+    description: '日本藥妝及高端護膚專家，熟悉 @cosme 排名及百貨限定套裝。每週更新最新藥妝優惠情報。',
     level: 'MICHI 達人',
     levelNum: 4,
-    highlight: '成功代購超過 500 件 SK-II 限定套裝',
-    completedOrders: 1890,
+    highlight: '@cosme Best Awards 年度推薦達人',
+    completedOrders: 2100,
     services: {
       livestream: true,
       photoVideo: true,
       queueing: false,
-      queueRate: '-',
+      queueRate: '',
       shipping: true,
       paymentTerms: '全額先付',
       depositRate: '100%',
     },
-    livestreamRate: '¥3,000/30分鐘',
-    photoVideoRate: '¥800/組',
+    livestreamRate: '¥4,000/30min',
+    photoVideoRate: '¥800',
   },
   {
     id: 4,
-    name: 'Nakamura Ryo',
-    nameJp: '中村涼',
+    name: 'Watanabe Riku',
+    nameJp: '渡邊陸',
     icon: '🎌',
+    location: '京都 Kyoto',
+    area: 'kyoto',
+    experience: '3年',
+    specialty: 'ANIME',
+    specialtyLabel: '動漫周邊',
+    score: 4.5,
+    reviews: 87,
+    commission: '8-12%',
+    responseTime: '< 6h',
+    languages: ['繁中', '日文'],
+    tags: ['一番賞', 'Gashapon', 'Limited'],
+    filter: 'anime',
+    description: '動漫周邊收藏家，熟悉各大会場限定、一番賞及扭蛋稀有商品，全國追蹤。',
+    level: 'MICHI 買手',
+    levelNum: 2,
+    highlight: '京都地區唯一 Michi 動漫專員',
+    completedOrders: 310,
+    services: {
+      livestream: false,
+      photoVideo: true,
+      queueing: true,
+      queueRate: '¥2,000/h',
+      shipping: true,
+      paymentTerms: '50% 訂金',
+      depositRate: '50%',
+    },
+    photoVideoRate: '¥500',
+  },
+  {
+    id: 5,
+    name: 'Mina Fujii',
+    nameJp: '藤井美奈',
+    icon: '👠',
     location: '福岡 Fukuoka',
     area: 'fukuoka',
     experience: '4年',
     specialty: 'LUXURY',
     specialtyLabel: '精品名牌',
     score: 4.7,
-    reviews: 89,
-    commission: '8-12%',
-    responseTime: '< 6小時',
-    languages: ['繁中', 'English'],
-    tags: ['LV', 'Chanel', 'Hermès', '日本限定'],
-    filter: 'luxury',
-    description: '福岡精品專家，專門代購 Louis Vuitton、Chanel 日本限定版及稀有色號手袋。熟悉百貨公司 VIP 入場途徑。',
-    level: 'MICHI 買手',
-    levelNum: 2,
-    highlight: '成功代購 Hermès Birkin 日本限定配色',
-    completedOrders: 234,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥5,000/小時',
-      shipping: true,
-      paymentTerms: '30%訂金',
-      depositRate: '30%',
-    },
-    photoVideoRate: '¥2,000/組',
-  },
-  {
-    id: 5,
-    name: 'Suzuki Hana',
-    nameJp: '鈴木花',
-    icon: '🍡',
-    location: '名古屋 Nagoya',
-    area: 'nagoya',
-    experience: '3年',
-    specialty: 'FOOD',
-    specialtyLabel: '食品零食',
-    score: 4.6,
-    reviews: 156,
-    commission: '8-15%',
-    responseTime: '< 3小時',
-    languages: ['繁中', '簡中', '日文'],
-    tags: ['限定口味', '季節限定', '地區限定', '和菓子'],
-    filter: 'food',
-    description: '名古屋本地美食達人，專門搜羅各地限定口味零食、季節限定和菓子及地方限定伴手禮。',
-    level: 'MICHI 買手',
-    levelNum: 2,
-    highlight: '收錄超過 200 種日本地區限定零食資料庫',
-    completedOrders: 678,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '-',
-      shipping: true,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    photoVideoRate: '¥500/組',
-  },
-  {
-    id: 6,
-    name: 'Ito Takeshi',
-    nameJp: '伊藤武',
-    icon: '🎮',
-    location: '東京 Tokyo',
-    area: 'tokyo',
-    experience: '7年',
-    specialty: 'ELECTRONICS',
-    specialtyLabel: '電子產品',
-    score: 4.8,
-    reviews: 267,
+    reviews: 189,
     commission: '5-8%',
-    responseTime: '< 2小時',
-    languages: ['繁中', '簡中', '日文', 'English'],
-    tags: ['Sony', 'Nintendo', 'Limited Edition', 'Akihabara'],
-    filter: 'electronics',
-    description: '秋葉原電子產品專家，精通 Sony、Nintendo、Panasonic 日本限定版本。熟悉新品發售排隊及預約策略。',
+    responseTime: '< 3h',
+    languages: ['繁中', '日文', 'English'],
+    tags: ['Asics', 'Porter', 'Onitsuka Tiger'],
+    filter: 'luxury',
+    description: '球鞋及手袋達人，掌握日本限定球鞋抽籤資訊及 Porter、Bao Bao 最新款式。',
     level: 'MICHI 職人',
     levelNum: 3,
-    highlight: '成功代購 PlayStation 5 發售日首批',
-    completedOrders: 1120,
+    highlight: '福岡地區限定球鞋第一手情報',
+    completedOrders: 650,
     services: {
       livestream: true,
       photoVideo: true,
       queueing: true,
-      queueRate: '¥4,000/小時',
+      queueRate: '¥2,800/h',
       shipping: true,
-      paymentTerms: '50%訂金',
+      paymentTerms: '全額先付',
+      depositRate: '100%',
+    },
+    livestreamRate: '¥4,500/30min',
+    photoVideoRate: '¥1,200',
+  },
+  {
+    id: 6,
+    name: 'Kenji Mori',
+    nameJp: '森健二',
+    icon: '🎮',
+    location: '名古屋 Nagoya',
+    area: 'nagoya',
+    experience: '9年',
+    specialty: 'ELECTRONICS',
+    specialtyLabel: '電子遊戲',
+    score: 4.3,
+    reviews: 334,
+    commission: '5-9%',
+    responseTime: '< 4h',
+    languages: ['繁中', '簡中', '日文', 'English'],
+    tags: ['Pokemon', 'TCG', 'Retro Games'],
+    filter: 'electronics',
+    description: '專注卡牌遊戲及電子遊戲周邊，熟悉各地中古市場及限定發售，收藏評估經驗豐富。',
+    level: 'MICHI 達人',
+    levelNum: 4,
+    highlight: 'Pokemon TCG 鑑定認證收藏家',
+    completedOrders: 1800,
+    services: {
+      livestream: true,
+      photoVideo: true,
+      queueing: true,
+      queueRate: '¥2,000/h',
+      shipping: true,
+      paymentTerms: '50% 訂金',
       depositRate: '50%',
     },
-    livestreamRate: '¥6,000/30分鐘',
-    photoVideoRate: '¥1,200/組',
+    livestreamRate: '¥3,500/30min',
+    photoVideoRate: '¥800',
   },
 ];
 
 // ─────────────────────────────────────────────────────────────
-// CONSTANTS
-// ─────────────────────────────────────────────────────────────
-const BUYER_FILTERS = [
-  { key: 'all', label: '全部' },
-  { key: 'fashion', label: '時尚' },
-  { key: 'anime', label: '動漫' },
-  { key: 'beauty', label: '美容' },
-  { key: 'luxury', label: '精品' },
-  { key: 'food', label: '食品' },
-  { key: 'electronics', label: '電子' },
-];
-
-const AREAS = [
-  { key: 'all', label: '全日本' },
-  { key: 'tokyo', label: '東京' },
-  { key: 'osaka', label: '大阪' },
-  { key: 'kyoto', label: '京都' },
-  { key: 'fukuoka', label: '福岡' },
-  { key: 'nagoya', label: '名古屋' },
-];
-
-const PRODUCT_CATS = [
-  { key: 'all', label: '全部' },
-  { key: 'fashion', label: '時尚' },
-  { key: 'beauty', label: '美容' },
-  { key: 'anime', label: '動漫' },
-  { key: 'food', label: '食品' },
-  { key: 'electronics', label: '電子' },
-  { key: 'craft', label: '工藝' },
-];
-
-const LEVEL_STYLES: Record<number, { bg: string; text: string; label: string }> = {
-  1: { bg: 'bg-stone-200', text: 'text-stone-600', label: '新人' },
-  2: { bg: 'bg-amber-100', text: 'text-amber-700', label: '買手' },
-  3: { bg: 'bg-blue-100', text: 'text-blue-700', label: '職人' },
-  4: { bg: 'bg-[#1A237E]', text: 'text-white', label: '達人' },
-};
-
-// ─────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string): string {
   try {
-    return new Date(iso).toLocaleDateString('zh-TW', { month: 'short', day: 'numeric' });
+    const localeMap: Record<string, string> = {
+      zh: 'zh-TW', 'zh-CN': 'zh-CN', en: 'en-US', ja: 'ja-JP', th: 'th-TH',
+    };
+    return new Date(iso).toLocaleDateString(localeMap[locale] ?? 'en-US', { month: 'short', day: 'numeric' });
   } catch {
     return '';
   }
 }
 
 // ─────────────────────────────────────────────────────────────
-// BUYER CARD
+// BUYER CARD (i18n)
 // ─────────────────────────────────────────────────────────────
-function BuyerCard({ buyer, locale }: { buyer: Buyer; locale: string }) {
+function BuyerCard({ buyer, locale, t }: { buyer: Buyer; locale: string; t: (key: string) => string }) {
+  const levelLabels: Record<number, string> = {
+    1: t('buyers.level_newcomer'),
+    2: t('buyers.level_buyer'),
+    3: t('buyers.level_artisan'),
+    4: t('buyers.level_master'),
+  };
+  const LEVEL_STYLES: Record<number, { bg: string; text: string }> = {
+    1: { bg: 'bg-stone-200', text: 'text-stone-600' },
+    2: { bg: 'bg-amber-100', text: 'text-amber-700' },
+    3: { bg: 'bg-blue-100', text: 'text-blue-700' },
+    4: { bg: 'bg-[#1A237E]', text: 'text-white' },
+  };
   const lvl = LEVEL_STYLES[buyer.levelNum] ?? LEVEL_STYLES[1];
+  const lvlLabel = levelLabels[buyer.levelNum] ?? levelLabels[1];
+
   return (
-    <div className="group bg-white border border-stone-200 hover:border-[#1A237E] hover:shadow-lg transition-all duration-300 flex flex-col">
-      <div className="aspect-[4/3] bg-gradient-to-br from-stone-50 to-stone-100 flex items-center justify-center relative overflow-hidden">
-        <span className="text-6xl z-10">{buyer.icon}</span>
-        <div className="absolute inset-0 bg-[#1A237E] opacity-0 group-hover:opacity-5 transition-all duration-300" />
-        <div className="absolute top-3 left-3">
-          <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-1 ${lvl.bg} ${lvl.text}`}>
-            {lvl.label}
-          </span>
-        </div>
-        <div className="absolute top-3 right-3">
-          <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 bg-white/90 text-stone-600 border border-stone-200">
-            {buyer.specialty}
-          </span>
-        </div>
-      </div>
-
-      <div className="p-6 space-y-4 flex-1 flex flex-col">
+    <div className="border border-stone-200 bg-white hover:border-[#1A237E] transition-all group flex flex-col">
+      <div className="p-6 space-y-4 flex-1">
+        {/* Header */}
         <div className="flex items-start justify-between">
-          <div>
-            <h3 className="font-black text-[#1C1C1C] tracking-tight text-base">{buyer.name}</h3>
-            <p className="text-[9px] font-bold text-stone-400 uppercase tracking-[0.3em]">
-              {buyer.location} · {buyer.experience}
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-stone-100 flex items-center justify-center text-2xl rounded-sm">
+              {buyer.icon}
+            </div>
+            <div>
+              <h3 className="font-black text-sm text-[#1C1C1C]">{buyer.name}</h3>
+              <p className="text-[9px] text-stone-400 font-bold">{buyer.nameJp} · {buyer.location}</p>
+            </div>
           </div>
-          <div className="text-right">
-            <p className="text-xl font-serif italic text-[#C5A059] font-black">{buyer.score}</p>
-            <p className="text-[8px] text-stone-400">{buyer.reviews} 評價</p>
-          </div>
+          <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-2 py-1 ${lvl.bg} ${lvl.text}`}>
+            {lvlLabel}
+          </span>
         </div>
 
-        <p className="text-xs text-stone-500 leading-relaxed flex-1">{buyer.description}</p>
+        {/* Score row */}
+        <div className="flex items-center gap-4 text-[10px] text-stone-500 font-bold">
+          <span className="text-[#C5A059]">★ {buyer.score}</span>
+          <span>{buyer.reviews} {t('buyers.reviews')}</span>
+          <span>{buyer.experience}</span>
+        </div>
 
+        {/* Description */}
+        <p className="text-[11px] text-stone-500 leading-relaxed line-clamp-3">{buyer.description}</p>
+
+        {/* Services */}
         <div className="flex flex-wrap gap-1.5">
           {buyer.services.livestream && (
-            <span className="text-[7px] font-bold uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 px-2 py-0.5">
-              🎥 直播
-            </span>
-          )}
-          {buyer.services.queueing && (
-            <span className="text-[7px] font-bold uppercase tracking-wider bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5">
-              ⏰ 排隊
-            </span>
-          )}
-          {buyer.services.shipping && (
-            <span className="text-[7px] font-bold uppercase tracking-wider bg-green-50 text-green-600 border border-green-200 px-2 py-0.5">
-              📦 代運
+            <span className="text-[8px] font-bold bg-red-50 text-red-500 px-2 py-0.5">
+              📺 {t('buyers.service_livestream')}
             </span>
           )}
           {buyer.services.photoVideo && (
-            <span className="text-[7px] font-bold uppercase tracking-wider bg-purple-50 text-purple-600 border border-purple-200 px-2 py-0.5">
-              📷 拍攝
+            <span className="text-[8px] font-bold bg-purple-50 text-purple-500 px-2 py-0.5">
+              📷 {t('buyers.service_photo')}
+            </span>
+          )}
+          {buyer.services.queueing && (
+            <span className="text-[8px] font-bold bg-blue-50 text-blue-500 px-2 py-0.5">
+              🕐 {t('buyers.service_queue')}
+            </span>
+          )}
+          {buyer.services.shipping && (
+            <span className="text-[8px] font-bold bg-green-50 text-green-500 px-2 py-0.5">
+              📦 {t('buyers.service_shipping')}
             </span>
           )}
         </div>
 
+        {/* Tags */}
         <div className="flex flex-wrap gap-1.5">
           {buyer.tags.slice(0, 3).map((tag) => (
             <span key={tag} className="text-[8px] font-bold border border-stone-200 text-stone-400 px-2 py-0.5 uppercase tracking-wider">
@@ -382,9 +360,10 @@ function BuyerCard({ buyer, locale }: { buyer: Buyer; locale: string }) {
           ))}
         </div>
 
+        {/* Commission & response */}
         <div className="flex items-center justify-between text-[9px] font-bold text-stone-400 pt-2 border-t border-stone-100">
-          <span>佣金 {buyer.commission}</span>
-          <span>回覆 {buyer.responseTime}</span>
+          <span>{t('buyers.commission')} {buyer.commission}</span>
+          <span>{t('buyers.response')} {buyer.responseTime}</span>
         </div>
       </div>
 
@@ -393,7 +372,7 @@ function BuyerCard({ buyer, locale }: { buyer: Buyer; locale: string }) {
           href={`/${locale}/buyers`}
           className="block w-full text-center text-[9px] font-black uppercase tracking-[0.3em] border border-[#1C1C1C] text-[#1C1C1C] py-3 hover:bg-[#1A237E] hover:text-white hover:border-[#1A237E] transition-all"
         >
-          查看詳情 →
+          {t('buyers.viewDetail')} →
         </a>
       </div>
     </div>
@@ -401,15 +380,17 @@ function BuyerCard({ buyer, locale }: { buyer: Buyer; locale: string }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PRODUCT CARD
+// PRODUCT CARD (i18n)
 // ─────────────────────────────────────────────────────────────
-function ProductCard({ product }: { product: Product }) {
-  const cat = PRODUCT_CATS.find((c) => c.key === product.category) ?? PRODUCT_CATS[0];
+function ProductCard({ product, locale, t }: { product: Product; locale: string; t: (key: string) => string }) {
+  const catKey = product.category ?? 'all';
+  const catLabel = t(`products.categories.${catKey}`);
+
   return (
     <article className="group border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#C5A059]/40 transition-all duration-300 flex flex-col">
       <div className="p-5 pb-0 flex items-center justify-between">
-        <span className="text-[8px] font-black uppercase tracking-[0.35em] text-[#C5A059]">{cat.label}</span>
-        <span className="text-[8px] text-white/30 font-bold">{formatDate(product.published_at)}</span>
+        <span className="text-[8px] font-black uppercase tracking-[0.35em] text-[#C5A059]">{catLabel}</span>
+        <span className="text-[8px] text-white/30 font-bold">{formatDate(product.published_at, locale)}</span>
       </div>
 
       <div className="p-5 space-y-3 flex-1 flex flex-col">
@@ -436,7 +417,7 @@ function ProductCard({ product }: { product: Product }) {
               rel="noopener noreferrer"
               className="text-[#C5A059] hover:text-white transition-colors"
             >
-              了解更多 ↗
+              {t('products.viewDetails')} ↗
             </a>
           ) : (
             <span className="text-white/15">Japan Exclusive</span>
@@ -447,6 +428,9 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
+// ─────────────────────────────────────────────────────────────
+// SKELETON
+// ─────────────────────────────────────────────────────────────
 function ProductSkeleton() {
   return (
     <div className="border border-white/10 animate-pulse">
@@ -466,7 +450,13 @@ function ProductSkeleton() {
 // ─────────────────────────────────────────────────────────────
 export default function MichiMarketplace() {
   const locale = useLocale();
+  const t = useTranslations();
   const url = (path: string) => `/${locale}${path}`;
+
+  // Buyer filter keys (translation happens in render)
+  const BUYER_FILTER_KEYS = ['all', 'fashion', 'anime', 'beauty', 'luxury', 'food', 'electronics'];
+  const AREA_KEYS = ['all', 'tokyo', 'osaka', 'kyoto', 'fukuoka', 'nagoya'];
+  const PRODUCT_CAT_KEYS = ['all', 'fashion', 'beauty', 'anime', 'food', 'electronics', 'craft'];
 
   // Buyer state
   const [activeBuyerFilter, setActiveBuyerFilter] = useState('all');
@@ -485,7 +475,7 @@ export default function MichiMarketplace() {
           b.name.toLowerCase().includes(q) ||
           b.location.toLowerCase().includes(q) ||
           b.specialtyLabel.includes(q) ||
-          b.tags.some((t) => t.toLowerCase().includes(q))
+          b.tags.some((tag) => tag.toLowerCase().includes(q))
       );
     }
     return list.sort((a, b) => (sortBy === 'score' ? b.score - a.score : b.reviews - a.reviews));
@@ -508,10 +498,10 @@ export default function MichiMarketplace() {
       if (data.success) {
         setProducts(data.products ?? []);
       } else {
-        setProdError('無法載入商品');
+        setProdError(t('products.errorLoad'));
       }
     } catch {
-      setProdError('網絡錯誤，請重試');
+      setProdError(t('products.errorNetwork'));
     } finally {
       setLoadingProds(false);
     }
@@ -528,13 +518,13 @@ export default function MichiMarketplace() {
       const res = await fetch('/api/products?action=scrape');
       const data = await res.json();
       if (data.success) {
-        setScrapeMsg(`✅ 已新增 ${data.count ?? 0} 個商品`);
+        setScrapeMsg(`✅ ${t('products.scrapeSuccess', { count: data.count ?? 0 })}`);
         await fetchProducts();
       } else {
-        setScrapeMsg(`❌ ${data.error ?? '更新失敗'}`);
+        setScrapeMsg(`❌ ${data.error ?? t('products.scrapeFail')}`);
       }
     } catch {
-      setScrapeMsg('❌ 網絡錯誤');
+      setScrapeMsg(`❌ ${t('products.errorNetwork')}`);
     } finally {
       setScraping(false);
     }
@@ -569,7 +559,7 @@ export default function MichiMarketplace() {
                 <span className="text-4xl lg:text-5xl italic font-normal text-stone-400 font-serif">Michi</span>
               </h1>
               <p className="text-stone-500 text-lg leading-relaxed max-w-lg">
-                連接全球買家與日本本地代購職人。13年代購經驗，真實可信的日本商品橋樑。
+                {t('hero.subtitle')}
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -577,25 +567,25 @@ export default function MichiMarketplace() {
                 href="#buyers"
                 className="bg-[#1A237E] text-white px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all"
               >
-                搵代購買手
+                {t('hero.findBuyer')}
               </a>
               <a
                 href="#products"
                 className="border border-[#1C1C1C] text-[#1C1C1C] px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#1A237E] hover:text-white hover:border-[#1A237E] transition-all"
               >
-                最新商品情報
+                {t('hero.latestProducts')}
               </a>
             </div>
           </div>
 
           <div className="lg:col-span-5 grid grid-cols-2 gap-6">
             {[
-              { n: '13+', label: '年代購經驗', sub: 'Since 2011' },
-              { n: '7', label: '商品品類', sub: 'Categories' },
-              { n: '5K+', label: '服務客戶', sub: 'Clients' },
-              { n: '4', label: '日本城市', sub: 'Cities' },
+              { n: '13+', label: t('hero.stat_years'), sub: 'Since 2011' },
+              { n: '7', label: t('hero.stat_categories'), sub: 'Categories' },
+              { n: '5K+', label: t('hero.stat_clients'), sub: 'Clients' },
+              { n: '4', label: t('hero.stat_cities'), sub: 'Cities' },
             ].map(({ n, label, sub }) => (
-              <div key={label} className="border border-stone-200 p-6 text-center hover:border-[#C5A059] transition-all">
+              <div key={sub} className="border border-stone-200 p-6 text-center hover:border-[#C5A059] transition-all">
                 <p className="text-4xl font-serif italic text-[#C5A059] font-black">{n}</p>
                 <p className="text-xs font-black text-[#1C1C1C] mt-1">{label}</p>
                 <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest">{sub}</p>
@@ -604,31 +594,33 @@ export default function MichiMarketplace() {
           </div>
         </div>
 
+        {/* Marquee */}
         <div className="absolute bottom-0 left-0 right-0 bg-[#C5A059] py-3 overflow-hidden">
           <div className="flex whitespace-nowrap animate-marquee text-white font-black text-[9px] tracking-[0.4em] uppercase">
             {[...Array(8)].map((_, i) => (
               <span key={i} className="mx-10">
-                Michi · 日本代購平台 · 連接買家與職人 · 13年信譽保證 ·
+                Michi · {t('hero.marquee')} ·
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══ SECTION 1 — 代購買手搜尋 ═══════════════════════ */}
+      {/* ══ SECTION 1 — BUYER DIRECTORY ════════════════════ */}
       <section id="buyers" className="py-28 px-8 bg-[#F9F7F2]">
         <div className="max-w-7xl mx-auto space-y-12">
 
+          {/* Header + Search */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="space-y-4">
               <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B22222]">Buyer Directory</p>
               <h2 className="text-5xl font-serif font-black text-[#1C1C1C] leading-tight">
-                代購買手
+                {t('buyers.title')}
                 <br />
-                <span className="italic font-serif font-normal text-[#C5A059] text-3xl">名錄</span>
+                <span className="italic font-serif font-normal text-[#C5A059] text-3xl">{t('buyers.subtitle')}</span>
               </h2>
               <p className="text-stone-500 text-sm max-w-md leading-relaxed">
-                各地買手均提供詳盡服務資訊。Michi 不介入交易，直接聯絡買手安排代購。
+                {t('buyers.description')}
               </p>
             </div>
             <div className="flex-shrink-0 w-full md:w-72">
@@ -636,15 +628,16 @@ export default function MichiMarketplace() {
                 type="text"
                 value={buyerSearch}
                 onChange={(e) => setBuyerSearch(e.target.value)}
-                placeholder="搜尋買手、地區或專長..."
+                placeholder={t('buyers.searchPlaceholder')}
                 className="w-full border border-stone-300 px-4 py-3 text-sm text-stone-700 placeholder:text-stone-400 focus:outline-none focus:border-[#1A237E] bg-white"
               />
             </div>
           </div>
 
+          {/* Filters */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex flex-wrap gap-2">
-              {BUYER_FILTERS.map(({ key, label }) => (
+              {BUYER_FILTER_KEYS.map((key) => (
                 <button
                   key={key}
                   onClick={() => setActiveBuyerFilter(key)}
@@ -654,7 +647,7 @@ export default function MichiMarketplace() {
                       : 'border-stone-300 text-stone-500 hover:border-[#1A237E] hover:text-[#1A237E]'
                   }`}
                 >
-                  {label}
+                  {t(`buyers.filter_${key}`)}
                 </button>
               ))}
             </div>
@@ -666,9 +659,9 @@ export default function MichiMarketplace() {
               onChange={(e) => setActiveArea(e.target.value)}
               className="border border-stone-200 px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 focus:outline-none bg-white focus:border-[#1A237E]"
             >
-              {AREAS.map(({ key, label }) => (
+              {AREA_KEYS.map((key) => (
                 <option key={key} value={key}>
-                  {label}
+                  {t(`buyers.area_${key}`)}
                 </option>
               ))}
             </select>
@@ -678,19 +671,20 @@ export default function MichiMarketplace() {
               onChange={(e) => setSortBy(e.target.value as 'score' | 'reviews')}
               className="border border-stone-200 px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 focus:outline-none bg-white focus:border-[#1A237E]"
             >
-              <option value="score">評分排序</option>
-              <option value="reviews">評價數排序</option>
+              <option value="score">{t('buyers.sort_score')}</option>
+              <option value="reviews">{t('buyers.sort_reviews')}</option>
             </select>
 
             <span className="ml-auto text-[9px] font-bold text-stone-400 uppercase tracking-widest hidden lg:block">
-              {filteredBuyers.length} 位買手
+              {filteredBuyers.length} {t('buyers.count_unit')}
             </span>
           </div>
 
+          {/* Buyer Grid or Empty */}
           {filteredBuyers.length === 0 ? (
             <div className="text-center py-28 space-y-4">
               <p className="text-5xl">🔍</p>
-              <p className="text-stone-400 font-bold text-sm">找不到符合條件的買手</p>
+              <p className="text-stone-400 font-bold text-sm">{t('buyers.noResults')}</p>
               <button
                 onClick={() => {
                   setBuyerSearch('');
@@ -699,44 +693,46 @@ export default function MichiMarketplace() {
                 }}
                 className="border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all"
               >
-                清除篩選
+                {t('buyers.clearFilters')}
               </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredBuyers.map((buyer) => (
-                <BuyerCard key={buyer.id} buyer={buyer} locale={locale} />
+                <BuyerCard key={buyer.id} buyer={buyer} locale={locale} t={t} />
               ))}
             </div>
           )}
 
+          {/* More buyers link */}
           <div className="text-center pt-4">
             <a
               href={url('/buyers')}
               className="inline-block border border-[#1C1C1C] text-[#1C1C1C] px-14 py-4 text-xs font-bold uppercase tracking-[0.3em] hover:bg-[#1A237E] hover:text-white hover:border-[#1A237E] transition-all"
             >
-              查看全部買手 →
+              {t('buyers.moreBuyers')} →
             </a>
           </div>
         </div>
       </section>
 
-      {/* ══ SECTION 2 — AI 日本最新商品情報 ═══════════════ */}
+      {/* ══ SECTION 2 — AI PRODUCTS ════════════════════════ */}
       <section id="products" className="py-28 px-8 bg-[#1C1C1C]">
         <div className="max-w-7xl mx-auto space-y-12">
 
+          {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="space-y-4">
               <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#C5A059]">
                 AI · Japan Product Intelligence
               </p>
               <h2 className="text-5xl font-serif font-black text-white leading-tight">
-                最新商品情報
+                {t('products.title')}
                 <br />
                 <span className="italic font-serif font-normal text-[#C5A059] text-3xl">Japan Trends</span>
               </h2>
               <p className="text-white/40 text-sm max-w-md leading-relaxed">
-                AI 自動搜索日本最新商品發佈，涵蓋時尚、美容、動漫、電子及限定品。每日更新。
+                {t('products.description')}
               </p>
             </div>
 
@@ -748,19 +744,22 @@ export default function MichiMarketplace() {
               >
                 {scraping ? (
                   <>
-                    <span className="animate-spin inline-block w-3 h-3 border-2 border-[#C5A059] border-t-transparent rounded-full" />
-                    AI 搜索中...
+                    <span className="w-3 h-3 border border-[#C5A059] border-t-transparent rounded-full animate-spin" />
+                    {t('products.aiRefreshing')}
                   </>
                 ) : (
-                  <>🔍 AI 更新商品</>
+                  <>✦ {t('products.aiRefresh')}</>
                 )}
               </button>
-              {scrapeMsg && <p className="text-[10px] text-white/50 font-bold">{scrapeMsg}</p>}
+              {scrapeMsg && (
+                <p className="text-[9px] font-bold text-white/40">{scrapeMsg}</p>
+              )}
             </div>
           </div>
 
+          {/* Category filter */}
           <div className="flex flex-wrap gap-2">
-            {PRODUCT_CATS.map(({ key, label }) => (
+            {PRODUCT_CAT_KEYS.map((key) => (
               <button
                 key={key}
                 onClick={() => setActiveCat(key)}
@@ -770,11 +769,12 @@ export default function MichiMarketplace() {
                     : 'border-white/20 text-white/50 hover:border-[#C5A059] hover:text-[#C5A059]'
                 }`}
               >
-                {label}
+                {t(`products.categories.${key}`)}
               </button>
             ))}
           </div>
 
+          {/* Product Grid */}
           {loadingProds ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
@@ -783,103 +783,58 @@ export default function MichiMarketplace() {
             </div>
           ) : prodError ? (
             <div className="text-center py-20 space-y-4">
-              <p className="text-5xl">⚠️</p>
-              <p className="text-white/40 font-bold text-sm">{prodError}</p>
+              <p className="text-4xl">⚠️</p>
+              <p className="text-white/50 font-bold text-sm">{prodError}</p>
               <button
                 onClick={fetchProducts}
-                className="border border-white/20 text-white/50 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#C5A059] hover:text-[#C5A059] transition-all"
+                className="border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all"
               >
-                重試
+                {t('products.retry')}
               </button>
             </div>
           ) : displayedProducts.length === 0 ? (
-            <div className="text-center py-20 space-y-6">
-              <p className="text-5xl">📭</p>
-              <p className="text-white/40 font-bold text-sm">暫無商品情報，點擊 AI 更新獲取最新資訊</p>
+            <div className="text-center py-20 space-y-4">
+              <p className="text-5xl">📦</p>
+              <p className="text-white/40 font-bold text-sm">{t('products.noProducts')}</p>
               <button
                 onClick={handleScrape}
                 disabled={scraping}
-                className="bg-[#C5A059] text-[#1C1C1C] px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:opacity-90 transition-all disabled:opacity-50"
+                className="border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all disabled:opacity-50"
               >
-                {scraping ? 'AI 搜索中...' : '🔍 立即獲取日本最新商品'}
+                ✦ {t('products.aiRefresh')}
               </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
+              {displayedProducts.slice(0, 6).map((product) => (
+                <ProductCard key={product.id} product={product} locale={locale} t={t} />
               ))}
             </div>
           )}
 
-          <div className="text-center pt-4">
+          {/* More products + powered by */}
+          <div className="flex flex-col items-center gap-6 pt-4">
             <a
               href={url('/products')}
-              className="inline-block border border-white/20 text-white/60 px-14 py-4 text-xs font-bold uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] hover:border-[#C5A059] transition-all"
+              className="inline-block border border-[#C5A059] text-[#C5A059] px-14 py-4 text-xs font-bold uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all"
             >
-              查看全部商品情報 →
+              {t('products.moreProducts')} →
             </a>
+            <p className="text-[9px] font-bold text-white/20 uppercase tracking-[0.4em]">
+              {t('products.poweredBy')}
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ══ ABOUT STRIP ════════════════════════════════════ */}
-      <section className="py-20 px-8 bg-white border-t border-stone-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B22222]">About Michi</p>
-              <h2 className="text-4xl font-serif font-black text-[#1C1C1C]">
-                13年代購信譽
-                <br />
-                <span className="italic font-normal text-stone-400">Global EZshop</span>
-              </h2>
-              <p className="text-stone-500 text-sm leading-relaxed">
-                2011年從 Facebook 開始，從個人代購發展為正式香港公司。服務過數千名客戶，熟悉日本七大商品品類，建立了完善的買手網絡。
-              </p>
-              <a
-                href={url('/about')}
-                className="inline-block border border-[#1C1C1C] text-[#1C1C1C] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#1A237E] hover:text-white hover:border-[#1A237E] transition-all"
-              >
-                了解我們的故事 →
-              </a>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { emoji: '👜', label: '精品名牌' },
-                { emoji: '💄', label: '美容護膚' },
-                { emoji: '🎌', label: '動漫周邊' },
-                { emoji: '👗', label: '時尚服飾' },
-                { emoji: '🍡', label: '食品零食' },
-                { emoji: '⚡', label: '電子產品' },
-              ].map(({ emoji, label }) => (
-                <div
-                  key={label}
-                  className="border border-stone-200 p-4 text-center hover:border-[#1A237E] transition-all group cursor-default"
-                >
-                  <span className="text-3xl block mb-2">{emoji}</span>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-stone-500 group-hover:text-[#1A237E] transition-colors">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <style jsx>{`
+      {/* ══ MARQUEE CSS ═══════════════════════════════════ */}
+      <style jsx global>{`
         @keyframes marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 28s linear infinite;
+          animation: marquee 30s linear infinite;
         }
       `}</style>
     </div>
