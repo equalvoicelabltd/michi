@@ -12,20 +12,30 @@ const languages = [
   { code: 'th',    name: 'ไทย',      flag: '🇹🇭' },
 ];
 
+const ALL_LOCALES = ['zh-CN', 'zh', 'en', 'ja', 'th'];
+
 export default function LanguageSwitcher() {
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const currentLanguage = languages.find((l) => l.code === locale);
 
+  const getTargetPath = (newLocale: string): string => {
+    let rest = '';
+    for (const loc of ALL_LOCALES) {
+      if (pathname === `/${loc}`) { rest = ''; break; }
+      if (pathname.startsWith(`/${loc}/`)) { rest = pathname.slice(`/${loc}`.length); break; }
+    }
+    return `/${newLocale}${rest}`;
+  };
+
   const handleChange = (newLocale: string) => {
     setIsOpen(false);
     if (newLocale === locale) return;
     startTransition(() => {
-      router.replace(pathname, { locale: newLocale });
+      window.location.href = getTargetPath(newLocale);
     });
   };
 
