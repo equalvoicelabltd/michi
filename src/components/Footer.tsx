@@ -1,46 +1,48 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Link } from '@/navigation';
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const t = useTranslations('footer');
+  const tn = useTranslations('nav');
 
   const cols = [
     {
-      heading: '平台',
+      heading: t('col_platform'),
       links: [
-        { href: '/buyers',   label: '找買手' },
-        { href: '/products', label: '最新商品情報' },
-        { href: '/about',    label: '關於我們' },
+        { href: '/buyers',   label: tn('buyers') },
+        { href: '/products', label: tn('products') },
+        { href: '/about',    label: tn('about') },
       ],
     },
     {
-      heading: '買手',
+      heading: t('col_buyers'),
       links: [
-        { href: '/buyers',        label: '瀏覽買手名錄' },
-        { href: '/buyers#apply',  label: '申請成為買手' },
+        { href: '/buyers',       label: t('browseBuyers') },
+        { href: '/buyers#apply', label: tn('applyBuyer') },
       ],
     },
     {
-      heading: '支援',
+      heading: t('col_support'),
       links: [
-        { href: '/about',         label: '關於我們' },
-        { href: 'mailto:hello@michi.jp', label: '聯絡我們', external: true },
+        { href: '/about',                label: tn('about') },
+        { href: 'mailto:hello@michi.jp', label: tn('contact'), external: true },
       ],
     },
     {
-      heading: '法律資訊',
+      heading: t('col_legal'),
       links: [
-        { href: '/legal/privacy',    label: '隱私政策' },
-        { href: '/legal/terms',      label: '服務條款' },
-        { href: '/legal/disclaimer', label: '免責聲明' },
+        { href: '/legal/privacy',    label: t('privacy') },
+        { href: '/legal/terms',      label: t('terms') },
+        { href: '/legal/disclaimer', label: t('disclaimer') },
       ],
     },
   ];
 
   return (
     <footer className="bg-[#111] text-white">
-      {/* Main footer */}
       <div className="max-w-7xl mx-auto px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
 
@@ -56,8 +58,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-[10px] text-stone-500 leading-relaxed">
-              由 Global EZshop 創辦人於 2011 年起深耕日本代購。
-              Michi 是資訊索引平台，連接全球買家與日本在地買手。
+              {t('brandDescription')}
             </p>
             <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-600">
               Since 2011 · Global EZshop
@@ -69,7 +70,7 @@ export default function Footer() {
             <div key={heading} className="space-y-4">
               <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-500">{heading}</h4>
               <ul className="space-y-3">
-                {links.map(({ href, label, external }) => (
+                {links.map(({ href, label, external }: any) => (
                   <li key={href}>
                     {external ? (
                       <a
@@ -101,12 +102,12 @@ export default function Footer() {
             © {year} Michi Project · All Rights Reserved
           </p>
           <p className="text-[9px] text-stone-700 text-center max-w-xl">
-            Michi Project 為資訊索引平台，不對任何買手的服務質素、交易安全或商品真偽作出保證。所有交易由買賣雙方自行承擔責任。
+            {t('platformNote')}
           </p>
           <div className="flex gap-4 text-[9px] text-stone-600 uppercase tracking-widest">
-            <Link href="/legal/privacy">私隱政策</Link>
+            <Link href="/legal/privacy">{t('privacy')}</Link>
             <span>·</span>
-            <Link href="/legal/terms">服務條款</Link>
+            <Link href="/legal/terms">{t('terms')}</Link>
           </div>
         </div>
       </div>
