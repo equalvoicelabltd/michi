@@ -12,33 +12,30 @@ const languages = [
   { code: 'th',    name: 'ไทย',      flag: '🇹🇭' },
 ];
 
-const LOCALES = ['zh', 'zh-CN', 'en', 'ja', 'th'];
+// zh-CN 必須排在 zh 前面，避免前綴誤匹配
+const ALL_LOCALES = ['zh-CN', 'zh', 'en', 'ja', 'th'];
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
-  const pathname = usePathname(); // 取得當前完整路徑，含 locale 前綴
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const currentLanguage = languages.find(l => l.code === locale);
+  const currentLanguage = languages.find((l) => l.code === locale);
 
   const getTargetPath = (newLocale: string): string => {
-    // 移除現有 locale 前綴
-    let pathWithoutLocale = pathname;
-    for (const loc of LOCALES) {
-      if (pathname === `/${loc}` || pathname.startsWith(`/${loc}/`)) {
-        pathWithoutLocale = pathname.slice(`/${loc}`.length) || '/';
-        break;
-      }
+    let rest = '';
+    for (const loc of ALL_LOCALES) {
+      if (pathname === `/${loc}`) { rest = ''; break; }
+      if (pathname.startsWith(`/${loc}/`)) { rest = pathname.slice(`/${loc}`.length); break; }
     }
-    return `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+    return `/${newLocale}${rest}`;
   };
 
   const handleChange = (newLocale: string) => {
-    startTransition(() => {
-      window.location.href = getTargetPath(newLocale);
-      setIsOpen(false);
-    });
+    setIsOpen(false);
+    if (newLocale === locale) return;
+    startTransition(() => { window.location.href = getTargetPath(newLocale); });
   };
 
   return (
