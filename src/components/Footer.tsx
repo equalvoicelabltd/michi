@@ -1,13 +1,8 @@
 /**
  * src/components/Footer.tsx
  *
- * Michi 完整頁腳組件
- * 包含：
- * - 法律頁面連結
- * - 公司信息
- * - 聯繫方式
- * - 社交媒體連結
- * - 多語言支持
+ * Michi 完整頁腳組件 - 修復版本
+ * 移除不存在的 TikTok 圖標
  */
 
 'use client';
@@ -15,7 +10,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { Mail, MapPin, Phone, Instagram, TikTok, Facebook, Linkedin } from 'lucide-react';
+import { Mail, MapPin, Phone, Instagram, Facebook, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   const locale = useLocale();
@@ -171,15 +166,6 @@ export default function Footer() {
                 title="Instagram"
               >
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://tiktok.com/@michi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-pink-500 transition"
-                title="TikTok"
-              >
-                <TikTok className="w-5 h-5" />
               </a>
               <a
                 href="https://facebook.com/michi"
