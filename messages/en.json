@@ -1,168 +1,169 @@
 {
   "nav": {
-    "tagline": "Your Path to Japan",
+    "tagline": "Your Path to Japan's Best",
     "home": "Home",
-    "buyers": "Find Buyers",
-    "products": "Discover Products",
-    "dashboard": "Dashboard",
-    "chat": "Messages",
-    "login": "Sign In",
-    "logout": "Sign Out",
+    "buyers": "Proxy Shoppers",
+    "products": "New Products",
+    "disputes": "Report Issue",
+    "contact": "Contact",
     "language": "Language"
   },
-  "footer": {
-    "tagline": "Your Path to Japan's Best",
-    "description": "Michi connects global buyers with Japanese shoppers, making it easy to purchase Japan's finest products. We provide a safe and convenient cross-border shopping experience.",
-    "quickLinks": "Quick Links",
-    "findBuyers": "Find Buyers",
-    "discoverProducts": "Discover Products",
-    "aboutUs": "About Us",
-    "contact": "Contact Us",
-    "support": "Customer Support",
-    "helpCenter": "Help Center",
-    "faq": "FAQ",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "rights": "All Rights Reserved",
-    "paymentMethods": "Payment Methods"
-  },
-  "home": {
-    "hero": {
-      "title": "Your Trusted Path to Japan's Best",
-      "subtitle": "Connect with verified Japanese shoppers for authentic products",
-      "cta": "Start Your Michi Journey"
-    },
-    "features": {
-      "title": "Why Choose Michi?",
-      "trusted": "Verified Buyers",
-      "trustedDesc": "All our shoppers are verified professionals",
-      "multilingual": "5 Languages",
-      "multilingualDesc": "Communicate in your preferred language",
-      "ai": "AI-Powered Discovery",
-      "aiDesc": "Find the latest Japanese products instantly"
-    }
-  },
-  "buyers": {
-    "title": "Find Your Perfect Shopper",
-    "search": "Search buyers...",
-    "filter": "Filter",
-    "location": "Location",
-    "category": "Category",
-    "rating": "Rating",
-    "commission": "Commission Rate"
-  },
-  "products": {
-    "title": "Latest from Japan",
-    "search": "Search products...",
-    "filter": "Filter by Category",
-    "viewDetails": "View Details"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "retry": "Try Again",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "close": "Close",
-    "save": "Save",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "delete": "Delete",
-    "edit": "Edit",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous"
+  "hero": {
+    "title": "Find Japan's Best Proxy Shoppers",
+    "subtitle": "Connect with verified Japanese proxy shoppers. Direct connections. No middleman fees.",
+    "cta": "Explore Proxy Shoppers",
+    "trust": "13 years of trusted service"
   },
   "legal": {
     "step1_title": "Michi Platform Disclaimer - Critical Notice",
     "step2_title": "Understanding Buyer Risks",
     "step3_title": "Final Confirmation and Agreement",
-
     "step_progress": "Step {current} of {total}",
     "button_previous": "Previous",
     "button_next": "Next",
     "button_processing": "Processing...",
     "button_accept": "I Agree and Enter Michi",
-
     "error_must_accept": "You must accept the terms to continue.",
-
-    // Step 1: Platform Disclaimer
     "disclaimer_title": "Important: Read Before Using Michi",
-
     "disclaimer_point1_title": "Michi is a Pure Information Intermediary",
-    "disclaimer_point1_desc": "Michi does not participate in any transactions. We do not process payments, arrange shipping, verify product quality, or provide transaction guarantees. We are a platform connecting buyers with Japanese proxy shoppers.",
-
+    "disclaimer_point1_desc": "Michi does not participate in any transactions. We do not process payments, arrange shipping, verify product quality, or provide transaction guarantees.",
     "disclaimer_point2_title": "All Transactions Are Private Agreements",
-    "disclaimer_point2_desc": "Your agreement with any proxy shopper is entirely private and directly between you and that person. Michi is not a party to, and cannot enforce, any agreement between you and a proxy shopper.",
-
+    "disclaimer_point2_desc": "Your agreement with any proxy shopper is entirely private. Michi is not a party to any agreement between you and a proxy shopper.",
     "disclaimer_point3_title": "Michi Does Not Guarantee Proxy Shopper Trustworthiness",
-    "disclaimer_point3_desc": "Our verification confirms identity and Japan residence ONLY. We do NOT verify: professional competence, honesty, reliability, previous transaction history, or service quality. Proxy shoppers may still commit fraud, not ship items, or disappear.",
-
+    "disclaimer_point3_desc": "Our verification confirms identity and Japan residence only. We do NOT verify professional competence, honesty, reliability, or service quality.",
     "disclaimer_point4_title": "You Assume All Transaction Risk",
-    "disclaimer_point4_desc": "You accept full risk of: fraud, non-delivery, counterfeit products, shipping loss or damage, currency fluctuation, customs confiscation, and any other transaction-related problems. Michi will not refund you or compensate you for any of these.",
-
+    "disclaimer_point4_desc": "You accept full risk of fraud, non-delivery, counterfeit products, shipping loss, and any other transaction problems. Michi will not refund or compensate you.",
     "disclaimer_point5_title": "Michi Cannot Mediate Disputes",
-    "disclaimer_point5_desc": "If a proxy shopper does not deliver, disappears, or provides defective goods, Michi cannot help. You must resolve disputes directly with the proxy shopper, request a chargeback from your payment provider, or contact law enforcement.",
-
+    "disclaimer_point5_desc": "If a proxy shopper does not deliver or disappears, Michi cannot help. You must resolve disputes directly with the proxy shopper or contact law enforcement.",
     "jurisdiction_specific_title": "Important: Your Legal Location",
-    "jurisdiction_us": "United States Jurisdiction: You agree that Michi is protected under Section 230 of the Communications Decency Act as an information intermediary. Any disputes between you and a proxy shopper are not Michi's responsibility. You acknowledge that you are knowingly assuming all risks.",
-
-    "jurisdiction_hk": "Hong Kong Jurisdiction: Under Hong Kong's Supply of Services (Implied Terms) Ordinance, Michi commits to reasonable care in maintaining the platform. However, you explicitly agree that Michi bears no responsibility for proxy shopper conduct, and you accept all transaction risks.",
-
-    "jurisdiction_jp": "Japan Jurisdiction: Under Japan's Consumer Contract Act, Michi cannot fully disclaim liability, but our responsibility is limited to providing verified identity information and contact details. All transaction risks are borne by you and the proxy shopper.",
-
-    "jurisdiction_other": "Multiple Jurisdictions: Since Michi serves users worldwide, different laws may apply. However, Michi's core position is that we are an information intermediary, not a transaction facilitator, and you assume all transaction risks.",
-
+    "jurisdiction_us": "United States: You agree that Michi is protected under Section 230 of the Communications Decency Act as an information intermediary.",
+    "jurisdiction_hk": "Hong Kong: Under Hong Kong supply of services law, Michi commits to reasonable care but you accept all transaction risks.",
+    "jurisdiction_jp": "Japan: Under Japan's Consumer Contract Act, Michi's responsibility is limited to providing verified information.",
+    "jurisdiction_other": "Multiple Jurisdictions: Michi is an information intermediary and you assume all transaction risks.",
     "full_terms_intro": "For the complete terms of service, please review",
     "full_terms_link": "the full Service Terms Agreement",
-
-    // Step 2: Buyer Warnings
-    "buyer_warning_title": "Before You Contact a Proxy Shopper, Understand These Risks",
-
+    "buyer_warning_title": "Before You Contact a Proxy Shopper - Understand These Risks",
     "buyer_warning_1_title": "Complete Private Agreement",
-    "buyer_warning_1_desc": "Any agreement you make with a proxy shopper is entirely private. Michi does not monitor, participate in, or can intervene in your communications or transactions.",
-
+    "buyer_warning_1_desc": "Any agreement you make with a proxy shopper is entirely private. Michi does not monitor or intervene in your communications.",
     "buyer_warning_2_title": "No Michi Protection",
-    "buyer_warning_2_desc": "Even though the proxy shopper is identity-verified, they could still commit fraud, fail to deliver, steal your payment, or disappear. Michi has no insurance, guarantee, or protection for you.",
-
+    "buyer_warning_2_desc": "Even though the proxy shopper is identity-verified, they could still commit fraud, fail to deliver, or disappear.",
     "buyer_warning_3_title": "Verify Identity Yourself",
-    "buyer_warning_3_desc": "Before paying, you should independently verify the proxy shopper's identity through: video call verification, checking Instagram/TikTok history for genuine transactions, requesting bank or payment verification, and researching online reviews outside Michi.",
-
-    "buyer_warning_4_title": "Recommended Payment Methods (Your Choice)",
-    "buyer_warning_4_desc": "Michi recommends NO specific payment method. Common safer options that offer buyer protection:",
-    "buyer_warning_4_option1": "PayPal Goods & Services (has buyer protection/chargeback)",
+    "buyer_warning_3_desc": "Before paying, verify the proxy shopper through video call, Instagram/TikTok history, and online reviews outside Michi.",
+    "buyer_warning_4_title": "Recommended Payment Methods",
+    "buyer_warning_4_desc": "Michi recommends NO specific payment method. Common safer options:",
+    "buyer_warning_4_option1": "PayPal Goods & Services (buyer protection)",
     "buyer_warning_4_option2": "Credit Card (chargeback protection)",
-    "buyer_warning_4_option3": "Staged payments (pay only for items already received, not all upfront)",
-
+    "buyer_warning_4_option3": "Staged payments (pay for items already received)",
     "buyer_warning_5_title": "If Something Goes Wrong",
     "buyer_warning_5_desc": "Michi cannot help. Your options are:",
-    "buyer_warning_5_option1": "Request chargeback from your payment provider (PayPal/credit card company)",
+    "buyer_warning_5_option1": "Request chargeback from your payment provider",
     "buyer_warning_5_option2": "Report fraud to local law enforcement",
-    "buyer_warning_5_option3": "Report to Japan Consumer Affairs Agency (if proxy shopper is in Japan)",
-
+    "buyer_warning_5_option3": "Report to Japan Consumer Affairs Agency",
     "payment_safety_title": "Payment Security Note",
-    "payment_safety_desc": "Do NOT send money to Michi company accounts. All payments should go directly to the proxy shopper through channels you have independently verified. Michi never handles customer funds.",
-
-    // Step 3: Final Confirmation
-    "confirmation_summary_title": "Summary - You Are Agreeing To:",
-    "confirmation_summary_1": "Michi is a pure information intermediary - we do not process payments or provide transaction guarantees",
-    "confirmation_summary_2": "All transaction risks (fraud, non-delivery, loss, damage) are your responsibility",
+    "payment_safety_desc": "Do NOT send money to Michi company accounts. All payments go directly to the proxy shopper.",
+    "confirmation_summary_title": "Summary - You Are Agreeing To",
+    "confirmation_summary_1": "Michi is a pure information intermediary with no payment processing or transaction guarantees",
+    "confirmation_summary_2": "All transaction risks are your responsibility",
     "confirmation_summary_3": "Michi cannot mediate disputes, provide refunds, or help if things go wrong",
     "confirmation_summary_4": "You have read and understand this agreement and accept all risks",
-
-    "final_confirm_strong": "I have read and fully understand:",
+    "final_confirm_strong": "I have read and fully understand",
     "final_confirm_point1": "Michi is a pure intermediary and does not participate in transactions",
     "final_confirm_point2": "All transaction risks are my responsibility",
     "final_confirm_point3": "Michi will not refund me or help with disputes",
     "final_confirm_point4": "I will not hold Michi liable for proxy shopper actions",
     "final_confirm_point5": "I understand this agreement is legally binding",
-
     "final_timestamp_label": "Agreement Timestamp",
-    "final_audit_notice": "This agreement is recorded in Michi's audit log with your timestamp, IP address, and device information for legal verification purposes.",
-
-    "error_consent_failed": "Failed to record your consent. Please try again or contact support.",
+    "final_audit_notice": "This agreement is recorded in Michi audit log for legal verification.",
+    "error_consent_failed": "Failed to record your consent. Please try again.",
     "error_unexpected": "An unexpected error occurred. Please try again.",
-    "success_terms_accepted": "Thank you. You have accepted Michi's terms of service."
+    "success_terms_accepted": "Thank you. You have accepted Michi terms of service."
+  },
+  "disputes": {
+    "page_title": "Report an Issue",
+    "page_subtitle": "If you have a problem with a proxy shopper transaction, please understand that Michi cannot intervene.",
+    "critical_notice_title": "Important - Michi Cannot Help With Disputes",
+    "critical_notice_desc": "Michi is a pure information platform. We do not participate in transactions and assume no liability for disputes.",
+    "critical_point_1": "Michi does not process payments and cannot issue refunds",
+    "critical_point_2": "Michi cannot force a proxy shopper to take action",
+    "critical_point_3": "You must resolve disputes with the proxy shopper or through your payment provider",
+    "tab_report_dispute": "Report Issue",
+    "tab_solutions": "Solutions",
+    "tab_faq": "FAQ",
+    "error_must_login": "You must log in to report an issue.",
+    "error_failed_to_submit": "Failed to submit your report. Please try again.",
+    "section_basic_info": "Basic Information",
+    "field_seller_name": "Proxy Shopper Name",
+    "field_transaction_date": "Transaction Date",
+    "field_product_description": "What did you buy?",
+    "field_amount": "Amount (HKD)",
+    "field_payment_method": "How did you pay?",
+    "field_dispute_reason": "What is the problem?",
+    "field_dispute_description": "Please describe what happened",
+    "field_evidence": "Evidence (optional)",
+    "placeholder_seller_name": "Enter the proxy shopper name",
+    "placeholder_product": "e.g., iPhone 15 Pro Max",
+    "placeholder_dispute_description": "Describe the issue in detail",
+    "placeholder_evidence": "Screenshots, tracking numbers, chat messages",
+    "select_payment_method": "Select a payment method",
+    "option_credit_card": "Credit Card",
+    "option_bank_transfer": "Bank Transfer",
+    "option_other": "Other",
+    "section_dispute_details": "Dispute Details",
+    "reason_non_delivery": "Item not received",
+    "reason_fraud": "Suspected fraud",
+    "reason_quality": "Quality issue",
+    "reason_communication": "Communication problem",
+    "button_submitting": "Submitting...",
+    "button_submit_dispute": "Submit Report",
+    "button_submit_another": "Submit Another Report",
+    "submitted_success_title": "Report Submitted",
+    "submitted_success_message": "Thank you for reporting. We have recorded your report. Remember that Michi cannot intervene. Please contact the proxy shopper directly or request a chargeback.",
+    "solution_paypal_title": "Resolve via PayPal",
+    "solution_paypal_desc": "If you paid with PayPal, you can open a dispute for non-delivery.",
+    "solution_paypal_step1": "Log in to PayPal and go to Your Account - Resolution Center",
+    "solution_paypal_step2": "Click Report a Problem and choose the transaction",
+    "solution_paypal_step3": "Select Item Not Received or Item Not As Described",
+    "solution_paypal_step4": "PayPal will mediate and may refund you within 30 days",
+    "solution_credit_card_title": "Resolve via Credit Card Chargeback",
+    "solution_credit_card_desc": "Contact your credit card company to request a chargeback.",
+    "solution_credit_card_step1": "Call your credit card dispute line",
+    "solution_credit_card_step2": "Explain the issue and provide evidence",
+    "solution_credit_card_step3": "The bank will investigate and may refund you",
+    "solution_police_title": "Report to Law Enforcement",
+    "solution_police_desc": "If you believe you have been defrauded, file a police report.",
+    "solution_police_step1": "Contact your local police fraud department",
+    "solution_police_step2": "Provide all evidence and transaction details",
+    "solution_police_step3": "If in Japan, report to the National Police Agency",
+    "faq_1_question": "Can Michi help me get a refund?",
+    "faq_1_answer": "No. Michi is information only. You must contact your payment provider for refunds.",
+    "faq_2_question": "What if the proxy shopper won't respond?",
+    "faq_2_answer": "Request a chargeback from your payment provider or open a dispute with PayPal.",
+    "faq_3_question": "Can I sue Michi?",
+    "faq_3_answer": "No. By using Michi, you agreed we are an information intermediary with no responsibility for transactions.",
+    "faq_4_question": "Should I report to the police?",
+    "faq_4_answer": "Yes, if you believe you have been defrauded. Report to your local cyber crime unit."
+  },
+  "buyers": {
+    "pageTitle": "Proxy Shoppers",
+    "pageSubtitle": "Connect with verified Japanese proxy shoppers",
+    "searchPlaceholder": "Search by city, specialty, or name",
+    "filterAll": "All",
+    "filterNewbie": "New",
+    "filterBuyer": "Buyer",
+    "filterCraftsman": "Craftsman",
+    "filterMaster": "Master",
+    "noResults": "No proxy shoppers found",
+    "verification": "Identity verified",
+    "notVerified": "Verification pending",
+    "contact": "Contact Shopper",
+    "moreInfo": "View Profile"
+  },
+  "footer": {
+    "about": "About Michi",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us",
+    "copyright": "2026 Michi. All rights reserved.",
+    "disclaimer": "Michi is an information platform. We do not participate in transactions and assume no liability for disputes."
   }
 }

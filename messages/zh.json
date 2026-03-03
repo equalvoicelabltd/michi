@@ -1,107 +1,169 @@
 {
-  "buyers": {
-    "pageTitle": "代購職人市場",
-    "pageSubtitle": "尋找最適合您的日本買手，提供一站式代購與配送服務。",
-    "verifiedList": "已驗證的職人列表",
-    "buyerCard": {
-      "commission": "代購手續費",
-      "viewProfile": "查看個人檔案"
-    },
-    "categories": {
-      "fashion": "流行時尚",
-      "vintage": "中古精品",
-      "anime": "動漫週邊",
-      "food": "在地美食"
-    },
+  "nav": {
+    "tagline": "你的日本代購之道",
+    "home": "首頁",
+    "buyers": "代購職人",
+    "products": "最新商品",
+    "disputes": "報告問題",
+    "contact": "聯繫我們",
+    "language": "語言"
+  },
+  "hero": {
+    "title": "找到日本最好的代購職人",
+    "subtitle": "連接經過驗證的日本代購職人。直接連接。無中介費用。",
+    "cta": "探索代購職人",
+    "trust": "13年可信服務"
+  },
   "legal": {
     "step1_title": "Michi 平台免責聲明 - 重要通知",
     "step2_title": "理解買家風險",
     "step3_title": "最終確認及同意",
-
     "step_progress": "第 {current} 步，共 {total} 步",
     "button_previous": "上一步",
     "button_next": "下一步",
     "button_processing": "處理中...",
     "button_accept": "我同意並進入 Michi",
-
     "error_must_accept": "您必須同意條款才能繼續。",
-
-    // Step 1: Platform Disclaimer
     "disclaimer_title": "重要：使用 Michi 前請閱讀",
-
     "disclaimer_point1_title": "Michi 是純信息媒介平台",
-    "disclaimer_point1_desc": "Michi 不參與任何交易。我們不處理支付、安排物流、驗證商品品質或提供交易保證。我們只是連接買家與日本代購買手的平台。",
-
+    "disclaimer_point1_desc": "Michi 不參與任何交易。我們不處理支付、安排物流、驗證商品品質或提供交易保證。",
     "disclaimer_point2_title": "所有交易都是私人協議",
-    "disclaimer_point2_desc": "您與任何代購買手的協議完全私人，直接在您與對方之間進行。Michi 不是交易方，也無法強制執行您與代購買手之間的任何協議。",
-
-    "disclaimer_point3_title": "Michi 不保證代購買手的可信性",
-    "disclaimer_point3_desc": "我們的驗證僅確認身份和日本駐在。我們不驗證：專業能力、誠實性、可靠性、過往交易記錄或服務品質。代購買手可能仍會欺詐、不發貨或消失。",
-
+    "disclaimer_point2_desc": "您與任何代購職人的協議完全私人。Michi 不是交易方，也無法強制執行。",
+    "disclaimer_point3_title": "Michi 不保證代購職人的可信性",
+    "disclaimer_point3_desc": "我們的驗證只確認身份和日本駐在。我們不驗證專業能力、誠實性、可靠性或服務品質。",
     "disclaimer_point4_title": "您承擔所有交易風險",
-    "disclaimer_point4_desc": "您接受完全的交易風險，包括：欺詐、不發貨、假冒商品、運輸遺失或損毀、匯率波動、海關沒收及任何其他交易相關問題。Michi 不會向您退款或賠償。",
-
+    "disclaimer_point4_desc": "您接受完全的交易風險，包括欺詐、不發貨、假冒商品和運輸損失。Michi 不會退款或賠償。",
     "disclaimer_point5_title": "Michi 無法調解糾紛",
-    "disclaimer_point5_desc": "如果代購買手不發貨、消失或提供瑕疵商品，Michi 無法幫助。您必須直接與代購買手解決糾紛、向付款平台要求退款，或聯繫執法部門。",
-
+    "disclaimer_point5_desc": "如果代購職人不發貨或消失，Michi 無法幫助。您必須直接與對方解決或聯繫執法部門。",
     "jurisdiction_specific_title": "重要：您的法律管轄地區",
-    "jurisdiction_us": "美國司法管轄區：您同意 Michi 受美國《通信規範第 230 條》保護，作為信息媒介。您與代購買手之間的任何糾紛不是 Michi 的責任。您確認您知情後自願承擔所有風險。",
-
-    "jurisdiction_hk": "香港司法管轄區：根據香港《服務供應(隱含條款)條例》，Michi 承諾以合理謹慎維護平台。但您明確同意 Michi 不對代購買手行為負責，您接受所有交易風險。",
-
-    "jurisdiction_jp": "日本司法管轄區：根據日本《消費者契約法》，Michi 無法完全免責，但我們的責任僅限於提供驗證的身份信息和聯繫方式。所有交易風險由您與代購買手承擔。",
-
-    "jurisdiction_other": "多個司法管轄區：由於 Michi 服務全球用戶，可能適用不同法律。但 Michi 的核心立場是我們是信息媒介，而非交易促進者，您承擔所有交易風險。",
-
+    "jurisdiction_us": "美國：您同意 Michi 受美國第 230 條保護，作為信息媒介。",
+    "jurisdiction_hk": "香港：根據香港法律，Michi 承諾合理謹慎，但您接受所有交易風險。",
+    "jurisdiction_jp": "日本：根據日本消費者契約法，Michi 責任僅限於提供驗證的信息。",
+    "jurisdiction_other": "多個司法管轄區：Michi 是信息媒介，您承擔所有交易風險。",
     "full_terms_intro": "如需完整服務條款，請查看",
-    "full_terms_link": "完整《服務條款協議》",
-
-    // Step 2: Buyer Warnings
-    "buyer_warning_title": "聯繫代購買手前，請理解這些風險",
-
+    "full_terms_link": "完整服務條款協議",
+    "buyer_warning_title": "聯繫代購職人前 - 理解這些風險",
     "buyer_warning_1_title": "完全私人協議",
-    "buyer_warning_1_desc": "您與代購買手的任何協議完全私人。Michi 不會監控、參與或介入您的通訊或交易。",
-
+    "buyer_warning_1_desc": "您與代購職人的任何協議完全私人。Michi 不監控或介入您的通訊。",
     "buyer_warning_2_title": "沒有 Michi 保護",
-    "buyer_warning_2_desc": "即使代購買手身份已驗證，他們仍可能欺詐、不發貨、盜取您的付款或消失。Michi 沒有保險、保證或保護。",
-
+    "buyer_warning_2_desc": "即使代購職人身份已驗證，他們仍可能欺詐、不發貨或消失。",
     "buyer_warning_3_title": "自己驗證身份",
-    "buyer_warning_3_desc": "付款前，您應自己驗證代購買手的身份：視頻通話驗證、查看 Instagram/TikTok 歷史記錄、要求銀行或支付驗證、線上搜索 Michi 以外的評論。",
-
-    "buyer_warning_4_title": "建議的付款方式（您的選擇）",
-    "buyer_warning_4_desc": "Michi 不推薦特定付款方式。提供買家保護的常見更安全選項：",
-    "buyer_warning_4_option1": "PayPal 商品及服務（有買家保護/退款）",
+    "buyer_warning_3_desc": "付款前，通過視頻通話、Instagram/TikTok 歷史和線上評論驗證代購職人。",
+    "buyer_warning_4_title": "建議的付款方式",
+    "buyer_warning_4_desc": "Michi 不推薦特定付款方式。常見更安全的選項：",
+    "buyer_warning_4_option1": "PayPal 商品及服務（買家保護）",
     "buyer_warning_4_option2": "信用卡（退款保護）",
-    "buyer_warning_4_option3": "分階段付款（只支付已收到的商品，不預先全額付款）",
-
+    "buyer_warning_4_option3": "分階段付款（只支付已收到的商品）",
     "buyer_warning_5_title": "如果出現問題",
     "buyer_warning_5_desc": "Michi 無法幫助。您的選擇是：",
-    "buyer_warning_5_option1": "向付款服務商要求退款（PayPal/信用卡公司）",
+    "buyer_warning_5_option1": "向支付提供商要求退款",
     "buyer_warning_5_option2": "向當地執法部門報告欺詐",
-    "buyer_warning_5_option3": "向日本消費者事務委員會報告（如代購買手在日本）",
-
+    "buyer_warning_5_option3": "向日本消費者事務委員會報告",
     "payment_safety_title": "付款安全提示",
-    "payment_safety_desc": "不要向 Michi 公司帳戶匯款。所有付款應直接去往您已獨立驗證的代購買手。Michi 從不處理客戶資金。",
-
-    // Step 3: Final Confirmation
-    "confirmation_summary_title": "摘要 - 您同意以下內容：",
-    "confirmation_summary_1": "Michi 是純信息媒介 - 我們不處理支付或提供交易保證",
-    "confirmation_summary_2": "所有交易風險（欺詐、不發貨、遺失、損毀）是您的責任",
-    "confirmation_summary_3": "Michi 無法調解糾紛、提供退款或幫助解決問題",
+    "payment_safety_desc": "不要向 Michi 公司帳戶匯款。所有付款應直接去往代購職人。",
+    "confirmation_summary_title": "摘要 - 您同意以下內容",
+    "confirmation_summary_1": "Michi 是純信息媒介，無支付處理或交易保證",
+    "confirmation_summary_2": "所有交易風險是您的責任",
+    "confirmation_summary_3": "Michi 無法調解糾紛、提供退款或幫助",
     "confirmation_summary_4": "您已閱讀並理解本協議，接受所有風險",
-
-    "final_confirm_strong": "我已閱讀並完全理解：",
+    "final_confirm_strong": "我已閱讀並完全理解",
     "final_confirm_point1": "Michi 是純媒介，不參與交易",
     "final_confirm_point2": "所有交易風險是我的責任",
     "final_confirm_point3": "Michi 不會向我退款或幫助解決糾紛",
-    "final_confirm_point4": "我不會因代購買手行為而追究 Michi 責任",
+    "final_confirm_point4": "我不會因代購職人行為而追究 Michi 責任",
     "final_confirm_point5": "我理解本協議具有法律約束力",
-
     "final_timestamp_label": "協議時間戳",
-    "final_audit_notice": "本協議記錄在 Michi 的審計日誌中，包含您的時間戳、IP 地址和設備信息，用於法律驗證。",
-
-    "error_consent_failed": "無法記錄您的同意。請重試或聯繫支持。",
+    "final_audit_notice": "本協議已記錄在 Michi 審計日誌中，用於法律驗證。",
+    "error_consent_failed": "無法記錄您的同意。請重試。",
     "error_unexpected": "出現意外錯誤。請重試。",
-    "success_terms_accepted": "感謝。您已接受 Michi 的服務條款。"
+    "success_terms_accepted": "感謝。您已接受 Michi 服務條款。"
+  },
+  "disputes": {
+    "page_title": "報告問題",
+    "page_subtitle": "如果您在代購職人交易中遇到問題，請了解 Michi 無法介入。",
+    "critical_notice_title": "重要 - Michi 無法幫助解決糾紛",
+    "critical_notice_desc": "Michi 是純信息平台。我們不參與交易，對糾紛不承擔責任。",
+    "critical_point_1": "Michi 不處理支付，無法退款",
+    "critical_point_2": "Michi 無法強制代購職人採取行動",
+    "critical_point_3": "您必須直接與代購職人解決或通過支付提供商處理",
+    "tab_report_dispute": "報告問題",
+    "tab_solutions": "解決方案",
+    "tab_faq": "常見問題",
+    "error_must_login": "您必須登入才能報告問題。",
+    "error_failed_to_submit": "提交失敗。請重試。",
+    "section_basic_info": "基本信息",
+    "field_seller_name": "代購職人名稱",
+    "field_transaction_date": "交易日期",
+    "field_product_description": "您購買了什麼?",
+    "field_amount": "金額(港幣)",
+    "field_payment_method": "您如何付款?",
+    "field_dispute_reason": "問題是什麼?",
+    "field_dispute_description": "請詳細描述發生了什麼",
+    "field_evidence": "證據(可選)",
+    "placeholder_seller_name": "輸入代購職人名稱",
+    "placeholder_product": "例如：iPhone 15 Pro Max",
+    "placeholder_dispute_description": "詳細描述問題",
+    "placeholder_evidence": "截圖、追蹤號碼、聊天記錄",
+    "select_payment_method": "選擇付款方式",
+    "option_credit_card": "信用卡",
+    "option_bank_transfer": "銀行轉帳",
+    "option_other": "其他",
+    "section_dispute_details": "糾紛詳情",
+    "reason_non_delivery": "未收到商品",
+    "reason_fraud": "懷疑欺詐",
+    "reason_quality": "品質問題",
+    "reason_communication": "溝通問題",
+    "button_submitting": "提交中...",
+    "button_submit_dispute": "提交報告",
+    "button_submit_another": "提交另一份報告",
+    "submitted_success_title": "報告已提交",
+    "submitted_success_message": "感謝您的報告。我們已記錄您的報告。請直接聯繫代購職人或要求退款。",
+    "solution_paypal_title": "通過 PayPal 解決",
+    "solution_paypal_desc": "如果您使用 PayPal 付款，可以開立爭議。",
+    "solution_paypal_step1": "登入 PayPal，進入您的帳戶 - 解決中心",
+    "solution_paypal_step2": "點擊報告問題並選擇交易",
+    "solution_paypal_step3": "選擇未收到商品或與描述不符",
+    "solution_paypal_step4": "PayPal 將進行調解，30 天內可能退款",
+    "solution_credit_card_title": "通過信用卡退款解決",
+    "solution_credit_card_desc": "聯繫您的信用卡公司要求退款。",
+    "solution_credit_card_step1": "撥打您的信用卡爭議熱線",
+    "solution_credit_card_step2": "說明問題並提供證據",
+    "solution_credit_card_step3": "銀行將調查並可能退款",
+    "solution_police_title": "向執法部門報告",
+    "solution_police_desc": "如果您懷疑被欺詐，可以向警察報告。",
+    "solution_police_step1": "聯繫當地警察欺詐部門",
+    "solution_police_step2": "提供所有證據和交易詳情",
+    "solution_police_step3": "若在日本，向國家警察廳報告",
+    "faq_1_question": "Michi 能幫我退款嗎?",
+    "faq_1_answer": "不能。Michi 只是信息平台。您必須聯繫支付提供商退款。",
+    "faq_2_question": "代購職人不回應怎麼辦?",
+    "faq_2_answer": "向支付提供商要求退款或向 PayPal 開立爭議。",
+    "faq_3_question": "我可以起訴 Michi 嗎?",
+    "faq_3_answer": "不能。使用 Michi 時，您同意我們是信息媒介，對交易不負責。",
+    "faq_4_question": "我應該向警察報告嗎?",
+    "faq_4_answer": "是的，如果您懷疑被欺詐。向當地網絡犯罪部門報告。"
+  },
+  "buyers": {
+    "pageTitle": "代購職人",
+    "pageSubtitle": "連接經過驗證的日本代購職人",
+    "searchPlaceholder": "按城市、專長或名稱搜索",
+    "filterAll": "全部",
+    "filterNewbie": "新手",
+    "filterBuyer": "買手",
+    "filterCraftsman": "職人",
+    "filterMaster": "達人",
+    "noResults": "未找到相符的代購職人",
+    "verification": "身份已驗證",
+    "notVerified": "驗證中",
+    "contact": "聯繫職人",
+    "moreInfo": "查看資料"
+  },
+  "footer": {
+    "about": "關於 Michi",
+    "terms": "服務條款",
+    "privacy": "隱私政策",
+    "contact": "聯繫我們",
+    "copyright": "2026 Michi。版權所有。",
+    "disclaimer": "Michi 是信息平台。我們不參與交易，對糾紛不承擔責任。"
   }
 }
