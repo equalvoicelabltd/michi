@@ -12,6 +12,96 @@
       "vintage": "中古精品",
       "anime": "動漫週邊",
       "food": "在地美食"
-    }
+    },
+  "legal": {
+    "step1_title": "Michi 平台免責聲明 - 重要通知",
+    "step2_title": "理解買家風險",
+    "step3_title": "最終確認及同意",
+
+    "step_progress": "第 {current} 步，共 {total} 步",
+    "button_previous": "上一步",
+    "button_next": "下一步",
+    "button_processing": "處理中...",
+    "button_accept": "我同意並進入 Michi",
+
+    "error_must_accept": "您必須同意條款才能繼續。",
+
+    // Step 1: Platform Disclaimer
+    "disclaimer_title": "重要：使用 Michi 前請閱讀",
+
+    "disclaimer_point1_title": "Michi 是純信息媒介平台",
+    "disclaimer_point1_desc": "Michi 不參與任何交易。我們不處理支付、安排物流、驗證商品品質或提供交易保證。我們只是連接買家與日本代購買手的平台。",
+
+    "disclaimer_point2_title": "所有交易都是私人協議",
+    "disclaimer_point2_desc": "您與任何代購買手的協議完全私人，直接在您與對方之間進行。Michi 不是交易方，也無法強制執行您與代購買手之間的任何協議。",
+
+    "disclaimer_point3_title": "Michi 不保證代購買手的可信性",
+    "disclaimer_point3_desc": "我們的驗證僅確認身份和日本駐在。我們不驗證：專業能力、誠實性、可靠性、過往交易記錄或服務品質。代購買手可能仍會欺詐、不發貨或消失。",
+
+    "disclaimer_point4_title": "您承擔所有交易風險",
+    "disclaimer_point4_desc": "您接受完全的交易風險，包括：欺詐、不發貨、假冒商品、運輸遺失或損毀、匯率波動、海關沒收及任何其他交易相關問題。Michi 不會向您退款或賠償。",
+
+    "disclaimer_point5_title": "Michi 無法調解糾紛",
+    "disclaimer_point5_desc": "如果代購買手不發貨、消失或提供瑕疵商品，Michi 無法幫助。您必須直接與代購買手解決糾紛、向付款平台要求退款，或聯繫執法部門。",
+
+    "jurisdiction_specific_title": "重要：您的法律管轄地區",
+    "jurisdiction_us": "美國司法管轄區：您同意 Michi 受美國《通信規範第 230 條》保護，作為信息媒介。您與代購買手之間的任何糾紛不是 Michi 的責任。您確認您知情後自願承擔所有風險。",
+
+    "jurisdiction_hk": "香港司法管轄區：根據香港《服務供應(隱含條款)條例》，Michi 承諾以合理謹慎維護平台。但您明確同意 Michi 不對代購買手行為負責，您接受所有交易風險。",
+
+    "jurisdiction_jp": "日本司法管轄區：根據日本《消費者契約法》，Michi 無法完全免責，但我們的責任僅限於提供驗證的身份信息和聯繫方式。所有交易風險由您與代購買手承擔。",
+
+    "jurisdiction_other": "多個司法管轄區：由於 Michi 服務全球用戶，可能適用不同法律。但 Michi 的核心立場是我們是信息媒介，而非交易促進者，您承擔所有交易風險。",
+
+    "full_terms_intro": "如需完整服務條款，請查看",
+    "full_terms_link": "完整《服務條款協議》",
+
+    // Step 2: Buyer Warnings
+    "buyer_warning_title": "聯繫代購買手前，請理解這些風險",
+
+    "buyer_warning_1_title": "完全私人協議",
+    "buyer_warning_1_desc": "您與代購買手的任何協議完全私人。Michi 不會監控、參與或介入您的通訊或交易。",
+
+    "buyer_warning_2_title": "沒有 Michi 保護",
+    "buyer_warning_2_desc": "即使代購買手身份已驗證，他們仍可能欺詐、不發貨、盜取您的付款或消失。Michi 沒有保險、保證或保護。",
+
+    "buyer_warning_3_title": "自己驗證身份",
+    "buyer_warning_3_desc": "付款前，您應自己驗證代購買手的身份：視頻通話驗證、查看 Instagram/TikTok 歷史記錄、要求銀行或支付驗證、線上搜索 Michi 以外的評論。",
+
+    "buyer_warning_4_title": "建議的付款方式（您的選擇）",
+    "buyer_warning_4_desc": "Michi 不推薦特定付款方式。提供買家保護的常見更安全選項：",
+    "buyer_warning_4_option1": "PayPal 商品及服務（有買家保護/退款）",
+    "buyer_warning_4_option2": "信用卡（退款保護）",
+    "buyer_warning_4_option3": "分階段付款（只支付已收到的商品，不預先全額付款）",
+
+    "buyer_warning_5_title": "如果出現問題",
+    "buyer_warning_5_desc": "Michi 無法幫助。您的選擇是：",
+    "buyer_warning_5_option1": "向付款服務商要求退款（PayPal/信用卡公司）",
+    "buyer_warning_5_option2": "向當地執法部門報告欺詐",
+    "buyer_warning_5_option3": "向日本消費者事務委員會報告（如代購買手在日本）",
+
+    "payment_safety_title": "付款安全提示",
+    "payment_safety_desc": "不要向 Michi 公司帳戶匯款。所有付款應直接去往您已獨立驗證的代購買手。Michi 從不處理客戶資金。",
+
+    // Step 3: Final Confirmation
+    "confirmation_summary_title": "摘要 - 您同意以下內容：",
+    "confirmation_summary_1": "Michi 是純信息媒介 - 我們不處理支付或提供交易保證",
+    "confirmation_summary_2": "所有交易風險（欺詐、不發貨、遺失、損毀）是您的責任",
+    "confirmation_summary_3": "Michi 無法調解糾紛、提供退款或幫助解決問題",
+    "confirmation_summary_4": "您已閱讀並理解本協議，接受所有風險",
+
+    "final_confirm_strong": "我已閱讀並完全理解：",
+    "final_confirm_point1": "Michi 是純媒介，不參與交易",
+    "final_confirm_point2": "所有交易風險是我的責任",
+    "final_confirm_point3": "Michi 不會向我退款或幫助解決糾紛",
+    "final_confirm_point4": "我不會因代購買手行為而追究 Michi 責任",
+    "final_confirm_point5": "我理解本協議具有法律約束力",
+
+    "final_timestamp_label": "協議時間戳",
+    "final_audit_notice": "本協議記錄在 Michi 的審計日誌中，包含您的時間戳、IP 地址和設備信息，用於法律驗證。",
+
+    "error_consent_failed": "無法記錄您的同意。請重試或聯繫支持。",
+    "error_unexpected": "出現意外錯誤。請重試。",
+    "success_terms_accepted": "感謝。您已接受 Michi 的服務條款。"
   }
 }
