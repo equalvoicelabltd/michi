@@ -1,16 +1,3 @@
-/**
- * src/lib/legal/audit-logger.ts
- *
- * Michi 審計日誌系統
- * 記錄所有用戶同意、交易和爭議，用於法律防守
- *
- * 核心原則：
- * 1. 記錄用戶知情同意（consent_audit_log）
- * 2. 記錄交易（transaction_audit_log - 無支付字段）
- * 3. 記錄爭議處理（dispute_log）
- * 4. 記錄賣家行為（seller_verification_audit）
- */
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -18,10 +5,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-/**
- * 記錄用戶同意
- * 用於法律防守：證明用戶知道風險並同意
- */
+// 記錄用戶同意
 export async function recordConsent(params: {
   userId?: string;
   anonymousUserId?: string;
@@ -33,7 +17,7 @@ export async function recordConsent(params: {
   step1Complete?: boolean;
   step2Complete?: boolean;
   step3Complete?: boolean;
-  termsHash?: string; // SHA256 hash of accepted terms
+  termsHash?: string;
 }): Promise<{ success: boolean; error?: string }> {
   try {
     const { data, error } = await supabase
@@ -44,7 +28,9 @@ export async function recordConsent(params: {
         consent_type: params.consentType,
         ip_address: params.ipAddress,
         user_agent: params.userAgent,
-        browser_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        browser_timezone: typeof window !== 'undefined'
+          ? Intl.DateTimeFormat().resolvedOptions().timeZone
+          : 'UTC',
         jurisdiction: params.jurisdiction,
         terms_version: params.termsVersion,
         step_1_platform_disclaimer: params.step1Complete ?? false,
@@ -67,11 +53,7 @@ export async function recordConsent(params: {
   }
 }
 
-/**
- * 記錄交易（Michi 無支付參與的證據）
- * 關鍵：此表無「支付」或「退款」字段
- * 用於法庭上證明 Michi 不是銷售者
- */
+// 記錄交易
 export async function logTransaction(params: {
   buyerId: string;
   sellerId: string;
@@ -108,27 +90,20 @@ export async function logTransaction(params: {
       return { success: false, error: error.message };
     }
 
-    console.log('[AuditLogger] Transaction logged:', data.id);
-    return { success: true, transactionId: data.id };
+    console.log('[AuditLogger] Transaction logged:', data?.id);
+    return { success: true, transactionId: data?.id };
   } catch (err) {
     console.error('[AuditLogger] Unexpected error in logTransaction:', err);
     return { success: false, error: String(err) };
   }
 }
 
-/**
- * 記錄爭議
- * 用於證明 Michi 的標準回應和非干預
- */
+// 記錄爭議
 export async function logDispute(params: {
   transactionId: string;
   buyerId: string;
   sellerId?: string;
-  disputeReason:
-    | 'non_delivery'
-    | 'fraud'
-    | 'quality_issue'
-    | 'communication_issue';
+  disputeReason: 'non_delivery' | 'fraud' | 'quality_issue' | 'communication_issue';
   disputeDescription: string;
   disputeAmount?: number;
   evidenceProvided?: string;
@@ -154,34 +129,28 @@ export async function logDispute(params: {
       return { success: false, error: error.message };
     }
 
-    console.log('[AuditLogger] Dispute logged:', data.id);
-    return { success: true, disputeId: data.id };
+    console.log('[AuditLogger] Dispute logged:', data?.id);
+    return { success: true, disputeId: data?.id };
   } catch (err) {
     console.error('[AuditLogger] Unexpected error in logDispute:', err);
     return { success: false, error: String(err) };
   }
 }
 
-/**
- * 記錄 Michi 對爭議的標準回應
- * 關鍵：使用預設模板，證明 Michi 沒有個案干預
- */
+// 記錄爭議回應 - 修復點 1：params.responseText
 export async function recordDisputeResponse(params: {
   disputeId: string;
-  responseTemplate:
-    | 'standard_non_intervention'
-    | 'chargeback_guidance'
-    | 'seller_contact';
+  responseTemplate: 'standard_non_intervention' | 'chargeback_guidance' | 'seller_contact';
   responseText?: string;
 }): Promise<{ success: boolean; error?: string }> {
   try {
-    // 預設模板
     const templates: Record<string, string> = {
-      standard_non_intervention: `感謝您的通知。根據 Michi 服務條款，我們是純媒介平台，不參與交易。\n\n建議步驟：\n1. 直接聯繫買手\n2. 若無回應，向支付平台要求退款（信用卡/PayPal）\n3. 若涉及欺詐，向當地執法機構舉報\n\nMichi 無法提供退款或強制買手行動。`,
-      chargeback_guidance: `感謝您的通知。您可以通過支付平台爭議功能獲得幫助：\n\nPayPal: 提出「商品未收到」或「描述不符」案例\n信用卡：向銀行申請退款\n銀行轉帳：向銀行舉報欺詐\n\nMichi 無法參與此過程。`,
-      seller_contact: `感謝您的通知。您可以：\n\n1. 通過原始聯繫方式聯繫買手\n2. 要求發貨證明\n3. 若買手無回應，進行退款\n\nMichi 提供的聯繫方式：[買手信息]`,
+      standard_non_intervention: `感謝您的通知。根據 Michi 服務條款，我們是純媒介平台，不參與交易。建議步驟：1. 直接聯繫買手 2. 若無回應，向支付平台要求退款 3. 若涉及欺詐，向執法機構舉報。Michi 無法提供退款或強制買手行動。`,
+      chargeback_guidance: `感謝您的通知。您可以通過支付平台爭議功能獲得幫助：PayPal、信用卡或銀行轉帳。Michi 無法參與此過程。`,
+      seller_contact: `感謝您的通知。您可以：1. 通過原始聯繫方式聯繫買手 2. 要求發貨證明 3. 若買手無回應，進行退款。`,
     };
 
+    // 修復：使用 params.responseText 而不是 responseText
     const response = params.responseText || templates[params.responseTemplate];
 
     const { error } = await supabase
@@ -207,10 +176,7 @@ export async function recordDisputeResponse(params: {
   }
 }
 
-/**
- * 更新交易爭議狀態
- * 用於追蹤爭議解決方式
- */
+// 更新交易爭議狀態
 export async function updateTransactionDisputeStatus(params: {
   transactionId: string;
   disputeFiled: boolean;
@@ -244,24 +210,17 @@ export async function updateTransactionDisputeStatus(params: {
   }
 }
 
-/**
- * 記錄賣家驗證和投訴
- * 用於證明 Michi 對賣家進行了監督
- */
+// 記錄賣家投訴 - 修復點 2：.select('*')
 export async function recordSellerComplaint(params: {
   sellerId: string;
-  complaintType:
-    | 'fraud'
-    | 'non_delivery'
-    | 'quality'
-    | 'communication';
+  complaintType: 'fraud' | 'non_delivery' | 'quality' | 'communication';
   complaintDescription: string;
 }): Promise<{ success: boolean; error?: string }> {
   try {
-    // 首先獲取當前計數
+    // 修復：使用 .select('*') 而不是選擇特定欄位
     const { data: currentData } = await supabase
       .from('seller_verification_audit')
-      .select('complaints_received, fraud_complaints, non_delivery_complaints, quality_complaints, communication_complaints')
+      .select('*')
       .eq('seller_id', params.sellerId)
       .single();
 
@@ -269,7 +228,6 @@ export async function recordSellerComplaint(params: {
       complaints_received: (currentData?.complaints_received || 0) + 1,
     };
 
-    // 更新特定投訴計數
     switch (params.complaintType) {
       case 'fraud':
         updates.fraud_complaints = (currentData?.fraud_complaints || 0) + 1;
@@ -285,14 +243,12 @@ export async function recordSellerComplaint(params: {
         break;
     }
 
-    // 如果投訴過多，自動發警告
     if (updates.complaints_received >= 3 && !currentData?.warning_issued) {
       updates.warning_issued = true;
       updates.warning_issue_date = new Date().toISOString();
       updates.warning_reason = `已收到 ${updates.complaints_received} 個投訴。`;
     }
 
-    // 如果投訴更多，自動暫停
     if (updates.complaints_received >= 10 && !currentData?.account_suspended) {
       updates.account_suspended = true;
       updates.suspension_date = new Date().toISOString();
@@ -317,17 +273,12 @@ export async function recordSellerComplaint(params: {
   }
 }
 
-/**
- * 獲取賣家的投訴摘要
- * 用於審視賣家是否應被警告或暫停
- */
+// 獲取賣家投訴摘要
 export async function getSellerComplaintSummary(sellerId: string) {
   try {
     const { data, error } = await supabase
       .from('seller_verification_audit')
-      .select(
-        'complaints_received, fraud_complaints, non_delivery_complaints, quality_complaints, communication_complaints, warning_issued, account_suspended'
-      )
+      .select('complaints_received, fraud_complaints, non_delivery_complaints, quality_complaints, communication_complaints, warning_issued, account_suspended')
       .eq('seller_id', sellerId)
       .single();
 
@@ -343,10 +294,7 @@ export async function getSellerComplaintSummary(sellerId: string) {
   }
 }
 
-/**
- * 系統日誌（Admin 可查看）
- * 用於內部審計和合規性檢查
- */
+// 系統日誌
 export async function logSystemAction(params: {
   logType: string;
   action: string;
@@ -384,3 +332,14 @@ export async function logSystemAction(params: {
     return { success: false, error: String(err) };
   }
 }
+
+export default {
+  recordConsent,
+  logTransaction,
+  logDispute,
+  recordDisputeResponse,
+  updateTransactionDisputeStatus,
+  recordSellerComplaint,
+  getSellerComplaintSummary,
+  logSystemAction,
+};
