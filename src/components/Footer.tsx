@@ -9,30 +9,30 @@ export default function Footer() {
     {
       heading: '平台',
       links: [
-        { href: '/buyers',   label: '找買手' },
+        { href: '/buyers', label: '找買手' },
         { href: '/products', label: '最新商品情報' },
-        { href: '/about',    label: '關於我們' },
+        { href: '/about', label: '關於我們' },
       ],
     },
     {
       heading: '買手',
       links: [
-        { href: '/buyers',        label: '瀏覽買手名錄' },
-        { href: '/buyers#apply',  label: '申請成為買手' },
+        { href: '/buyers', label: '瀏覽買手名錄' },
+        { href: '/buyers#apply', label: '申請成為買手' },
       ],
     },
     {
       heading: '支援',
       links: [
-        { href: '/about',         label: '關於我們' },
+        { href: '/about', label: '關於我們' },
         { href: 'mailto:hello@michi.jp', label: '聯絡我們', external: true },
       ],
     },
     {
       heading: '法律資訊',
       links: [
-        { href: '/legal/privacy',    label: '隱私政策' },
-        { href: '/legal/terms',      label: '服務條款' },
+        { href: '/legal/privacy', label: '隱私政策' },
+        { href: '/legal/terms', label: '服務條款' },
         { href: '/legal/disclaimer', label: '免責聲明' },
       ],
     },
@@ -40,11 +40,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#111] text-white">
-      {/* Main footer */}
       <div className="max-w-7xl mx-auto px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
-
-          {/* Brand block */}
           <div className="space-y-5">
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="w-9 h-9 bg-white text-[#1C1C1C] flex items-center justify-center font-serif text-xl font-black transition-transform group-hover:rotate-6">
@@ -64,10 +61,11 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Link columns */}
           {cols.map(({ heading, links }) => (
             <div key={heading} className="space-y-4">
-              <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-500">{heading}</h4>
+              <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-500">
+                {heading}
+              </h4>
               <ul className="space-y-3">
                 {links.map(({ href, label, external }) => (
                   <li key={href}>
@@ -94,7 +92,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Disclaimer bar */}
       <div className="border-t border-white/5 px-8 py-5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-[9px] text-stone-600 uppercase tracking-widest">
