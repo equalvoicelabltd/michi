@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
 // ─────────────────────────────────────────────────────────────
@@ -296,6 +296,13 @@ export default function BuyersPage() {
   const [sortBy, setSortBy] = useState<'score' | 'reviews' | 'experience'>('score');
   const [contactBuyer, setContactBuyer] = useState<Buyer | null>(null);
   const [showApply, setShowApply] = useState(false);
+
+  // Auto-open apply modal when URL hash is #apply
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#apply') {
+      setShowApply(true);
+    }
+  }, []);
 
   const displayed = useMemo(() => {
     let list: Buyer[] = [...BUYERS];
