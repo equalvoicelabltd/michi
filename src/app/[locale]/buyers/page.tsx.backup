@@ -2,11 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { useLocale } from 'next-intl';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 // ─────────────────────────────────────────────────────────────
-// SERVICE TYPES
+// TYPES
 // ─────────────────────────────────────────────────────────────
 interface BuyerServices {
   livestream: boolean;
@@ -62,212 +60,38 @@ const BUYERS = [
     commission: '6-10%',
     responseTime: '< 4小時',
     languages: ['繁中', '簡中', '日文'],
-    tags: ['Gundam', 'Figure', 'Limited', '一番賞'],
+    tags: ['Gundam', 'Figure', 'Pokemon', 'Jump'],
     filter: 'anime',
-    description: '動漫周邊收藏家出身，熟悉各大コミケ及会場限定商品。善用人脈提前預約，確保搶手商品到手。',
+    description: '動漫周邊收藏家，熟悉各大會場限定及一番賞。日本橋及秋葉原常駐，第一時間掌握新品動態。',
     level: 'MICHI 職人', levelNum: 3,
-    highlight: '大阪 Namba 扭蛋倉庫合作夥伴',
-    completedOrders: 678,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥2,500/小時',
-      shipping: true,
-      paymentTerms: '訂金50%',
-      depositRate: '50%',
-    },
-    livestreamRate: '¥4,000/30分鐘',
-    photoVideoRate: '¥1,000/組',
-  },
-  {
-    id: 3,
-    name: 'Aoyama Mei', nameJp: '青山芽衣',
-    icon: '🏺',
-    location: '京都 Kyoto', area: 'kyoto',
-    experience: '12年',
-    specialty: 'VINTAGE', specialtyLabel: '古董工藝',
-    score: 5.0, reviews: 445,
-    commission: '8-12%',
-    responseTime: '< 6小時',
-    languages: ['繁中', '日文', 'English'],
-    tags: ['陶藝', '古布', '民藝', '漆器'],
-    filter: 'vintage',
-    description: '京都傳統工藝職人，深入西陣織、錦市場等百年市場。專門尋訪老店與職人直售商品。',
-    level: 'MICHI 達人', levelNum: 4,
-    highlight: '與京都70+年老店建立獨家合作',
-    completedOrders: 2100,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '—',
-      shipping: true,
-      paymentTerms: '訂金30%',
-      depositRate: '30%',
-    },
-    livestreamRate: '—',
-    photoVideoRate: '¥2,000/組',
-  },
-  {
-    id: 4,
-    name: 'Shimizu Ryo', nameJp: '清水遼',
-    icon: '📷',
-    location: '東京 Tokyo', area: 'tokyo',
-    experience: '6年',
-    specialty: 'TECH', specialtyLabel: '電子科技',
-    score: 4.7, reviews: 267,
-    commission: '4-7%',
-    responseTime: '< 3小時',
-    languages: ['繁中', '簡中', '日文', 'English'],
-    tags: ['Sony', 'Panasonic', 'Fujifilm', 'Nintendo'],
-    filter: 'tech',
-    description: '秋葉原電子達人，每週到場探貨。熟悉各大電量販店會員制度，能搶到最優惠價格及最新限定款式。',
-    level: 'MICHI 買手', levelNum: 2,
-    highlight: 'Yodobashi/BIC 忠誠會員，最高折扣',
-    completedOrders: 892,
+    highlight: '大阪難波 Jump 旗艦店限定品專家',
+    completedOrders: 876,
     services: {
       livestream: true,
       photoVideo: true,
       queueing: true,
       queueRate: '¥2,000/小時',
-      shipping: false,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    livestreamRate: '¥3,500/30分鐘',
-    photoVideoRate: '¥800/組',
-  },
-  {
-    id: 5,
-    name: 'Fujita Hana', nameJp: '藤田花',
-    icon: '🌿',
-    location: '福岡 Fukuoka', area: 'fukuoka',
-    experience: '4年',
-    specialty: 'BEAUTY', specialtyLabel: '美妝藥粧',
-    score: 4.9, reviews: 189,
-    commission: '5-9%',
-    responseTime: '< 2小時',
-    languages: ['繁中', '簡中', '泰文'],
-    tags: ['COSME大賞', '藥妝', 'DHC', 'Canmake'],
-    filter: 'beauty',
-    description: '藥妝店達人，深入研究日本年度 COSME 大賞排行。熟悉各大連鎖藥妝折扣期及海外未上市商品。',
-    level: 'MICHI 買手', levelNum: 2,
-    highlight: '福岡限定品及九州區域商品專家',
-    completedOrders: 534,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '—',
       shipping: true,
       paymentTerms: '訂金50%',
       depositRate: '50%',
     },
-    livestreamRate: '—',
+    livestreamRate: '¥3,500/30分鐘',
     photoVideoRate: '¥1,200/組',
   },
   {
-    id: 6,
-    name: 'Ono Takashi', nameJp: '小野貴',
-    icon: '🎴',
-    location: '名古屋 Nagoya', area: 'nagoya',
-    experience: '9年',
-    specialty: 'GAMING', specialtyLabel: '遊戲卡牌',
-    score: 4.8, reviews: 334,
-    commission: '6-10%',
-    responseTime: '< 5小時',
-    languages: ['繁中', '簡中', '日文'],
-    tags: ['Pokemon', 'ワンピース', 'Dragon Ball', '遊戲王'],
-    filter: 'anime',
-    description: '專注卡牌遊戲及電子遊戲周邊，熟悉名古屋各大中古市場。擅長鑑定稀有卡及限定版。',
-    level: 'MICHI 職人', levelNum: 3,
-    highlight: 'Pokemon Center Nagoya 每日探貨',
-    completedOrders: 1560,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥15,000/日',
-      shipping: true,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    livestreamRate: '¥6,000/30分鐘',
-    photoVideoRate: '¥1,000/組',
-  },
-  {
-    id: 7,
-    name: 'Nishida Yoko', nameJp: '西田陽子',
-    icon: '☕',
-    location: '東京 Tokyo', area: 'tokyo',
-    experience: '3年',
-    specialty: 'FOOD', specialtyLabel: '食品零食',
-    score: 4.6, reviews: 88,
-    commission: '7-12%',
-    responseTime: '< 3小時',
-    languages: ['繁中', '日文'],
-    tags: ['限定口味', '地區特產', '和菓子', '抹茶'],
-    filter: 'food',
-    description: '日本食品愛好者，專注季節限定口味及地區特產。定期探索各大便利店、超市及百貨食品館期間限定商品。',
-    level: 'MICHI 新人', levelNum: 1,
-    highlight: 'TOKYO Banana / Shiroi Koibito 限定專家',
-    completedOrders: 213,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '—',
-      shipping: false,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    livestreamRate: '—',
-    photoVideoRate: '¥800/組',
-  },
-  {
-    id: 8,
-    name: 'Kobayashi Sota', nameJp: '小林颯太',
-    icon: '⌚',
-    location: '大阪 Osaka', area: 'osaka',
-    experience: '7年',
-    specialty: 'LUXURY', specialtyLabel: '精品名錶',
-    score: 4.9, reviews: 156,
-    commission: '3-5%',
-    responseTime: '< 24小時',
-    languages: ['繁中', '簡中', '日文', 'English'],
-    tags: ['Seiko', 'Grand Seiko', 'Omega', '精品'],
-    filter: 'fashion',
-    description: '精品腕錶及名牌包專家，熟悉日本正規經銷商及 outlet。提供正品收據、海外購物退稅協助及安全寄送服務。',
-    level: 'MICHI 職人', levelNum: 3,
-    highlight: 'Grand Seiko 大阪旗艦店 VIP 會員',
-    completedOrders: 445,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '—',
-      shipping: true,
-      paymentTerms: '訂金30%',
-      depositRate: '30%',
-    },
-    livestreamRate: '¥8,000/30分鐘',
-    photoVideoRate: '¥3,000/組',
-  },
-  {
-    id: 9,
-    name: 'Hayashi Rina', nameJp: '林里奈',
-    icon: '🎋',
+    id: 3,
+    name: 'Haru Nakamura', nameJp: '中村晴',
+    icon: '🏮',
     location: '京都 Kyoto', area: 'kyoto',
-    experience: '10年',
-    specialty: 'LIFESTYLE', specialtyLabel: '生活雜貨',
-    score: 4.8, reviews: 290,
-    commission: '5-8%',
-    responseTime: '< 4小時',
-    languages: ['繁中', '日文', 'English', '泰文'],
-    tags: ['無印良品', '北歐風', '文具', '香薰'],
-    filter: 'lifestyle',
-    description: '日本生活選物達人，專注高質感生活雜貨。熟悉 Loft、東急Hands、蔦屋書店等選品店限定款。',
+    experience: '12年',
+    specialty: 'VINTAGE', specialtyLabel: '古著工藝',
+    score: 5.0, reviews: 445,
+    commission: '8-12%',
+    responseTime: '< 6小時',
+    languages: ['繁中', '日文'],
+    tags: ['陶藝', '古布', '民藝', '古道具'],
+    filter: 'vintage',
+    description: '京都傳統工藝職人，深入寺町、錦市場尋找稀有工藝品。專注昭和古著、手作陶器及民藝器物。',
     level: 'MICHI 達人', levelNum: 4,
     highlight: '京都限定文具及和風生活用品達人',
     completedOrders: 1890,
@@ -283,26 +107,112 @@ const BUYERS = [
     livestreamRate: '¥4,500/30分鐘',
     photoVideoRate: '¥1,500/組',
   },
+  {
+    id: 4,
+    name: 'Sato Hiroshi', nameJp: '佐藤博',
+    icon: '📷',
+    location: '東京 Tokyo', area: 'tokyo',
+    experience: '6年',
+    specialty: 'TECH', specialtyLabel: '電子數碼',
+    score: 4.7, reviews: 267,
+    commission: '5-9%',
+    responseTime: '< 3小時',
+    languages: ['繁中', '英文', '日文'],
+    tags: ['Sony', 'Apple', 'Fujifilm', 'Limited'],
+    filter: 'tech',
+    description: '秋葉原常駐，專注最新日本限定版電子產品。相機、音響、遊戲機限定色及日版開箱。',
+    level: 'MICHI 買手', levelNum: 2,
+    highlight: 'Sony / Fujifilm 日本限定色專家',
+    completedOrders: 534,
+    services: {
+      livestream: false,
+      photoVideo: true,
+      queueing: true,
+      queueRate: '¥3,500/小時',
+      shipping: true,
+      paymentTerms: '全額先付',
+      depositRate: '100%',
+    },
+    livestreamRate: '—',
+    photoVideoRate: '¥1,000/組',
+  },
+  {
+    id: 5,
+    name: 'Mina Yoshida', nameJp: '吉田美奈',
+    icon: '💄',
+    location: '福岡 Fukuoka', area: 'fukuoka',
+    experience: '4年',
+    specialty: 'BEAUTY', specialtyLabel: '美妝護膚',
+    score: 4.7, reviews: 189,
+    commission: '6-9%',
+    responseTime: '< 2小時',
+    languages: ['繁中', '簡中', '日文', 'English'],
+    tags: ['藥妝', 'CANMAKE', 'KOSE', '限定色'],
+    filter: 'beauty',
+    description: '福岡藥妝店達人，熟悉各大品牌季節限定色及九州限定商品。Instagram 粉絲 2 萬，每週直播選品。',
+    level: 'MICHI 買手', levelNum: 2,
+    highlight: '九州限定 & 季節限定美妝首選',
+    completedOrders: 421,
+    services: {
+      livestream: true,
+      photoVideo: true,
+      queueing: false,
+      queueRate: '—',
+      shipping: true,
+      paymentTerms: '訂金30%',
+      depositRate: '30%',
+    },
+    livestreamRate: '¥2,500/30分鐘',
+    photoVideoRate: '¥800/組',
+  },
+  {
+    id: 6,
+    name: 'Kenji Fujimoto', nameJp: '藤本健二',
+    icon: '🎮',
+    location: '名古屋 Nagoya', area: 'nagoya',
+    experience: '9年',
+    specialty: 'FOOD', specialtyLabel: '食品零食',
+    score: 4.6, reviews: 334,
+    commission: '5-7%',
+    responseTime: '< 5小時',
+    languages: ['繁中', '日文'],
+    tags: ['名古屋限定', '卡牌', '零食', 'Pokemon'],
+    filter: 'food',
+    description: '中部地區代購老手，專注名古屋限定食品及名產。同時熟悉卡牌遊戲二手市場，可代尋稀有絕版卡牌。',
+    level: 'MICHI 職人', levelNum: 3,
+    highlight: '名古屋限定食品 & Pokemon 卡牌',
+    completedOrders: 1102,
+    services: {
+      livestream: false,
+      photoVideo: true,
+      queueing: false,
+      queueRate: '—',
+      shipping: true,
+      paymentTerms: '全額先付',
+      depositRate: '100%',
+    },
+    livestreamRate: '—',
+    photoVideoRate: '¥1,000/組',
+  },
 ];
 
 const FILTERS = [
-  { key: 'all',       label: 'All',       icon: '◉' },
-  { key: 'fashion',   label: 'Fashion',   icon: '👔' },
-  { key: 'anime',     label: 'Anime',     icon: '⚡' },
-  { key: 'vintage',   label: 'Vintage',   icon: '🏺' },
-  { key: 'beauty',    label: 'Beauty',    icon: '🌿' },
-  { key: 'tech',      label: 'Tech',      icon: '📷' },
-  { key: 'food',      label: 'Food',      icon: '☕' },
-  { key: 'lifestyle', label: 'Lifestyle', icon: '🎋' },
+  { key: 'all',      label: 'All',       icon: '◉' },
+  { key: 'fashion',  label: 'Fashion',   icon: '👔' },
+  { key: 'anime',    label: 'Anime',     icon: '⚡' },
+  { key: 'vintage',  label: 'Vintage',   icon: '🏺' },
+  { key: 'beauty',   label: 'Beauty',    icon: '🌿' },
+  { key: 'tech',     label: 'Tech',      icon: '📷' },
+  { key: 'food',     label: 'Food',      icon: '☕' },
 ];
 
 const AREAS = [
-  { key: 'all',      label: '全部地區' },
-  { key: 'tokyo',    label: '東京' },
-  { key: 'osaka',    label: '大阪' },
-  { key: 'kyoto',    label: '京都' },
-  { key: 'fukuoka',  label: '福岡' },
-  { key: 'nagoya',   label: '名古屋' },
+  { key: 'all',     label: '全部地區' },
+  { key: 'tokyo',   label: '東京' },
+  { key: 'osaka',   label: '大阪' },
+  { key: 'kyoto',   label: '京都' },
+  { key: 'fukuoka', label: '福岡' },
+  { key: 'nagoya',  label: '名古屋' },
 ];
 
 const SERVICE_FILTERS = [
@@ -313,10 +223,10 @@ const SERVICE_FILTERS = [
 ];
 
 const LEVEL_STYLES: Record<number, { bg: string; text: string; border: string }> = {
-  1: { bg: 'bg-stone-100', text: 'text-stone-500',  border: 'border-stone-300' },
-  2: { bg: 'bg-blue-50',   text: 'text-[#1A237E]',  border: 'border-[#1A237E]/30' },
-  3: { bg: 'bg-pink-50',   text: 'text-[#B22222]',  border: 'border-[#B22222]/30' },
-  4: { bg: 'bg-amber-50',  text: 'text-[#C5A059]',  border: 'border-[#C5A059]/50' },
+  1: { bg: 'bg-stone-100', text: 'text-stone-500', border: 'border-stone-300' },
+  2: { bg: 'bg-blue-50',   text: 'text-[#1A237E]', border: 'border-[#1A237E]/30' },
+  3: { bg: 'bg-pink-50',   text: 'text-[#B22222]', border: 'border-[#B22222]/30' },
+  4: { bg: 'bg-amber-50',  text: 'text-[#C5A059]', border: 'border-[#C5A059]/50' },
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -357,12 +267,17 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
 
   const inputCls = "w-full border border-stone-200 px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E]";
 
+  const serviceOptions = [
+    { key: 'needLivestream', label: '現場直播',  avail: buyer.services.livestream, rate: buyer.livestreamRate },
+    { key: 'needPhoto',      label: '現場拍照',  avail: buyer.services.photoVideo, rate: buyer.photoVideoRate },
+    { key: 'needQueueing',   label: '排隊服務',  avail: buyer.services.queueing,   rate: buyer.services.queueRate },
+    { key: 'needShipping',   label: '代寄服務',  avail: buyer.services.shipping,   rate: '按重量報價' },
+  ];
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white w-full max-w-lg shadow-2xl my-auto">
-
-        {/* Header */}
         <div className="bg-[#1A237E] text-white p-7 flex items-start justify-between">
           <div className="space-y-1">
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">聯絡買手</p>
@@ -374,63 +289,68 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
 
         {sent ? (
           <div className="p-10 text-center space-y-4">
-            <div className="text-5xl">✓</div>
-            <h4 className="text-xl font-serif font-black text-[#1C1C1C]">詢問已送出</h4>
-            <p className="text-stone-400 text-sm">買手將盡快與您聯絡，請留意 WhatsApp / LINE / WeChat 訊息。</p>
+            <div className="text-5xl">✦</div>
+            <h3 className="text-xl font-black text-[#1C1C1C]">詢問已發送</h3>
+            <p className="text-stone-500 text-sm">{buyer.name} 將在 {buyer.responseTime} 內回覆您。</p>
             <button onClick={onClose}
-              className="mt-4 border border-stone-200 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] transition-all">
+              className="mt-4 border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all">
               關閉
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-7 space-y-5">
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">您的姓名 *</label>
-                <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                  className={inputCls} placeholder="Hong Tai Ming" />
+              <div className="space-y-1">
+                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">姓名 *</label>
+                <input required type="text" value={form.name}
+                  onChange={e => setForm({ ...form, name: e.target.value })}
+                  className={inputCls} placeholder="你的名字" />
               </div>
-              <div>
-                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">聯絡電郵 *</label>
-                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-                  className={inputCls} placeholder="you@email.com" />
+              <div className="space-y-1">
+                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">Email *</label>
+                <input required type="email" value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  className={inputCls} placeholder="your@email.com" />
               </div>
             </div>
 
-            <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">所需服務</label>
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { key: 'needLivestream', label: '📹 直播' },
-                  { key: 'needPhoto',      label: '📸 拍照' },
-                  { key: 'needQueueing',   label: '⏳ 排隊' },
-                  { key: 'needShipping',   label: '📦 代寄' },
-                ].map(({ key, label }) => (
-                  <button key={key} type="button"
-                    onClick={() => setForm({ ...form, [key]: !form[key as keyof typeof form] })}
-                    className={`py-2 text-[9px] font-black border transition-all ${
-                      form[key as keyof typeof form]
-                        ? 'bg-[#1A237E] text-white border-[#1A237E]'
-                        : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+            <div className="space-y-2">
+              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">所需服務</label>
+              <div className="grid grid-cols-2 gap-2">
+                {serviceOptions.map(({ key, label, avail, rate }) => (
+                  <label key={key}
+                    className={`flex items-start gap-2 p-3 border cursor-pointer transition-all ${
+                      !avail
+                        ? 'opacity-30 cursor-not-allowed bg-stone-50'
+                        : (form as any)[key] ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200 hover:border-stone-300'
                     }`}>
-                    {label}
-                  </button>
+                    <input type="checkbox" disabled={!avail}
+                      checked={(form as any)[key]}
+                      onChange={e => avail && setForm({ ...form, [key]: e.target.checked })}
+                      className="mt-0.5 accent-[#1A237E]" />
+                    <div>
+                      <p className="text-[9px] font-black text-[#1C1C1C]">{label}</p>
+                      <p className="text-[8px] text-[#C5A059] font-bold mt-0.5">{avail ? rate : '此買手不提供'}</p>
+                    </div>
+                  </label>
                 ))}
               </div>
             </div>
 
-            <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">代購需求詳情 *</label>
-              <textarea required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
-                rows={4} className={inputCls}
-                placeholder="請描述想購買的商品、預算、數量及任何特殊要求…" />
+            <div className="space-y-1">
+              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購需求 *</label>
+              <textarea required rows={3} value={form.message}
+                onChange={e => setForm({ ...form, message: e.target.value })}
+                className={`${inputCls} resize-none`}
+                placeholder="描述商品、預算、時間要求…" />
             </div>
 
-            <div className="bg-stone-50 p-4 text-[9px] text-stone-500 leading-relaxed">
-              <p className="font-black text-stone-400 uppercase tracking-widest mb-1">付款條件</p>
-              <p>{buyer.services.paymentTerms === '全額先付'
-                ? `💳 全額先付 — 確認訂單後須支付全數貨款及服務費`
-                : `💳 訂金制 — 確認後先付 ${buyer.services.depositRate} 訂金，收貨後付尾數`}
+            <div className="bg-amber-50 border border-amber-200 p-3 space-y-1">
+              <p className="text-[9px] font-black text-amber-700 uppercase tracking-widest">此買手付款條件</p>
+              <p className="text-[10px] text-amber-900 font-bold">
+                {buyer.services.paymentTerms === '全額先付'
+                  ? `💳 全額先付 — 確認訂單後須支付全數貨款及服務費`
+                  : `💳 訂金制 — 確認後先付 ${buyer.services.depositRate} 訂金，收貨後付尾數`}
               </p>
             </div>
 
@@ -449,278 +369,65 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
 // APPLY MODAL
 // ─────────────────────────────────────────────────────────────
 function ApplyModal({ onClose }: { onClose: () => void }) {
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    name: '', nameJp: '', email: '',
-    whatsapp: '', wechat: '', line: '',
-    city: '', cityOther: '', residency: '',
-    specialties: [] as string[],
-    otherSpecialty: '',
-    languages: [] as string[],
-    commission: '', minOrder: '', responseTime: '',
-    bio: '', experience: '', highlight: '',
-    offersLivestream: false,
-    livestreamRate: '',
-    livestreamUnit: '30分鐘',
-    offersPhotoVideo: false,
-    photoVideoRate: '',
-    offersQueueing: false,
-    queueingRate: '',
-    queueingUnit: 'hourly' as 'hourly' | 'daily' | 'both',
-    offersShipping: false,
-    shippingMethods: [] as string[],
-    paymentTerms: '' as string,
-    depositRate: '',
-    agreeTerms: false,
-    agreeDisclaimer: false,
-  });
-
-  const toggle = (arr: string[], val: string) =>
-    arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
-
-  const SPECIALTY_OPTIONS = ['時尚服飾','動漫周邊','古董工藝','電子科技','美妝藥粧','遊戲卡牌','食品零食','精品名錶','生活雜貨','其他'];
-  const LANGUAGE_OPTIONS  = ['繁體中文','簡體中文','English','日本語','ภาษาไทย'];
-  const CITY_OPTIONS      = ['東京','大阪','京都','福岡','名古屋','札幌','仙台','廣島','其他'];
-  const SHIPPING_OPTIONS  = ['EMS','DHL/FedEx','日本郵便','Sea Mail（船運）','自取（東京/大阪）'];
-
-  const inputCls = "w-full border border-stone-200 bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E] text-[#1C1C1C] placeholder-stone-300";
-
-  const Field = ({ label, req, children }: { label: string; req?: boolean; children: React.ReactNode }) => (
-    <div className="space-y-1.5">
-      <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block">
-        {label}{req && <span className="text-[#B22222] ml-1">*</span>}
-      </label>
-      {children}
-    </div>
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (step < 3) { setStep(step + 1); return; }
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setLoading(false);
-    setStep(4);
-  };
-
-  const STEPS = ['基本資料', '服務設定', '確認提交'];
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', location: '', specialty: '', experience: '', intro: '' });
+  const inputCls = "w-full border border-stone-200 px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E] bg-white";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white w-full max-w-2xl shadow-2xl my-8">
-
-        {/* Header */}
-        <div className="bg-[#1C1C1C] text-white p-6 flex items-center justify-between">
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 mb-1">Michi Project</p>
-            <h3 className="text-lg font-serif font-black">申請成為買手</h3>
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white w-full max-w-lg shadow-2xl my-auto">
+        <div className="bg-[#1C1C1C] text-white p-7 flex items-start justify-between">
+          <div className="space-y-1">
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Join Michi</p>
+            <h3 className="text-xl font-serif font-black">申請成為買手</h3>
+            <p className="text-white/50 text-xs">加入 Michi 買手網絡，連接全球買家</p>
           </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white text-2xl leading-none">×</button>
+          <button onClick={onClose} className="text-white/40 hover:text-white text-2xl leading-none mt-1">×</button>
         </div>
 
-        {step < 4 && (
-          <div className="flex border-b border-stone-200">
-            {STEPS.map((s, i) => (
-              <div key={s} className={`flex-1 py-3 text-center text-[9px] font-black uppercase tracking-widest transition-colors ${
-                i + 1 === step ? 'text-[#1A237E] border-b-2 border-[#1A237E]' :
-                i + 1 < step  ? 'text-[#C5A059]' : 'text-stone-300'
-              }`}>
-                {i + 1 < step ? '✓ ' : `${i + 1}. `}{s}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {step === 4 ? (
-          <div className="p-12 text-center space-y-4">
-            <div className="text-6xl">🌸</div>
-            <h4 className="text-2xl font-serif font-black text-[#1C1C1C]">申請已送出！</h4>
-            <p className="text-stone-400 text-sm max-w-sm mx-auto">我們將在 3-5 個工作天內審核您的申請，並通過電郵通知您結果。</p>
+        {sent ? (
+          <div className="p-10 text-center space-y-4">
+            <div className="text-5xl">🎌</div>
+            <h3 className="text-xl font-black text-[#1C1C1C]">申請已收到</h3>
+            <p className="text-stone-500 text-sm">我們將在 3 個工作天內審核您的申請並回覆。</p>
             <button onClick={onClose}
-              className="mt-4 bg-[#1A237E] text-white px-10 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
+              className="mt-4 border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all">
               關閉
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-7 space-y-5 max-h-[70vh] overflow-y-auto">
-
-            {step === 1 && (
-              <>
-                <div className="grid grid-cols-2 gap-4">
-                  <Field label="英文姓名" req>
-                    <input required value={form.name} onChange={e => setForm({...form, name: e.target.value})}
-                      className={inputCls} placeholder="Tanaka Yuki" />
-                  </Field>
-                  <Field label="日文姓名">
-                    <input value={form.nameJp} onChange={e => setForm({...form, nameJp: e.target.value})}
-                      className={inputCls} placeholder="田中雪" />
-                  </Field>
-                </div>
-                <Field label="電郵地址" req>
-                  <input required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
-                    className={inputCls} placeholder="you@email.com" />
-                </Field>
-                <div className="grid grid-cols-3 gap-3">
-                  <Field label="WhatsApp">
-                    <input value={form.whatsapp} onChange={e => setForm({...form, whatsapp: e.target.value})}
-                      className={inputCls} placeholder="+852 XXXX XXXX" />
-                  </Field>
-                  <Field label="WeChat">
-                    <input value={form.wechat} onChange={e => setForm({...form, wechat: e.target.value})}
-                      className={inputCls} placeholder="WeChat ID" />
-                  </Field>
-                  <Field label="LINE">
-                    <input value={form.line} onChange={e => setForm({...form, line: e.target.value})}
-                      className={inputCls} placeholder="LINE ID" />
-                  </Field>
-                </div>
-                <Field label="現居城市" req>
-                  <div className="flex flex-wrap gap-2">
-                    {CITY_OPTIONS.map(c => (
-                      <button key={c} type="button" onClick={() => setForm({...form, city: c})}
-                        className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
-                          form.city === c ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-                        }`}>{c}</button>
-                    ))}
-                  </div>
-                </Field>
-                <Field label="專長類別" req>
-                  <div className="flex flex-wrap gap-2">
-                    {SPECIALTY_OPTIONS.map(s => (
-                      <button key={s} type="button"
-                        onClick={() => setForm({...form, specialties: toggle(form.specialties, s)})}
-                        className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
-                          form.specialties.includes(s) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-                        }`}>{s}</button>
-                    ))}
-                  </div>
-                </Field>
-                <Field label="溝通語言" req>
-                  <div className="flex flex-wrap gap-2">
-                    {LANGUAGE_OPTIONS.map(l => (
-                      <button key={l} type="button"
-                        onClick={() => setForm({...form, languages: toggle(form.languages, l)})}
-                        className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
-                          form.languages.includes(l) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-                        }`}>{l}</button>
-                    ))}
-                  </div>
-                </Field>
-                <Field label="個人簡介" req>
-                  <textarea required rows={3} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})}
-                    className={inputCls} placeholder="介紹您的代購經驗、專長及服務特色…" />
-                </Field>
-              </>
-            )}
-
-            {step === 2 && (
-              <>
-                <div className="grid grid-cols-3 gap-4">
-                  <Field label="佣金率" req>
-                    <input required value={form.commission} onChange={e => setForm({...form, commission: e.target.value})}
-                      className={inputCls} placeholder="e.g. 5-8%" />
-                  </Field>
-                  <Field label="最低訂單">
-                    <input value={form.minOrder} onChange={e => setForm({...form, minOrder: e.target.value})}
-                      className={inputCls} placeholder="e.g. ¥3,000" />
-                  </Field>
-                  <Field label="平均回覆時間">
-                    <input value={form.responseTime} onChange={e => setForm({...form, responseTime: e.target.value})}
-                      className={inputCls} placeholder="e.g. < 2小時" />
-                  </Field>
-                </div>
-
-                <Field label="付款條件" req>
-                  <div className="flex gap-3">
-                    {['全額先付', '訂金制'].map(t => (
-                      <button key={t} type="button" onClick={() => setForm({...form, paymentTerms: t})}
-                        className={`flex-1 py-3 text-[10px] font-black border transition-all ${
-                          form.paymentTerms === t ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-                        }`}>{t}</button>
-                    ))}
-                  </div>
-                </Field>
-
-                <div className="space-y-3 border border-stone-200 p-4">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-stone-400">提供服務</p>
-                  {[
-                    { key: 'offersLivestream', label: '📹 現場直播' },
-                    { key: 'offersPhotoVideo', label: '📸 現場拍照/影片' },
-                    { key: 'offersQueueing',   label: '⏳ 排隊代購' },
-                    { key: 'offersShipping',   label: '📦 代寄服務' },
-                  ].map(({ key, label }) => (
-                    <label key={key} className="flex items-center gap-3 cursor-pointer">
-                      <input type="checkbox"
-                        checked={form[key as keyof typeof form] as boolean}
-                        onChange={e => setForm({...form, [key]: e.target.checked})}
-                        className="w-4 h-4 accent-[#1A237E]" />
-                      <span className="text-sm font-bold text-[#1C1C1C]">{label}</span>
-                    </label>
-                  ))}
-                </div>
-
-                {form.offersShipping && (
-                  <Field label="代寄方式">
-                    <div className="flex flex-wrap gap-2">
-                      {SHIPPING_OPTIONS.map(s => (
-                        <button key={s} type="button"
-                          onClick={() => setForm({...form, shippingMethods: toggle(form.shippingMethods, s)})}
-                          className={`px-3 py-1.5 text-[10px] font-black border transition-all ${
-                            form.shippingMethods.includes(s) ? 'bg-[#1A237E] text-white border-[#1A237E]' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-                          }`}>{s}</button>
-                      ))}
-                    </div>
-                  </Field>
-                )}
-              </>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-4">
-                <div className="bg-stone-50 p-5 space-y-3 text-sm">
-                  <p className="font-black text-[#1C1C1C]">申請確認</p>
-                  {[
-                    ['姓名', form.name],
-                    ['城市', form.city],
-                    ['佣金', form.commission],
-                    ['語言', form.languages.join(', ')],
-                    ['專長', form.specialties.join(', ')],
-                  ].map(([label, value]) => (
-                    <div key={label} className="flex justify-between text-[11px]">
-                      <span className="text-stone-400 font-bold uppercase tracking-widest">{label}</span>
-                      <span className="text-[#1C1C1C] font-bold">{value || '—'}</span>
-                    </div>
-                  ))}
-                </div>
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" required checked={form.agreeTerms}
-                    onChange={e => setForm({...form, agreeTerms: e.target.checked})}
-                    className="w-4 h-4 mt-0.5 accent-[#1A237E]" />
-                  <span className="text-[11px] text-stone-500">我同意 Michi Project 的使用條款及隱私政策，並確認所提供的資料真實準確。</span>
-                </label>
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" required checked={form.agreeDisclaimer}
-                    onChange={e => setForm({...form, agreeDisclaimer: e.target.checked})}
-                    className="w-4 h-4 mt-0.5 accent-[#1A237E]" />
-                  <span className="text-[11px] text-stone-500">我明白 Michi 為資訊平台，不參與任何交易，所有交易責任由買手自行承擔。</span>
-                </label>
+          <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="p-7 space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">姓名 *</label>
+                <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} placeholder="你的姓名" />
               </div>
-            )}
-
-            <div className="flex gap-3 pt-2">
-              {step > 1 && (
-                <button type="button" onClick={() => setStep(step - 1)}
-                  className="flex-1 py-3 border border-stone-200 text-stone-500 text-[10px] font-black uppercase tracking-[0.3em] hover:border-stone-400 transition-all">
-                  上一步
-                </button>
-              )}
-              <button type="submit" disabled={loading}
-                className="flex-1 py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all disabled:opacity-50">
-                {loading ? '提交中…' : step < 3 ? '下一步 →' : '提交申請'}
-              </button>
+              <div className="space-y-1">
+                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">Email *</label>
+                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} placeholder="your@email.com" />
+              </div>
             </div>
+            <div className="space-y-1">
+              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">現居日本城市 *</label>
+              <input required type="text" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className={inputCls} placeholder="東京、大阪、京都…" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購專長 *</label>
+              <input required type="text" value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} className={inputCls} placeholder="時尚、動漫、美妝…" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購年資 *</label>
+              <input required type="text" value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} className={inputCls} placeholder="例如：3年" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">自我介紹</label>
+              <textarea rows={3} value={form.intro} onChange={e => setForm({ ...form, intro: e.target.value })} className={`${inputCls} resize-none`} placeholder="簡介你的代購經驗及優勢…" />
+            </div>
+            <button type="submit"
+              className="w-full py-4 bg-[#1C1C1C] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
+              提交申請
+            </button>
           </form>
         )}
       </div>
@@ -732,7 +439,6 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
 // MAIN PAGE
 // ─────────────────────────────────────────────────────────────
 export default function BuyersPage() {
-  const locale = useLocale();
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeArea, setActiveArea] = useState('all');
@@ -743,11 +449,11 @@ export default function BuyersPage() {
 
   const displayed = useMemo(() => {
     let list = BUYERS;
-    if (activeFilter !== 'all')          list = list.filter(b => b.filter === activeFilter);
-    if (activeArea !== 'all')            list = list.filter(b => b.area === activeArea);
-    if (activeService === 'livestream')  list = list.filter(b => b.services.livestream);
-    if (activeService === 'queueing')    list = list.filter(b => b.services.queueing);
-    if (activeService === 'shipping')    list = list.filter(b => b.services.shipping);
+    if (activeFilter !== 'all')   list = list.filter(b => b.filter === activeFilter);
+    if (activeArea !== 'all')     list = list.filter(b => b.area === activeArea);
+    if (activeService === 'livestream') list = list.filter(b => b.services.livestream);
+    if (activeService === 'queueing')   list = list.filter(b => b.services.queueing);
+    if (activeService === 'shipping')   list = list.filter(b => b.services.shipping);
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter(b =>
@@ -758,8 +464,8 @@ export default function BuyersPage() {
       );
     }
     return [...list].sort((a, b) => {
-      if (sortBy === 'score')   return b.score - a.score;
-      if (sortBy === 'reviews') return b.reviews - a.reviews;
+      if (sortBy === 'score')    return b.score - a.score;
+      if (sortBy === 'reviews')  return b.reviews - a.reviews;
       return parseInt(b.experience) - parseInt(a.experience);
     });
   }, [search, activeFilter, activeArea, activeService, sortBy]);
@@ -771,50 +477,49 @@ export default function BuyersPage() {
 
       <main className="min-h-screen bg-[#F9F7F2]">
 
-        {/* ── TOP BAR ── */}
-        <div className="bg-[#1C1C1C] text-[#F9F7F2]/50 py-2 px-6 text-[9px] tracking-[0.4em] text-center uppercase font-bold">
-          MICHI • 代購買手資訊平台 • 平台不參與任何交易 • 透明直接
-        </div>
-
-        {/* ── NAV ── */}
-        <nav className="sticky top-0 z-40 bg-[#F9F7F2]/90 backdrop-blur-md border-b border-stone-200">
-          <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            <a href={`/${locale}`} className="flex items-center space-x-4 group">
-              <div className="w-9 h-9 bg-[#B22222] flex items-center justify-center text-white font-serif text-xl font-black transition-transform group-hover:rotate-6">道</div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-xl font-black tracking-tighter text-[#1C1C1C]">みち</span>
-                <span className="text-[7px] font-bold text-stone-400 tracking-[0.4em] uppercase">Michi Project</span>
+        {/* ══ HERO ══════════════════════════════════════════ */}
+        <section className="bg-[#1C1C1C] text-white">
+          <div className="max-w-7xl mx-auto px-8 py-16 md:py-20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+              <div className="space-y-4">
+                <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">
+                  Michi · 買手名錄
+                </p>
+                <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-none">
+                  找到你的<br />
+                  <span className="text-[#C5A059]">日本買手</span>
+                </h1>
+                <p className="text-[12px] text-white/50 max-w-md leading-relaxed">
+                  Michi 收錄在日本各城市的代購買手，提供直播、拍照、排隊及代寄服務。平台不參與任何交易，資訊僅供參考。
+                </p>
               </div>
-            </a>
-            <div className="hidden lg:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.3em] text-stone-500">
-              <a href={`/${locale}/buyers`} className="text-[#1A237E] border-b border-[#1A237E] pb-0.5 transition-colors">買手名錄</a>
-              <a href={`/${locale}/products`} className="hover:text-[#1A237E] transition-colors">最新商品</a>
-              <a href={`/${locale}/about`} className="hover:text-[#1A237E] transition-colors">關於我們</a>
+              <button
+                onClick={() => setShowApply(true)}
+                className="flex-shrink-0 border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all"
+              >
+                ✦ 申請成為買手
+              </button>
             </div>
-            <button onClick={() => setShowApply(true)}
-              className="text-[10px] font-black uppercase tracking-[0.3em] bg-[#1A237E] text-white px-5 py-2.5 hover:bg-[#B22222] transition-all">
-              申請成為買手
-            </button>
-          </div>
-        </nav>
 
-        {/* ── HERO ── */}
-        <section className="bg-[#1A237E] text-white py-16 px-8 relative overflow-hidden">
-          <div className="absolute right-0 top-0 text-[20rem] font-serif text-white/5 pointer-events-none select-none leading-none">道</div>
-          <div className="max-w-7xl mx-auto relative z-10">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40 mb-4">Michi Project · 代購買手資訊平台</p>
-            <h1 className="text-4xl md:text-5xl font-serif font-black leading-tight mb-4">
-              探索代購買手<br />
-              <span className="italic font-normal text-[#C5A059]">Find Your Shopper</span>
-            </h1>
-            <p className="text-white/60 text-sm max-w-xl leading-relaxed">
-              瀏覽來自日本各地的認證代購買手，比較服務、評分與專長，找到最適合您的購物夥伴。
-            </p>
+            {/* Stats */}
+            <div className="mt-14 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { n: `${BUYERS.length}+`, label: '買手' },
+                { n: '5', label: '日本城市' },
+                { n: '7', label: '專長分類' },
+                { n: '2011', label: '年起創辦' },
+              ].map(({ n, label }) => (
+                <div key={label} className="space-y-1">
+                  <p className="text-3xl font-black text-white">{n}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40">{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ── PAYMENT INFO ── */}
-        <div className="bg-[#1C1C1C] text-white py-5 px-8">
+        {/* ══ PAYMENT INFO STRIP ════════════════════════════ */}
+        <div className="bg-[#1C1C1C] border-t border-white/5 text-white py-5 px-8">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-8">
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 flex-shrink-0">付款條件說明</p>
             <div className="flex flex-wrap gap-6">
@@ -831,8 +536,8 @@ export default function BuyersPage() {
           </div>
         </div>
 
-        {/* ── FILTERS ── */}
-        <section className="bg-white border-b border-stone-200 sticky top-[81px] z-30">
+        {/* ══ SEARCH + FILTERS ══════════════════════════════ */}
+        <section className="bg-white border-b border-stone-200 sticky top-[80px] z-30">
           <div className="max-w-7xl mx-auto px-8 py-5 space-y-4">
             <div className="flex flex-wrap items-center gap-4">
               <div className="relative flex-1 min-w-[200px] max-w-sm">
@@ -841,6 +546,7 @@ export default function BuyersPage() {
                   className="w-full border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm pr-8 focus:outline-none focus:border-[#1A237E] placeholder-stone-400" />
                 <span className="absolute right-3 top-2.5 text-stone-400 text-sm pointer-events-none">🔍</span>
               </div>
+
               <div className="flex flex-wrap gap-1">
                 {FILTERS.map(({ key, label, icon }) => (
                   <button key={key} onClick={() => setActiveFilter(key)}
@@ -888,7 +594,7 @@ export default function BuyersPage() {
           </div>
         </section>
 
-        {/* ── BUYER GRID ── */}
+        {/* ══ BUYER GRID ════════════════════════════════════ */}
         <section className="max-w-7xl mx-auto px-8 py-14">
           {displayed.length === 0 ? (
             <div className="text-center py-28 space-y-4">
@@ -905,51 +611,47 @@ export default function BuyersPage() {
                 const lvl = LEVEL_STYLES[buyer.levelNum];
                 return (
                   <div key={buyer.id} className="group flex flex-col">
-
                     {/* Avatar */}
                     <div className="aspect-[4/3] bg-stone-100 border border-stone-200 flex items-center justify-center relative overflow-hidden">
                       <span className="text-7xl z-10">{buyer.icon}</span>
-                      <div className="absolute inset-0 bg-[#1A237E]/0 group-hover:bg-[#1A237E]/5 transition-all" />
-                      <div className="absolute top-3 left-3">
-                        <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-1 border ${lvl.bg} ${lvl.text} ${lvl.border}`}>
-                          {buyer.level}
-                        </span>
+                      <div className="absolute inset-0 bg-[#1A237E]/0 group-hover:bg-[#1A237E]/5 transition-all duration-300" />
+                      {/* Level badge */}
+                      <div className={`absolute top-3 left-3 px-2 py-1 text-[7px] font-black uppercase tracking-[0.3em] border ${lvl.bg} ${lvl.text} ${lvl.border}`}>
+                        {buyer.level}
                       </div>
-                      <div className="absolute top-3 right-3 bg-white px-2 py-1 text-[8px] font-black uppercase tracking-widest text-stone-400 border border-stone-200">
-                        {buyer.specialty}
-                      </div>
-                      <div className="absolute bottom-3 right-3 bg-white/90 px-2 py-1 text-[10px] font-black text-[#1C1C1C]">
-                        ★ {buyer.score}
+                      {/* Score */}
+                      <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 flex items-center gap-1">
+                        <span className="text-[#C5A059] text-xs">★</span>
+                        <span className="text-[10px] font-black text-[#1C1C1C]">{buyer.score}</span>
                       </div>
                     </div>
 
-                    {/* Info Card */}
-                    <div className="flex-1 bg-white p-5 border border-stone-200 border-t-0 space-y-4">
-
-                      {/* Name + Location */}
-                      <div className="border-b border-stone-100 pb-3">
-                        <h4 className="text-xl font-serif font-black text-[#1C1C1C] group-hover:text-[#B22222] transition-colors">{buyer.name}</h4>
-                        <p className="text-[10px] text-stone-400 font-bold mt-0.5">{buyer.nameJp} · {buyer.location} · {buyer.experience}</p>
+                    {/* Info */}
+                    <div className="border border-t-0 border-stone-200 p-5 flex flex-col gap-4 flex-1 bg-white group-hover:border-[#1A237E]/30 transition-colors">
+                      <div className="space-y-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <h3 className="font-black text-[#1C1C1C] text-sm">{buyer.name}</h3>
+                            <p className="text-[9px] text-stone-400 font-bold">{buyer.nameJp} · {buyer.location}</p>
+                          </div>
+                          <span className="text-[8px] font-bold text-stone-400 flex-shrink-0">{buyer.experience}</span>
+                        </div>
+                        <p className="text-[9px] font-black text-[#B22222] uppercase tracking-widest">{buyer.highlight}</p>
                       </div>
 
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5">
-                        {buyer.tags.map(tag => (
-                          <span key={tag} className="text-[8px] font-bold text-stone-500 border border-stone-100 px-2 py-0.5 uppercase tracking-tighter">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Description */}
                       <p className="text-[11px] text-stone-500 leading-relaxed line-clamp-2">{buyer.description}</p>
 
-                      {/* Highlight */}
-                      <p className="text-[9px] font-black text-[#C5A059] uppercase tracking-wider">✦ {buyer.highlight}</p>
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-1">
+                        {buyer.tags.slice(0, 3).map(tag => (
+                          <span key={tag} className="text-[8px] bg-stone-100 text-stone-500 px-1.5 py-0.5 font-bold">{tag}</span>
+                        ))}
+                        <span className="text-[8px] bg-stone-100 text-stone-400 px-1.5 py-0.5 font-bold">{buyer.specialty}</span>
+                      </div>
 
                       {/* Services */}
-                      <div className="grid grid-cols-4 gap-1.5">
-                        <ServiceBadge active={buyer.services.livestream} label="直播" sub={buyer.livestreamRate !== '—' ? buyer.livestreamRate : undefined} />
+                      <div className="grid grid-cols-4 gap-1">
+                        <ServiceBadge active={buyer.services.livestream} label="直播" sub={buyer.services.livestream ? buyer.livestreamRate : undefined} />
                         <ServiceBadge active={buyer.services.photoVideo} label="拍照" sub={buyer.photoVideoRate !== '—' ? buyer.photoVideoRate : undefined} />
                         <ServiceBadge active={buyer.services.queueing}   label="排隊" sub={buyer.services.queueRate !== '—' ? buyer.services.queueRate : undefined} />
                         <ServiceBadge active={buyer.services.shipping}   label="代寄" />
@@ -977,11 +679,10 @@ export default function BuyersPage() {
                         <span className="ml-auto text-[9px] text-stone-400">{buyer.completedOrders.toLocaleString()} 紀錄</span>
                       </div>
 
-                      {/* ✅ 聯繫按鈕 → 導向 /[locale]/buyers 頁面，不再使用 email */}
-                      <a href={`/${locale}/buyers`}
-                        className="block w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all text-center">
-                        聯繫
-                      </a>
+                      <button onClick={() => setContactBuyer(buyer)}
+                        className="w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
+                        聯絡買手
+                      </button>
                     </div>
                   </div>
                 );
@@ -990,27 +691,24 @@ export default function BuyersPage() {
           )}
         </section>
 
-        {/* ── FOOTER ── */}
-        <footer className="bg-[#1C1C1C] text-white py-12 px-8 mt-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-8 pb-8 border-b border-stone-800">
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 bg-[#B22222] flex items-center justify-center text-white font-serif text-lg font-black">道</div>
-                  <span className="text-lg font-black tracking-tighter">みち</span>
-                </div>
-                <p className="text-[10px] text-stone-500 max-w-xs leading-relaxed">日本代購職人資訊平台，連結買手與代購專家。平台不參與任何交易。</p>
-              </div>
-              <div className="flex gap-12 text-[10px] font-bold uppercase tracking-[0.3em] text-stone-500">
-                <a href={`/${locale}`} className="hover:text-white transition-colors">首頁</a>
-                <a href={`/${locale}/products`} className="hover:text-white transition-colors">商品</a>
-                <a href={`/${locale}/about`} className="hover:text-white transition-colors">關於我們</a>
-                <a href="mailto:hello@michi.jp" className="hover:text-white transition-colors">聯絡</a>
-              </div>
+        {/* ══ APPLY CTA ═════════════════════════════════════ */}
+        <section id="apply" className="bg-[#1A237E] text-white py-20 px-8">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="space-y-4">
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">For Buyers in Japan</p>
+              <h2 className="text-3xl md:text-4xl font-black leading-tight">你也在日本？<br />加入 Michi 買手網絡</h2>
+              <p className="text-white/50 text-sm max-w-md leading-relaxed">
+                無論你在東京、大阪、京都還是其他城市，Michi 讓全球買家主動找到你。設定你的專長、服務與費用，建立你的代購品牌。
+              </p>
             </div>
-            <p className="text-[9px] text-stone-600 uppercase tracking-widest mt-8">© {new Date().getFullYear()} Michi Project. All Rights Reserved.</p>
+            <button
+              onClick={() => setShowApply(true)}
+              className="flex-shrink-0 border border-white text-white px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-[#1A237E] transition-all"
+            >
+              立即申請成為買手 →
+            </button>
           </div>
-        </footer>
+        </section>
 
       </main>
     </>
