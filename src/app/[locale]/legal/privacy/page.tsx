@@ -122,8 +122,8 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">9. {t('section9_title')}</h2>
             <p className="text-gray-700 mb-4">{t('section9_intro')}</p>
             <div className="bg-gray-50 p-4 rounded border border-gray-200">
-              <p className="text-gray-700"><strong>{t('section9_email')}</strong>: privacy@michi.com</p>
-              <p className="text-gray-700 mt-2"><strong>{t('section9_address')}</strong>: Equal Voice Lab Ltd, Hong Kong</p>
+              <p className="text-gray-700"><strong>{t('section9_email')}</strong>: privacy@michiproject.com</p>
+              <p className="text-gray-700 mt-2"><strong>{t('section9_address')}</strong>: Equal Voice Lab Ltd, 66 Paul Street, London, EC2A 4NA</p>
               <p className="text-gray-700 mt-2"><strong>{t('section9_response_time')}</strong>: {t('section9_response_time_value')}</p>
             </div>
           </section>

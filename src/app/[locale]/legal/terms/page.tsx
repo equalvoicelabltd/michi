@@ -234,10 +234,10 @@ export default function TermsPage() {
             </p>
             <div className="bg-gray-50 p-4 rounded border border-gray-200">
               <p className="text-gray-700">
-                <strong>Email:</strong> legal@michi.com
+                <strong>Email:</strong> enquiry@michiproject.com
               </p>
               <p className="text-gray-700 mt-2">
-                <strong>Address:</strong> Equal Voice Lab Ltd, Hong Kong
+                <strong>Address:</strong> Equal Voice Lab Ltd, 66 Paul Street, London, EC2A 4NA
               </p>
             </div>
           </section>
