@@ -28,7 +28,7 @@ export default function Footer() {
       heading: t('col_support'),
       links: [
         { href: '/about',                label: tn('about') },
-        { href: 'mailto:hello@michi.jp', label: tn('contact'), external: true },
+        { href: 'mailto:hello@michiproject.com', label: tn('contact'), external: true },
       ],
     },
     {
