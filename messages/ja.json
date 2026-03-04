@@ -209,7 +209,17 @@
     "buyer6_desc": "TCGとゲームグッズに特化。各地の中古市場や限定発売に精通。コレクション鑑定経験豊富。",
     "payDepositPrefix": "💳 デポジット制 —",
     "payDepositSuffix": "を前払い、残金は商品到着後",
-    "payDepositShortPrefix": "デポジット"
+    "payDepositShortPrefix": "デポジット",
+    "applySection1": "基本情報",
+    "applySection2": "サービスと料金",
+    "applySection3": "手数料と決済",
+    "applyCommission": "代行手数料",
+    "applyMinOrder": "最低注文金額",
+    "applyDepositRate": "前金の割合",
+    "applyPaymentMethods": "対応決済方法",
+    "applyLanguages": "対応言語",
+    "applyPortfolio": "ポートフォリオ / SNS",
+    "phone": "電話"
   },
   "pp": {
     "heroTitle1": "日本最新商品情報",

@@ -209,7 +209,17 @@
     "buyer6_desc": "เน้น TCG และสินค้าเกม เชี่ยวชาญตลาดมือสองและการวางจำหน่ายลิมิเต็ด",
     "payDepositPrefix": "💳 มัดจำ —",
     "payDepositSuffix": "ชำระส่วนที่เหลือหลังได้รับสินค้า",
-    "payDepositShortPrefix": "มัดจำ"
+    "payDepositShortPrefix": "มัดจำ",
+    "applySection1": "ข้อมูลพื้นฐาน",
+    "applySection2": "บริการและราคา",
+    "applySection3": "ค่าคอมมิชชันและการชำระเงิน",
+    "applyCommission": "ค่าคอมมิชชัน",
+    "applyMinOrder": "ยอดสั่งซื้อขั้นต่ำ",
+    "applyDepositRate": "อัตราเงินมัดจำ",
+    "applyPaymentMethods": "วิธีชำระเงินที่รับ",
+    "applyLanguages": "ภาษาที่ให้บริการ",
+    "applyPortfolio": "ผลงาน / โซเชียลมีเดีย",
+    "phone": "โทรศัพท์"
   },
   "pp": {
     "heroTitle1": "สินค้าญี่ปุ่นล่าสุด",

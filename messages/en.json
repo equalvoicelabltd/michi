@@ -209,7 +209,17 @@
     "buyer6_desc": "Focused on TCG and gaming merchandise, familiar with secondhand markets and limited releases nationwide.",
     "payDepositPrefix": "💳 Deposit — Pay",
     "payDepositSuffix": "deposit first, balance on delivery",
-    "payDepositShortPrefix": "Deposit"
+    "payDepositShortPrefix": "Deposit",
+    "applySection1": "Basic Info",
+    "applySection2": "Services & Pricing",
+    "applySection3": "Commission & Payment",
+    "applyCommission": "Commission Rate",
+    "applyMinOrder": "Minimum Order",
+    "applyDepositRate": "Deposit Rate",
+    "applyPaymentMethods": "Accepted Payment Methods",
+    "applyLanguages": "Service Languages",
+    "applyPortfolio": "Portfolio / Social Media",
+    "phone": "Phone"
   },
   "pp": {
     "heroTitle1": "Latest Japan Products",

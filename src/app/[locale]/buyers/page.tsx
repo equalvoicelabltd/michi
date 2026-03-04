@@ -242,14 +242,68 @@ function ContactModal({ buyer, onClose, t }: { buyer: Buyer; onClose: () => void
 // ─────────────────────────────────────────────────────────────
 function ApplyModal({ onClose, t }: { onClose: () => void; t: (k: string) => string }) {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', location: '', specialty: '', experience: '', intro: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '', location: '', specialty: '', experience: '', intro: '', portfolio_url: '',
+    // Services
+    service_livestream: false, service_photo: false, service_queueing: false, service_shipping: false,
+    livestream_rate: '', photo_rate: '', queue_rate: '', shipping_note: '',
+    // Pricing
+    commission_rate: '10', min_order_amount: '',
+    payment_terms: 'deposit' as 'deposit' | 'full',
+    deposit_rate: '50%',
+    payment_methods: [] as string[],
+    // Languages
+    languages: [] as string[],
+  });
+
   const inputCls = "w-full border border-stone-200 px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E] bg-white";
+  const labelCls = "text-[9px] font-black uppercase tracking-[0.3em] text-stone-400";
+
+  const toggleArr = (arr: string[], val: string) => arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch('/api/buyer-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone || null,
+          location: form.location,
+          specialty: form.specialty,
+          experience_years: parseInt(form.experience) || 0,
+          bio: form.intro || null,
+          portfolio_url: form.portfolio_url || null,
+          languages: form.languages,
+          service_livestream: form.service_livestream,
+          service_photo: form.service_photo,
+          service_queueing: form.service_queueing,
+          service_shipping: form.service_shipping,
+          livestream_rate: form.livestream_rate || null,
+          photo_rate: form.photo_rate || null,
+          queue_rate: form.queue_rate || null,
+          shipping_note: form.shipping_note || null,
+          commission_rate: parseFloat(form.commission_rate) || 10,
+          min_order_amount: form.min_order_amount || null,
+          payment_terms: form.payment_terms,
+          deposit_rate: form.deposit_rate,
+          payment_methods: form.payment_methods,
+        }),
+      });
+      setSent(true);
+    } catch { setSent(true); }
+    setSubmitting(false);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white w-full max-w-lg shadow-2xl my-auto">
-        <div className="bg-[#1C1C1C] text-white p-7 flex items-start justify-between">
+      <div className="relative bg-white w-full max-w-xl shadow-2xl my-8">
+        <div className="bg-[#1C1C1C] text-white p-7 flex items-start justify-between sticky top-0 z-10">
           <div className="space-y-1">
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Join Michi</p>
             <h3 className="text-xl font-serif font-black">{t('bp.applyTitle')}</h3>
@@ -266,16 +320,141 @@ function ApplyModal({ onClose, t }: { onClose: () => void; t: (k: string) => str
             <button onClick={onClose} className="border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em]">{t('bp.close')}</button>
           </div>
         ) : (
-          <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="p-7 space-y-5">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1"><label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">{t('bp.yourName')} *</label><input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} /></div>
-              <div className="space-y-1"><label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">{t('bp.yourEmail')} *</label><input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} /></div>
+          <form onSubmit={handleSubmit} className="p-7 space-y-6 max-h-[70vh] overflow-y-auto">
+
+            {/* ── Section 1: 基本資料 ── */}
+            <div className="space-y-1 pb-2 border-b border-stone-100">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A237E]">① {t('bp.applySection1')}</p>
             </div>
-            <div className="space-y-1"><label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">{t('bp.cityInJapan')} *</label><input required type="text" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className={inputCls} /></div>
-            <div className="space-y-1"><label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">{t('bp.specialtyLabel')} *</label><input required type="text" value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} className={inputCls} placeholder={t('bp.specialtyPlaceholder')} /></div>
-            <div className="space-y-1"><label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">{t('bp.yearsExp')} *</label><input required type="text" value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} className={inputCls} /></div>
-            <div className="space-y-1"><label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">{t('bp.selfIntro')}</label><textarea rows={3} value={form.intro} onChange={e => setForm({ ...form, intro: e.target.value })} className={`${inputCls} resize-none`} placeholder={t('bp.introPlaceholder')} /></div>
-            <button type="submit" className="w-full py-4 bg-[#1C1C1C] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">{t('bp.submitApplication')}</button>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1"><label className={labelCls}>{t('bp.yourName')} *</label><input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} /></div>
+              <div className="space-y-1"><label className={labelCls}>{t('bp.yourEmail')} *</label><input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1"><label className={labelCls}>{t('bp.phone')}</label><input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className={inputCls} placeholder="+81..." /></div>
+              <div className="space-y-1"><label className={labelCls}>{t('bp.cityInJapan')} *</label><input required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className={inputCls} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1"><label className={labelCls}>{t('bp.specialtyLabel')} *</label><input required value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} className={inputCls} placeholder={t('bp.specialtyPlaceholder')} /></div>
+              <div className="space-y-1"><label className={labelCls}>{t('bp.yearsExp')} *</label><input required type="number" min="0" max="30" value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} className={inputCls} /></div>
+            </div>
+
+            {/* Languages */}
+            <div className="space-y-2">
+              <label className={labelCls}>{t('bp.applyLanguages')}</label>
+              <div className="flex flex-wrap gap-2">
+                {['繁中', '簡中', 'English', '日本語', 'ไทย', '한국어'].map(lang => (
+                  <button key={lang} type="button" onClick={() => setForm({ ...form, languages: toggleArr(form.languages, lang) })}
+                    className={`text-[9px] font-bold px-3 py-1.5 border transition-all ${form.languages.includes(lang) ? 'border-[#1A237E] bg-[#1A237E] text-white' : 'border-stone-200 text-stone-400 hover:border-stone-400'}`}>
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1"><label className={labelCls}>{t('bp.selfIntro')}</label><textarea rows={3} value={form.intro} onChange={e => setForm({ ...form, intro: e.target.value })} className={`${inputCls} resize-none`} placeholder={t('bp.introPlaceholder')} /></div>
+            <div className="space-y-1"><label className={labelCls}>{t('bp.applyPortfolio')}</label><input value={form.portfolio_url} onChange={e => setForm({ ...form, portfolio_url: e.target.value })} className={inputCls} placeholder="Instagram / 小紅書 / website URL..." /></div>
+
+            {/* ── Section 2: 服務項目 ── */}
+            <div className="space-y-1 pb-2 border-b border-stone-100 pt-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A237E]">② {t('bp.applySection2')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { key: 'service_livestream', label: '📹 ' + t('bp.service_livestream'), rateKey: 'livestream_rate', placeholder: '¥5,000/30min' },
+                { key: 'service_photo', label: '📸 ' + t('bp.service_photo'), rateKey: 'photo_rate', placeholder: '¥1,500' },
+                { key: 'service_queueing', label: '⏳ ' + t('bp.service_queue'), rateKey: 'queue_rate', placeholder: '¥3,000/h' },
+                { key: 'service_shipping', label: '📦 ' + t('bp.service_shipping'), rateKey: 'shipping_note', placeholder: t('bp.byWeight') },
+              ].map(({ key, label, rateKey, placeholder }) => {
+                const active = form[key as keyof typeof form] as boolean;
+                return (
+                  <div key={key} className={`border p-3 space-y-2 cursor-pointer transition-all ${active ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200 hover:border-stone-300'}`}
+                    onClick={() => setForm({ ...form, [key]: !active })}>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-4 h-4 border flex items-center justify-center text-[10px] ${active ? 'border-[#1A237E] bg-[#1A237E] text-white' : 'border-stone-300'}`}>
+                        {active && '✓'}
+                      </div>
+                      <span className="text-sm font-bold">{label}</span>
+                    </div>
+                    {active && (
+                      <input
+                        onClick={e => e.stopPropagation()}
+                        value={form[rateKey as keyof typeof form] as string}
+                        onChange={e => setForm({ ...form, [rateKey]: e.target.value })}
+                        className="w-full border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#C5A059]"
+                        placeholder={placeholder}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* ── Section 3: 收費與佣金 ── */}
+            <div className="space-y-1 pb-2 border-b border-stone-100 pt-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A237E]">③ {t('bp.applySection3')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className={labelCls}>{t('bp.applyCommission')} *</label>
+                <div className="relative">
+                  <input required type="number" min="1" max="50" step="0.5" value={form.commission_rate} onChange={e => setForm({ ...form, commission_rate: e.target.value })} className={inputCls} />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm font-bold">%</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className={labelCls}>{t('bp.applyMinOrder')}</label>
+                <input value={form.min_order_amount} onChange={e => setForm({ ...form, min_order_amount: e.target.value })} className={inputCls} placeholder="¥5,000" />
+              </div>
+            </div>
+
+            {/* Payment terms */}
+            <div className="space-y-2">
+              <label className={labelCls}>{t('bp.paymentTerms')}</label>
+              <div className="grid grid-cols-2 gap-3">
+                {(['full', 'deposit'] as const).map(term => (
+                  <div key={term} onClick={() => setForm({ ...form, payment_terms: term })}
+                    className={`border p-3 cursor-pointer transition-all ${form.payment_terms === term ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200'}`}>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-3 h-3 rounded-full border-2 ${form.payment_terms === term ? 'border-[#1A237E] bg-[#1A237E]' : 'border-stone-300'}`} />
+                      <span className="text-xs font-bold">{term === 'full' ? t('bp.payFullShort') : t('bp.payDepositLabel')}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {form.payment_terms === 'deposit' && (
+                <div className="space-y-1">
+                  <label className={labelCls}>{t('bp.applyDepositRate')}</label>
+                  <div className="flex gap-2">
+                    {['30%', '50%', '70%'].map(r => (
+                      <button key={r} type="button" onClick={() => setForm({ ...form, deposit_rate: r })}
+                        className={`px-4 py-2 text-xs font-bold border transition-all ${form.deposit_rate === r ? 'border-[#C5A059] bg-[#C5A059]/10 text-[#C5A059]' : 'border-stone-200 text-stone-400'}`}>
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Payment methods */}
+            <div className="space-y-2">
+              <label className={labelCls}>{t('bp.applyPaymentMethods')}</label>
+              <div className="flex flex-wrap gap-2">
+                {['Bank Transfer', 'PayPal', 'WeChat Pay', 'Alipay', 'Wise', 'PayPay'].map(m => (
+                  <button key={m} type="button" onClick={() => setForm({ ...form, payment_methods: toggleArr(form.payment_methods, m) })}
+                    className={`text-[9px] font-bold px-3 py-1.5 border transition-all ${form.payment_methods.includes(m) ? 'border-[#C5A059] bg-[#C5A059]/10 text-[#C5A059]' : 'border-stone-200 text-stone-400 hover:border-stone-300'}`}>
+                    {m}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button type="submit" disabled={submitting}
+              className="w-full py-4 bg-[#1C1C1C] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all disabled:opacity-50">
+              {submitting ? '⏳ ...' : t('bp.submitApplication')}
+            </button>
           </form>
         )}
       </div>

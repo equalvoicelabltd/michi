@@ -209,7 +209,17 @@
     "buyer6_desc": "专注卡牌游戏及电子游戏周边，熟悉各地中古市场及限定发售，收藏评估经验丰富。",
     "payDepositPrefix": "💳 订金制 — 确认后先付",
     "payDepositSuffix": "订金，收货后付尾数",
-    "payDepositShortPrefix": "订金"
+    "payDepositShortPrefix": "订金",
+    "applySection1": "基本资料",
+    "applySection2": "服务项目与收费",
+    "applySection3": "佣金与付款方式",
+    "applyCommission": "代购佣金",
+    "applyMinOrder": "最低订单金额",
+    "applyDepositRate": "订金比例",
+    "applyPaymentMethods": "接受付款方式",
+    "applyLanguages": "服务语言",
+    "applyPortfolio": "作品集 / 社交媒体",
+    "phone": "电话"
   },
   "pp": {
     "heroTitle1": "日本最新商品情报",
