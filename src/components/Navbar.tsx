@@ -15,7 +15,7 @@ export default function Navbar() {
     { href: '/buyers',   label: t('buyers') },
     { href: '/products', label: t('products') },
     { href: '/about',    label: t('about') },
-    { href: '/premium', label: tn('premium') },
+    { href: '/premium', label: t('premium') },
   ];
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
