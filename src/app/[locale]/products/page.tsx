@@ -55,7 +55,7 @@ export default function ProductsPage() {
     try {
       const res = await fetch('/api/products?action=scrape');
       const data = await res.json();
-      if (data.success) { setRefreshMsg(`✦ ${t('products.scrapeSuccess', { count: data.count ?? 0 })}`); await fetchProducts(); }
+      if (data.success) { setRefreshMsg(`✦ ${t('products.scrapeSuccess')} ${data.count ?? 0}`); await fetchProducts(); }
       else setRefreshMsg(`⚠ ${data.error || t('products.scrapeFail')}`);
     } catch { setRefreshMsg(`⚠ ${t('products.errorNetwork')}`); }
     finally { setRefreshing(false); setTimeout(() => setRefreshMsg(''), 6000); }

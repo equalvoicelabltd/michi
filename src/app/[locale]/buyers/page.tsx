@@ -224,7 +224,7 @@ function ContactModal({ buyer, onClose, t }: { buyer: Buyer; onClose: () => void
 
             <div className="bg-stone-50 p-4 text-[9px] text-stone-500 leading-relaxed">
               <p className="font-black text-stone-400 uppercase tracking-widest mb-1">{t('bp.paymentTerms')}</p>
-              <p>{buyer.services.paymentTerms === 'full' ? t('bp.payFull') : t('bp.payDeposit', { rate: buyer.services.depositRate })}</p>
+              <p>{buyer.services.paymentTerms === 'full' ? t('bp.payFull') : `${t('bp.payDepositPrefix')} ${buyer.services.depositRate} ${t('bp.payDepositSuffix')}`}</p>
             </div>
 
             <button type="submit" className="w-full py-4 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
@@ -461,7 +461,7 @@ export default function BuyersPage() {
                       <div className="grid grid-cols-3 gap-2 text-center border-t border-stone-100 pt-3">
                         {[
                           [t('buyers.commission'), buyer.commission],
-                          [t('bp.paymentTerms'), buyer.services.paymentTerms === 'full' ? t('bp.payFullShort') : t('bp.payDepositShort', { rate: buyer.services.depositRate })],
+                          [t('bp.paymentTerms'), buyer.services.paymentTerms === 'full' ? t('bp.payFullShort') : `${t('bp.payDepositShortPrefix')} ${buyer.services.depositRate}`],
                           [t('buyers.response'), buyer.responseTime],
                         ].map(([label, value]) => (
                           <div key={label} className="space-y-0.5">
