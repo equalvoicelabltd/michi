@@ -7,7 +7,7 @@ import { useState, useTransition } from 'react';
 const languages = [
   { code: 'zh',    name: '繁體中文', flag: '🇹🇼' },
   { code: 'zh-CN', name: '简体中文', flag: '🇨🇳' },
-  { code: 'en',    name: 'English',  flag: '🇺🇸' },
+  { code: 'en',    name: 'English',  flag: '🇬🇧' },
   { code: 'ja',    name: '日本語',   flag: '🇯🇵' },
   { code: 'th',    name: 'ไทย',      flag: '🇹🇭' },
 ];
