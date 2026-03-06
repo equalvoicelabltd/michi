@@ -219,7 +219,10 @@
     "applyPaymentMethods": "対応決済方法",
     "applyLanguages": "対応言語",
     "applyPortfolio": "ポートフォリオ / SNS",
-    "phone": "電話"
+    "phone": "電話",
+    "selectCity": "都市を選択",
+    "selectSpecialty": "専門を選択",
+    "customRate": "カスタム %"
   },
   "pp": {
     "heroTitle1": "日本最新商品情報",

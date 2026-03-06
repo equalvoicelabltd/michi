@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useLocale } from 'next-intl';
+import { useState, useMemo, useEffect } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
 // ─────────────────────────────────────────────────────────────
 // TYPES
@@ -16,211 +16,116 @@ interface BuyerServices {
   depositRate: string;
 }
 
+interface Buyer {
+  id: number;
+  name: string;
+  nameJp: string;
+  icon: string;
+  location: string;
+  area: string;
+  experience: string;
+  specialty: string;
+  specialtyLabel: string;
+  score: number;
+  reviews: number;
+  commission: string;
+  responseTime: string;
+  languages: string[];
+  tags: string[];
+  filter: string;
+  descKey: string;
+  level: string;
+  levelNum: number;
+  highlightKey: string;
+  completedOrders: number;
+  services: BuyerServices;
+  livestreamRate?: string;
+  photoVideoRate?: string;
+}
+
 // ─────────────────────────────────────────────────────────────
-// BUYERS DATA
+// BUYERS DATA — description/highlight use translation keys
 // ─────────────────────────────────────────────────────────────
-const BUYERS = [
+const BUYERS: Buyer[] = [
   {
-    id: 1,
-    name: 'Tanaka Yuki', nameJp: '田中雪',
-    icon: '🌸',
-    location: '東京 Tokyo', area: 'tokyo',
-    experience: '8年',
-    specialty: 'FASHION', specialtyLabel: '時尚服飾',
-    score: 4.9, reviews: 312,
-    commission: '5-8%',
-    responseTime: '< 2小時',
+    id: 1, name: 'Tanaka Yuki', nameJp: '田中雪', icon: '🌸',
+    location: '東京 Tokyo', area: 'tokyo', experience: '8',
+    specialty: 'FASHION', specialtyLabel: 'fashion', score: 4.9, reviews: 312,
+    commission: '5-8%', responseTime: '< 2h',
     languages: ['繁中', '日文', 'English'],
     tags: ['Harajuku', 'Vintage', 'Streetwear', 'Luxury'],
-    filter: 'fashion',
-    description: '原宿時尚達人，深耕裏原宿 vintage 及限定聯名系列。擅長尋找 Supreme、Palace、Undercover 等品牌限定款。',
-    level: 'MICHI 達人', levelNum: 4,
-    highlight: '專攻 Nike SB 系列及 Tokyo 限定款',
-    completedOrders: 1240,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥3,000/小時',
-      shipping: true,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    livestreamRate: '¥5,000/30分鐘',
-    photoVideoRate: '¥1,500/組',
+    filter: 'fashion', descKey: 'buyer1_desc', level: 'master', levelNum: 4,
+    highlightKey: 'buyer1_highlight', completedOrders: 1240,
+    services: { livestream: true, photoVideo: true, queueing: true, queueRate: '¥3,000/h', shipping: true, paymentTerms: 'full', depositRate: '100%' },
+    livestreamRate: '¥5,000/30min', photoVideoRate: '¥1,500',
   },
   {
-    id: 2,
-    name: 'Matsuda Kenji', nameJp: '松田健二',
-    icon: '⚡',
-    location: '大阪 Osaka', area: 'osaka',
-    experience: '5年',
-    specialty: 'ANIME', specialtyLabel: '動漫周邊',
-    score: 4.8, reviews: 198,
-    commission: '6-10%',
-    responseTime: '< 4小時',
+    id: 2, name: 'Matsuda Kenji', nameJp: '松田健二', icon: '⚡',
+    location: '大阪 Osaka', area: 'osaka', experience: '5',
+    specialty: 'ANIME', specialtyLabel: 'anime', score: 4.8, reviews: 198,
+    commission: '6-10%', responseTime: '< 4h',
     languages: ['繁中', '簡中', '日文'],
-    tags: ['Gundam', 'Figure', 'Pokemon', 'Jump'],
-    filter: 'anime',
-    description: '動漫周邊收藏家，熟悉各大會場限定及一番賞。日本橋及秋葉原常駐，第一時間掌握新品動態。',
-    level: 'MICHI 職人', levelNum: 3,
-    highlight: '大阪難波 Jump 旗艦店限定品專家',
-    completedOrders: 876,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥2,000/小時',
-      shipping: true,
-      paymentTerms: '訂金50%',
-      depositRate: '50%',
-    },
-    livestreamRate: '¥3,500/30分鐘',
-    photoVideoRate: '¥1,200/組',
+    tags: ['Gundam', 'Figure', 'Limited', '一番賞'],
+    filter: 'anime', descKey: 'buyer2_desc', level: 'artisan', levelNum: 3,
+    highlightKey: 'buyer2_highlight', completedOrders: 867,
+    services: { livestream: true, photoVideo: true, queueing: true, queueRate: '¥2,500/h', shipping: true, paymentTerms: 'deposit', depositRate: '50%' },
+    livestreamRate: '¥3,000/30min', photoVideoRate: '¥1,000',
   },
   {
-    id: 3,
-    name: 'Haru Nakamura', nameJp: '中村晴',
-    icon: '🏮',
-    location: '京都 Kyoto', area: 'kyoto',
-    experience: '12年',
-    specialty: 'VINTAGE', specialtyLabel: '古著工藝',
-    score: 5.0, reviews: 445,
-    commission: '8-12%',
-    responseTime: '< 6小時',
+    id: 3, name: 'Suzuki Aoi', nameJp: '鈴木葵', icon: '💄',
+    location: '東京 Tokyo', area: 'tokyo', experience: '6',
+    specialty: 'BEAUTY', specialtyLabel: 'beauty', score: 4.9, reviews: 445,
+    commission: '4-7%', responseTime: '< 1h',
+    languages: ['繁中', '日文', 'English', 'ไทย'],
+    tags: ['SK-II', 'Shiseido', 'Canmake', 'DHC'],
+    filter: 'beauty', descKey: 'buyer3_desc', level: 'master', levelNum: 4,
+    highlightKey: 'buyer3_highlight', completedOrders: 2100,
+    services: { livestream: true, photoVideo: true, queueing: false, queueRate: '', shipping: true, paymentTerms: 'full', depositRate: '100%' },
+    livestreamRate: '¥4,000/30min', photoVideoRate: '¥800',
+  },
+  {
+    id: 4, name: 'Watanabe Riku', nameJp: '渡邊陸', icon: '🎌',
+    location: '京都 Kyoto', area: 'kyoto', experience: '3',
+    specialty: 'ANIME', specialtyLabel: 'anime', score: 4.5, reviews: 87,
+    commission: '8-12%', responseTime: '< 6h',
     languages: ['繁中', '日文'],
-    tags: ['陶藝', '古布', '民藝', '古道具'],
-    filter: 'vintage',
-    description: '京都傳統工藝職人，深入寺町、錦市場尋找稀有工藝品。專注昭和古著、手作陶器及民藝器物。',
-    level: 'MICHI 達人', levelNum: 4,
-    highlight: '京都限定文具及和風生活用品達人',
-    completedOrders: 1890,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥2,500/小時',
-      shipping: true,
-      paymentTerms: '訂金50%',
-      depositRate: '50%',
-    },
-    livestreamRate: '¥4,500/30分鐘',
-    photoVideoRate: '¥1,500/組',
+    tags: ['一番賞', 'Gashapon', 'Limited'],
+    filter: 'anime', descKey: 'buyer4_desc', level: 'buyer', levelNum: 2,
+    highlightKey: 'buyer4_highlight', completedOrders: 310,
+    services: { livestream: false, photoVideo: true, queueing: true, queueRate: '¥2,000/h', shipping: true, paymentTerms: 'deposit', depositRate: '50%' },
+    photoVideoRate: '¥500',
   },
   {
-    id: 4,
-    name: 'Sato Hiroshi', nameJp: '佐藤博',
-    icon: '📷',
-    location: '東京 Tokyo', area: 'tokyo',
-    experience: '6年',
-    specialty: 'TECH', specialtyLabel: '電子數碼',
-    score: 4.7, reviews: 267,
-    commission: '5-9%',
-    responseTime: '< 3小時',
-    languages: ['繁中', '英文', '日文'],
-    tags: ['Sony', 'Apple', 'Fujifilm', 'Limited'],
-    filter: 'tech',
-    description: '秋葉原常駐，專注最新日本限定版電子產品。相機、音響、遊戲機限定色及日版開箱。',
-    level: 'MICHI 買手', levelNum: 2,
-    highlight: 'Sony / Fujifilm 日本限定色專家',
-    completedOrders: 534,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: true,
-      queueRate: '¥3,500/小時',
-      shipping: true,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    livestreamRate: '—',
-    photoVideoRate: '¥1,000/組',
+    id: 5, name: 'Mina Fujii', nameJp: '藤井美奈', icon: '👠',
+    location: '福岡 Fukuoka', area: 'fukuoka', experience: '4',
+    specialty: 'LUXURY', specialtyLabel: 'luxury', score: 4.7, reviews: 189,
+    commission: '5-8%', responseTime: '< 3h',
+    languages: ['繁中', '日文', 'English'],
+    tags: ['Asics', 'Porter', 'Onitsuka Tiger'],
+    filter: 'luxury', descKey: 'buyer5_desc', level: 'artisan', levelNum: 3,
+    highlightKey: 'buyer5_highlight', completedOrders: 650,
+    services: { livestream: true, photoVideo: true, queueing: true, queueRate: '¥2,800/h', shipping: true, paymentTerms: 'full', depositRate: '100%' },
+    livestreamRate: '¥4,500/30min', photoVideoRate: '¥1,200',
   },
   {
-    id: 5,
-    name: 'Mina Yoshida', nameJp: '吉田美奈',
-    icon: '💄',
-    location: '福岡 Fukuoka', area: 'fukuoka',
-    experience: '4年',
-    specialty: 'BEAUTY', specialtyLabel: '美妝護膚',
-    score: 4.7, reviews: 189,
-    commission: '6-9%',
-    responseTime: '< 2小時',
+    id: 6, name: 'Kenji Mori', nameJp: '森健二', icon: '🎮',
+    location: '名古屋 Nagoya', area: 'nagoya', experience: '9',
+    specialty: 'ELECTRONICS', specialtyLabel: 'electronics', score: 4.3, reviews: 334,
+    commission: '5-9%', responseTime: '< 4h',
     languages: ['繁中', '簡中', '日文', 'English'],
-    tags: ['藥妝', 'CANMAKE', 'KOSE', '限定色'],
-    filter: 'beauty',
-    description: '福岡藥妝店達人，熟悉各大品牌季節限定色及九州限定商品。Instagram 粉絲 2 萬，每週直播選品。',
-    level: 'MICHI 買手', levelNum: 2,
-    highlight: '九州限定 & 季節限定美妝首選',
-    completedOrders: 421,
-    services: {
-      livestream: true,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '—',
-      shipping: true,
-      paymentTerms: '訂金30%',
-      depositRate: '30%',
-    },
-    livestreamRate: '¥2,500/30分鐘',
-    photoVideoRate: '¥800/組',
-  },
-  {
-    id: 6,
-    name: 'Kenji Fujimoto', nameJp: '藤本健二',
-    icon: '🎮',
-    location: '名古屋 Nagoya', area: 'nagoya',
-    experience: '9年',
-    specialty: 'FOOD', specialtyLabel: '食品零食',
-    score: 4.6, reviews: 334,
-    commission: '5-7%',
-    responseTime: '< 5小時',
-    languages: ['繁中', '日文'],
-    tags: ['名古屋限定', '卡牌', '零食', 'Pokemon'],
-    filter: 'food',
-    description: '中部地區代購老手，專注名古屋限定食品及名產。同時熟悉卡牌遊戲二手市場，可代尋稀有絕版卡牌。',
-    level: 'MICHI 職人', levelNum: 3,
-    highlight: '名古屋限定食品 & Pokemon 卡牌',
-    completedOrders: 1102,
-    services: {
-      livestream: false,
-      photoVideo: true,
-      queueing: false,
-      queueRate: '—',
-      shipping: true,
-      paymentTerms: '全額先付',
-      depositRate: '100%',
-    },
-    livestreamRate: '—',
-    photoVideoRate: '¥1,000/組',
+    tags: ['Pokemon', 'TCG', 'Retro Games'],
+    filter: 'electronics', descKey: 'buyer6_desc', level: 'master', levelNum: 4,
+    highlightKey: 'buyer6_highlight', completedOrders: 1800,
+    services: { livestream: true, photoVideo: true, queueing: true, queueRate: '¥2,000/h', shipping: true, paymentTerms: 'deposit', depositRate: '50%' },
+    livestreamRate: '¥3,500/30min', photoVideoRate: '¥800',
   },
 ];
 
-const FILTERS = [
-  { key: 'all',      label: 'All',       icon: '◉' },
-  { key: 'fashion',  label: 'Fashion',   icon: '👔' },
-  { key: 'anime',    label: 'Anime',     icon: '⚡' },
-  { key: 'vintage',  label: 'Vintage',   icon: '🏺' },
-  { key: 'beauty',   label: 'Beauty',    icon: '🌿' },
-  { key: 'tech',     label: 'Tech',      icon: '📷' },
-  { key: 'food',     label: 'Food',      icon: '☕' },
-];
-
-const AREAS = [
-  { key: 'all',     label: '全部地區' },
-  { key: 'tokyo',   label: '東京' },
-  { key: 'osaka',   label: '大阪' },
-  { key: 'kyoto',   label: '京都' },
-  { key: 'fukuoka', label: '福岡' },
-  { key: 'nagoya',  label: '名古屋' },
-];
-
-const SERVICE_FILTERS = [
-  { key: 'all',        label: '全部' },
-  { key: 'livestream', label: '📹 直播' },
-  { key: 'queueing',   label: '⏳ 排隊' },
-  { key: 'shipping',   label: '📦 代寄' },
-];
+const FILTER_KEYS = ['all', 'fashion', 'anime', 'vintage', 'beauty', 'luxury', 'electronics', 'food'];
+const FILTER_ICONS: Record<string, string> = { all: '◉', fashion: '👔', anime: '⚡', vintage: '🏺', beauty: '🌿', luxury: '💎', electronics: '📷', food: '☕' };
+const AREA_KEYS = ['all', 'tokyo', 'osaka', 'kyoto', 'fukuoka', 'nagoya'];
+const SERVICE_FILTER_KEYS = ['all', 'livestream', 'queueing', 'shipping'];
+const SERVICE_ICONS: Record<string, string> = { all: '', livestream: '📹', queueing: '⏳', shipping: '📦' };
 
 const LEVEL_STYLES: Record<number, { bg: string; text: string; border: string }> = {
   1: { bg: 'bg-stone-100', text: 'text-stone-500', border: 'border-stone-300' },
@@ -250,28 +155,18 @@ function ServiceBadge({ active, label, sub }: { active: boolean; label: string; 
 // ─────────────────────────────────────────────────────────────
 // CONTACT MODAL
 // ─────────────────────────────────────────────────────────────
-function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: () => void }) {
+function ContactModal({ buyer, onClose, t }: { buyer: Buyer; onClose: () => void; t: (k: string) => string }) {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({
-    name: '', email: '', message: '',
-    needLivestream: false,
-    needPhoto: false,
-    needQueueing: false,
-    needShipping: false,
-  });
+  const [form, setForm] = useState({ name: '', email: '', message: '', needLivestream: false, needPhoto: false, needQueueing: false, needShipping: false });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-  };
-
+  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSent(true); };
   const inputCls = "w-full border border-stone-200 px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E]";
 
   const serviceOptions = [
-    { key: 'needLivestream', label: '現場直播',  avail: buyer.services.livestream, rate: buyer.livestreamRate },
-    { key: 'needPhoto',      label: '現場拍照',  avail: buyer.services.photoVideo, rate: buyer.photoVideoRate },
-    { key: 'needQueueing',   label: '排隊服務',  avail: buyer.services.queueing,   rate: buyer.services.queueRate },
-    { key: 'needShipping',   label: '代寄服務',  avail: buyer.services.shipping,   rate: '按重量報價' },
+    { key: 'needLivestream', label: t('bp.service_livestream'), avail: buyer.services.livestream, rate: buyer.livestreamRate },
+    { key: 'needPhoto',      label: t('bp.service_photo'),     avail: buyer.services.photoVideo, rate: buyer.photoVideoRate },
+    { key: 'needQueueing',   label: t('bp.service_queue'),     avail: buyer.services.queueing,   rate: buyer.services.queueRate },
+    { key: 'needShipping',   label: t('bp.service_shipping'),  avail: buyer.services.shipping,   rate: t('bp.byWeight') },
   ];
 
   return (
@@ -280,7 +175,7 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
       <div className="relative bg-white w-full max-w-lg shadow-2xl my-auto">
         <div className="bg-[#1A237E] text-white p-7 flex items-start justify-between">
           <div className="space-y-1">
-            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">聯絡買手</p>
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">{t('bp.contactBuyer')}</p>
             <h3 className="text-xl font-serif font-black">{buyer.name}</h3>
             <p className="text-white/50 text-xs">{buyer.nameJp} · {buyer.location}</p>
           </div>
@@ -289,74 +184,51 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
 
         {sent ? (
           <div className="p-10 text-center space-y-4">
-            <div className="text-5xl">✦</div>
-            <h3 className="text-xl font-black text-[#1C1C1C]">詢問已發送</h3>
-            <p className="text-stone-500 text-sm">{buyer.name} 將在 {buyer.responseTime} 內回覆您。</p>
-            <button onClick={onClose}
-              className="mt-4 border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all">
-              關閉
-            </button>
+            <p className="text-4xl">✅</p>
+            <h4 className="text-lg font-black text-[#1C1C1C]">{t('bp.sentTitle')}</h4>
+            <p className="text-sm text-stone-500">{t('bp.sentDesc')}</p>
+            <button onClick={onClose} className="border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all">{t('bp.close')}</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-7 space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">姓名 *</label>
-                <input required type="text" value={form.name}
-                  onChange={e => setForm({ ...form, name: e.target.value })}
-                  className={inputCls} placeholder="你的名字" />
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400">{t('bp.yourName')} *</label>
+                <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} />
               </div>
               <div className="space-y-1">
-                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">Email *</label>
-                <input required type="email" value={form.email}
-                  onChange={e => setForm({ ...form, email: e.target.value })}
-                  className={inputCls} placeholder="your@email.com" />
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400">{t('bp.yourEmail')} *</label>
+                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">所需服務</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400">{t('bp.servicesNeeded')}</label>
               <div className="grid grid-cols-2 gap-2">
-                {serviceOptions.map(({ key, label, avail, rate }) => (
-                  <label key={key}
-                    className={`flex items-start gap-2 p-3 border cursor-pointer transition-all ${
-                      !avail
-                        ? 'opacity-30 cursor-not-allowed bg-stone-50'
-                        : (form as any)[key] ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200 hover:border-stone-300'
-                    }`}>
-                    <input type="checkbox" disabled={!avail}
-                      checked={(form as any)[key]}
-                      onChange={e => avail && setForm({ ...form, [key]: e.target.checked })}
-                      className="mt-0.5 accent-[#1A237E]" />
+                {serviceOptions.map(opt => (
+                  <label key={opt.key} className={`flex items-center gap-2 p-2 border text-xs cursor-pointer transition-all ${!opt.avail ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#1A237E]'}`}>
+                    <input type="checkbox" disabled={!opt.avail} checked={(form as any)[opt.key]} onChange={e => setForm({ ...form, [opt.key]: e.target.checked })} className="w-3.5 h-3.5" />
                     <div>
-                      <p className="text-[9px] font-black text-[#1C1C1C]">{label}</p>
-                      <p className="text-[8px] text-[#C5A059] font-bold mt-0.5">{avail ? rate : '此買手不提供'}</p>
+                      <span className="font-bold">{opt.label}</span>
+                      {opt.rate && <span className="text-[9px] text-[#C5A059] block">{opt.rate}</span>}
                     </div>
                   </label>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購需求 *</label>
-              <textarea required rows={3} value={form.message}
-                onChange={e => setForm({ ...form, message: e.target.value })}
-                className={`${inputCls} resize-none`}
-                placeholder="描述商品、預算、時間要求…" />
+            <div>
+              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-1.5">{t('bp.requestDetails')} *</label>
+              <textarea required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={4} className={inputCls} placeholder={t('bp.requestPlaceholder')} />
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 p-3 space-y-1">
-              <p className="text-[9px] font-black text-amber-700 uppercase tracking-widest">此買手付款條件</p>
-              <p className="text-[10px] text-amber-900 font-bold">
-                {buyer.services.paymentTerms === '全額先付'
-                  ? `💳 全額先付 — 確認訂單後須支付全數貨款及服務費`
-                  : `💳 訂金制 — 確認後先付 ${buyer.services.depositRate} 訂金，收貨後付尾數`}
-              </p>
+            <div className="bg-stone-50 p-4 text-[9px] text-stone-500 leading-relaxed">
+              <p className="font-black text-stone-400 uppercase tracking-widest mb-1">{t('bp.paymentTerms')}</p>
+              <p>{buyer.services.paymentTerms === 'full' ? t('bp.payFull') : `${t('bp.payDepositPrefix')} ${buyer.services.depositRate} ${t('bp.payDepositSuffix')}`}</p>
             </div>
 
-            <button type="submit"
-              className="w-full py-4 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
-              發送詢問
+            <button type="submit" className="w-full py-4 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
+              {t('bp.sendInquiry')}
             </button>
           </form>
         )}
@@ -368,65 +240,220 @@ function ContactModal({ buyer, onClose }: { buyer: typeof BUYERS[0]; onClose: ()
 // ─────────────────────────────────────────────────────────────
 // APPLY MODAL
 // ─────────────────────────────────────────────────────────────
-function ApplyModal({ onClose }: { onClose: () => void }) {
+function ApplyModal({ onClose, t }: { onClose: () => void; t: (k: string) => string }) {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', location: '', specialty: '', experience: '', intro: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '', location: '', specialty: '', experience: '', intro: '', portfolio_url: '',
+    // Services
+    service_livestream: false, service_photo: false, service_queueing: false, service_shipping: false,
+    livestream_rate: '', photo_rate: '', queue_rate: '', shipping_note: '',
+    // Pricing
+    commission_rate: '10', min_order_amount: '',
+    payment_terms: 'deposit' as 'deposit' | 'full',
+    deposit_rate: '50%',
+    payment_methods: [] as string[],
+    // Languages
+    languages: [] as string[],
+  });
+
   const inputCls = "w-full border border-stone-200 px-4 py-3 text-sm focus:outline-none focus:border-[#1A237E] bg-white";
+  const labelCls = "text-[9px] font-black uppercase tracking-[0.3em] text-stone-400";
+
+  const toggleArr = (arr: string[], val: string) => arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch('/api/buyer-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone || null,
+          location: form.location,
+          specialty: form.specialty,
+          experience_years: parseInt(form.experience) || 0,
+          bio: form.intro || null,
+          portfolio_url: form.portfolio_url || null,
+          languages: form.languages,
+          service_livestream: form.service_livestream,
+          service_photo: form.service_photo,
+          service_queueing: form.service_queueing,
+          service_shipping: form.service_shipping,
+          livestream_rate: form.livestream_rate || null,
+          photo_rate: form.photo_rate || null,
+          queue_rate: form.queue_rate || null,
+          shipping_note: form.shipping_note || null,
+          commission_rate: parseFloat(form.commission_rate) || 10,
+          min_order_amount: form.min_order_amount || null,
+          payment_terms: form.payment_terms,
+          deposit_rate: form.deposit_rate,
+          payment_methods: form.payment_methods,
+        }),
+      });
+      setSent(true);
+    } catch { setSent(true); }
+    setSubmitting(false);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white w-full max-w-lg shadow-2xl my-auto">
-        <div className="bg-[#1C1C1C] text-white p-7 flex items-start justify-between">
+      <div className="relative bg-white w-full max-w-xl shadow-2xl my-8">
+        <div className="bg-[#1C1C1C] text-white p-7 flex items-start justify-between sticky top-0 z-10">
           <div className="space-y-1">
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Join Michi</p>
-            <h3 className="text-xl font-serif font-black">申請成為買手</h3>
-            <p className="text-white/50 text-xs">加入 Michi 買手網絡，連接全球買家</p>
+            <h3 className="text-xl font-serif font-black">{t('bp.applyTitle')}</h3>
+            <p className="text-white/50 text-xs">{t('bp.applySubtitle')}</p>
           </div>
           <button onClick={onClose} className="text-white/40 hover:text-white text-2xl leading-none mt-1">×</button>
         </div>
 
         {sent ? (
           <div className="p-10 text-center space-y-4">
-            <div className="text-5xl">🎌</div>
-            <h3 className="text-xl font-black text-[#1C1C1C]">申請已收到</h3>
-            <p className="text-stone-500 text-sm">我們將在 3 個工作天內審核您的申請並回覆。</p>
-            <button onClick={onClose}
-              className="mt-4 border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all">
-              關閉
-            </button>
+            <p className="text-4xl">🎉</p>
+            <h4 className="text-lg font-black text-[#1C1C1C]">{t('bp.applySentTitle')}</h4>
+            <p className="text-sm text-stone-500">{t('bp.applySentDesc')}</p>
+            <button onClick={onClose} className="border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em]">{t('bp.close')}</button>
           </div>
         ) : (
-          <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="p-7 space-y-4">
+          <form onSubmit={handleSubmit} className="p-7 space-y-6 max-h-[70vh] overflow-y-auto">
+
+            {/* ── Section 1: 基本資料 ── */}
+            <div className="space-y-1 pb-2 border-b border-stone-100">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A237E]">① {t('bp.applySection1')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1"><label className={labelCls}>{t('bp.yourName')} *</label><input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} /></div>
+              <div className="space-y-1"><label className={labelCls}>{t('bp.yourEmail')} *</label><input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1"><label className={labelCls}>{t('bp.phone')}</label><input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className={inputCls} placeholder="+81..." /></div>
+              <div className="space-y-1"><label className={labelCls}>{t('bp.cityInJapan')} *</label><input required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className={inputCls} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1"><label className={labelCls}>{t('bp.specialtyLabel')} *</label><input required value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} className={inputCls} placeholder={t('bp.specialtyPlaceholder')} /></div>
+              <div className="space-y-1"><label className={labelCls}>{t('bp.yearsExp')} *</label><input required type="number" min="0" max="30" value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} className={inputCls} /></div>
+            </div>
+
+            {/* Languages */}
+            <div className="space-y-2">
+              <label className={labelCls}>{t('bp.applyLanguages')}</label>
+              <div className="flex flex-wrap gap-2">
+                {['繁中', '簡中', 'English', '日本語', 'ไทย', '한국어'].map(lang => (
+                  <button key={lang} type="button" onClick={() => setForm({ ...form, languages: toggleArr(form.languages, lang) })}
+                    className={`text-[9px] font-bold px-3 py-1.5 border transition-all ${form.languages.includes(lang) ? 'border-[#1A237E] bg-[#1A237E] text-white' : 'border-stone-200 text-stone-400 hover:border-stone-400'}`}>
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1"><label className={labelCls}>{t('bp.selfIntro')}</label><textarea rows={3} value={form.intro} onChange={e => setForm({ ...form, intro: e.target.value })} className={`${inputCls} resize-none`} placeholder={t('bp.introPlaceholder')} /></div>
+            <div className="space-y-1"><label className={labelCls}>{t('bp.applyPortfolio')}</label><input value={form.portfolio_url} onChange={e => setForm({ ...form, portfolio_url: e.target.value })} className={inputCls} placeholder="Instagram / 小紅書 / website URL..." /></div>
+
+            {/* ── Section 2: 服務項目 ── */}
+            <div className="space-y-1 pb-2 border-b border-stone-100 pt-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A237E]">② {t('bp.applySection2')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { key: 'service_livestream', label: '📹 ' + t('bp.service_livestream'), rateKey: 'livestream_rate', placeholder: '¥5,000/30min' },
+                { key: 'service_photo', label: '📸 ' + t('bp.service_photo'), rateKey: 'photo_rate', placeholder: '¥1,500' },
+                { key: 'service_queueing', label: '⏳ ' + t('bp.service_queue'), rateKey: 'queue_rate', placeholder: '¥3,000/h' },
+                { key: 'service_shipping', label: '📦 ' + t('bp.service_shipping'), rateKey: 'shipping_note', placeholder: t('bp.byWeight') },
+              ].map(({ key, label, rateKey, placeholder }) => {
+                const active = form[key as keyof typeof form] as boolean;
+                return (
+                  <div key={key} className={`border p-3 space-y-2 cursor-pointer transition-all ${active ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200 hover:border-stone-300'}`}
+                    onClick={() => setForm({ ...form, [key]: !active })}>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-4 h-4 border flex items-center justify-center text-[10px] ${active ? 'border-[#1A237E] bg-[#1A237E] text-white' : 'border-stone-300'}`}>
+                        {active && '✓'}
+                      </div>
+                      <span className="text-sm font-bold">{label}</span>
+                    </div>
+                    {active && (
+                      <input
+                        onClick={e => e.stopPropagation()}
+                        value={form[rateKey as keyof typeof form] as string}
+                        onChange={e => setForm({ ...form, [rateKey]: e.target.value })}
+                        className="w-full border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#C5A059]"
+                        placeholder={placeholder}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* ── Section 3: 收費與佣金 ── */}
+            <div className="space-y-1 pb-2 border-b border-stone-100 pt-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A237E]">③ {t('bp.applySection3')}</p>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">姓名 *</label>
-                <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={inputCls} placeholder="你的姓名" />
+                <label className={labelCls}>{t('bp.applyCommission')} *</label>
+                <div className="relative">
+                  <input required type="number" min="1" max="50" step="0.5" value={form.commission_rate} onChange={e => setForm({ ...form, commission_rate: e.target.value })} className={inputCls} />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm font-bold">%</span>
+                </div>
               </div>
               <div className="space-y-1">
-                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">Email *</label>
-                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputCls} placeholder="your@email.com" />
+                <label className={labelCls}>{t('bp.applyMinOrder')}</label>
+                <input value={form.min_order_amount} onChange={e => setForm({ ...form, min_order_amount: e.target.value })} className={inputCls} placeholder="¥5,000" />
               </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">現居日本城市 *</label>
-              <input required type="text" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className={inputCls} placeholder="東京、大阪、京都…" />
+
+            {/* Payment terms */}
+            <div className="space-y-2">
+              <label className={labelCls}>{t('bp.paymentTerms')}</label>
+              <div className="grid grid-cols-2 gap-3">
+                {(['full', 'deposit'] as const).map(term => (
+                  <div key={term} onClick={() => setForm({ ...form, payment_terms: term })}
+                    className={`border p-3 cursor-pointer transition-all ${form.payment_terms === term ? 'border-[#1A237E] bg-[#1A237E]/5' : 'border-stone-200'}`}>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-3 h-3 rounded-full border-2 ${form.payment_terms === term ? 'border-[#1A237E] bg-[#1A237E]' : 'border-stone-300'}`} />
+                      <span className="text-xs font-bold">{term === 'full' ? t('bp.payFullShort') : t('bp.payDepositLabel')}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {form.payment_terms === 'deposit' && (
+                <div className="space-y-1">
+                  <label className={labelCls}>{t('bp.applyDepositRate')}</label>
+                  <div className="flex gap-2">
+                    {['30%', '50%', '70%'].map(r => (
+                      <button key={r} type="button" onClick={() => setForm({ ...form, deposit_rate: r })}
+                        className={`px-4 py-2 text-xs font-bold border transition-all ${form.deposit_rate === r ? 'border-[#C5A059] bg-[#C5A059]/10 text-[#C5A059]' : 'border-stone-200 text-stone-400'}`}>
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="space-y-1">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購專長 *</label>
-              <input required type="text" value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} className={inputCls} placeholder="時尚、動漫、美妝…" />
+
+            {/* Payment methods */}
+            <div className="space-y-2">
+              <label className={labelCls}>{t('bp.applyPaymentMethods')}</label>
+              <div className="flex flex-wrap gap-2">
+                {['Bank Transfer', 'PayPal', 'WeChat Pay', 'Alipay', 'Wise', 'PayPay'].map(m => (
+                  <button key={m} type="button" onClick={() => setForm({ ...form, payment_methods: toggleArr(form.payment_methods, m) })}
+                    className={`text-[9px] font-bold px-3 py-1.5 border transition-all ${form.payment_methods.includes(m) ? 'border-[#C5A059] bg-[#C5A059]/10 text-[#C5A059]' : 'border-stone-200 text-stone-400 hover:border-stone-300'}`}>
+                    {m}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">代購年資 *</label>
-              <input required type="text" value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} className={inputCls} placeholder="例如：3年" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">自我介紹</label>
-              <textarea rows={3} value={form.intro} onChange={e => setForm({ ...form, intro: e.target.value })} className={`${inputCls} resize-none`} placeholder="簡介你的代購經驗及優勢…" />
-            </div>
-            <button type="submit"
-              className="w-full py-4 bg-[#1C1C1C] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
-              提交申請
+
+            {/* Submit */}
+            <button type="submit" disabled={submitting}
+              className="w-full py-4 bg-[#1C1C1C] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all disabled:opacity-50">
+              {submitting ? '⏳ ...' : t('bp.submitApplication')}
             </button>
           </form>
         )}
@@ -439,41 +466,45 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
 // MAIN PAGE
 // ─────────────────────────────────────────────────────────────
 export default function BuyersPage() {
+  const locale = useLocale();
+  const t = useTranslations();
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeArea, setActiveArea] = useState('all');
   const [activeService, setActiveService] = useState('all');
   const [sortBy, setSortBy] = useState<'score' | 'reviews' | 'experience'>('score');
-  const [contactBuyer, setContactBuyer] = useState<typeof BUYERS[0] | null>(null);
+  const [contactBuyer, setContactBuyer] = useState<Buyer | null>(null);
   const [showApply, setShowApply] = useState(false);
 
+  // Auto-open apply modal when URL hash is #apply
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#apply') {
+      setShowApply(true);
+    }
+  }, []);
+
   const displayed = useMemo(() => {
-    let list = BUYERS;
-    if (activeFilter !== 'all')   list = list.filter(b => b.filter === activeFilter);
-    if (activeArea !== 'all')     list = list.filter(b => b.area === activeArea);
+    let list: Buyer[] = [...BUYERS];
+    if (activeFilter !== 'all') list = list.filter(b => b.filter === activeFilter);
+    if (activeArea !== 'all') list = list.filter(b => b.area === activeArea);
     if (activeService === 'livestream') list = list.filter(b => b.services.livestream);
-    if (activeService === 'queueing')   list = list.filter(b => b.services.queueing);
-    if (activeService === 'shipping')   list = list.filter(b => b.services.shipping);
+    if (activeService === 'queueing') list = list.filter(b => b.services.queueing);
+    if (activeService === 'shipping') list = list.filter(b => b.services.shipping);
     if (search.trim()) {
       const q = search.toLowerCase();
-      list = list.filter(b =>
-        b.name.toLowerCase().includes(q) ||
-        b.location.toLowerCase().includes(q) ||
-        b.specialtyLabel.includes(q) ||
-        b.tags.some(t => t.toLowerCase().includes(q))
-      );
+      list = list.filter(b => b.name.toLowerCase().includes(q) || b.location.toLowerCase().includes(q) || b.tags.some(tg => tg.toLowerCase().includes(q)));
     }
-    return [...list].sort((a, b) => {
-      if (sortBy === 'score')    return b.score - a.score;
-      if (sortBy === 'reviews')  return b.reviews - a.reviews;
+    return list.sort((a, b) => {
+      if (sortBy === 'score') return b.score - a.score;
+      if (sortBy === 'reviews') return b.reviews - a.reviews;
       return parseInt(b.experience) - parseInt(a.experience);
     });
   }, [search, activeFilter, activeArea, activeService, sortBy]);
 
   return (
     <>
-      {contactBuyer && <ContactModal buyer={contactBuyer} onClose={() => setContactBuyer(null)} />}
-      {showApply && <ApplyModal onClose={() => setShowApply(false)} />}
+      {contactBuyer && <ContactModal buyer={contactBuyer} onClose={() => setContactBuyer(null)} t={t} />}
+      {showApply && <ApplyModal onClose={() => setShowApply(false)} t={t} />}
 
       <main className="min-h-screen bg-[#F9F7F2]">
 
@@ -482,56 +513,46 @@ export default function BuyersPage() {
           <div className="max-w-7xl mx-auto px-8 py-16 md:py-20">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div className="space-y-4">
-                <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">
-                  Michi · 買手名錄
-                </p>
+                <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">Michi · {t('bp.heroTag')}</p>
                 <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-none">
-                  找到你的<br />
-                  <span className="text-[#C5A059]">日本買手</span>
+                  {t('bp.heroTitle1')}<br /><span className="text-[#C5A059]">{t('bp.heroTitle2')}</span>
                 </h1>
-                <p className="text-[12px] text-white/50 max-w-md leading-relaxed">
-                  Michi 收錄在日本各城市的代購買手，提供直播、拍照、排隊及代寄服務。平台不參與任何交易，資訊僅供參考。
-                </p>
+                <p className="text-[12px] text-white/50 max-w-md leading-relaxed">{t('bp.heroDesc')}</p>
               </div>
-              <button
-                onClick={() => setShowApply(true)}
-                className="flex-shrink-0 border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all"
-              >
-                ✦ 申請成為買手
+              <button onClick={() => setShowApply(true)} className="flex-shrink-0 border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all">
+                ✦ {t('bp.applyBuyer')}
               </button>
             </div>
 
-            {/* Stats */}
             <div className="mt-14 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
-                { n: `${BUYERS.length}+`, label: '買手' },
-                { n: '5', label: '日本城市' },
-                { n: '7', label: '專長分類' },
-                { n: '2011', label: '年起創辦' },
-              ].map(({ n, label }) => (
-                <div key={label} className="space-y-1">
+                { n: `${BUYERS.length}+`, labelKey: 'bp.stat_buyers' },
+                { n: '5', labelKey: 'bp.stat_cities' },
+                { n: '7', labelKey: 'bp.stat_specialties' },
+                { n: '2011', labelKey: 'bp.stat_since' },
+              ].map(({ n, labelKey }) => (
+                <div key={labelKey} className="space-y-1">
                   <p className="text-3xl font-black text-white">{n}</p>
-                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40">{label}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40">{t(labelKey)}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ══ PAYMENT INFO STRIP ════════════════════════════ */}
+        {/* ══ PAYMENT INFO ══════════════════════════════════ */}
         <div className="bg-[#1C1C1C] border-t border-white/5 text-white py-5 px-8">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-8">
-            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 flex-shrink-0">付款條件說明</p>
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 flex-shrink-0">{t('bp.paymentInfo')}</p>
             <div className="flex flex-wrap gap-6">
-              {[
-                { label: '💳 全額先付', desc: '確認訂單後即付全數。買手購入商品風險較低，多用於搶手限定款。' },
-                { label: '💳 訂金制',   desc: '先付訂金（通常30-50%），買手入手商品後付尾數。適合大額訂單。' },
-              ].map(({ label, desc }) => (
-                <div key={label} className="flex items-start gap-3 max-w-sm">
-                  <span className="text-[10px] font-black text-[#C5A059] flex-shrink-0 mt-0.5">{label}</span>
-                  <p className="text-[9px] text-white/40 leading-relaxed">{desc}</p>
-                </div>
-              ))}
+              <div className="flex items-start gap-3 max-w-sm">
+                <span className="text-[10px] font-black text-[#C5A059] flex-shrink-0 mt-0.5">💳 {t('bp.payFullLabel')}</span>
+                <p className="text-[9px] text-white/40 leading-relaxed">{t('bp.payFullDesc')}</p>
+              </div>
+              <div className="flex items-start gap-3 max-w-sm">
+                <span className="text-[10px] font-black text-[#C5A059] flex-shrink-0 mt-0.5">💳 {t('bp.payDepositLabel')}</span>
+                <p className="text-[9px] text-white/40 leading-relaxed">{t('bp.payDepositDesc')}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -541,19 +562,15 @@ export default function BuyersPage() {
           <div className="max-w-7xl mx-auto px-8 py-5 space-y-4">
             <div className="flex flex-wrap items-center gap-4">
               <div className="relative flex-1 min-w-[200px] max-w-sm">
-                <input type="text" value={search} onChange={e => setSearch(e.target.value)}
-                  placeholder="搜尋買手、城市、專長…"
+                <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('bp.searchPlaceholder')}
                   className="w-full border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm pr-8 focus:outline-none focus:border-[#1A237E] placeholder-stone-400" />
                 <span className="absolute right-3 top-2.5 text-stone-400 text-sm pointer-events-none">🔍</span>
               </div>
-
               <div className="flex flex-wrap gap-1">
-                {FILTERS.map(({ key, label, icon }) => (
+                {FILTER_KEYS.map(key => (
                   <button key={key} onClick={() => setActiveFilter(key)}
-                    className={`px-2.5 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
-                      activeFilter === key ? 'bg-[#1A237E] text-white' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'
-                    }`}>
-                    {icon} {label}
+                    className={`px-2.5 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] transition-all ${activeFilter === key ? 'bg-[#1A237E] text-white' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>
+                    {FILTER_ICONS[key]} {t(`buyers.filter_${key}`)}
                   </button>
                 ))}
               </div>
@@ -561,108 +578,77 @@ export default function BuyersPage() {
 
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex gap-1">
-                {SERVICE_FILTERS.map(({ key, label }) => (
+                {SERVICE_FILTER_KEYS.map(key => (
                   <button key={key} onClick={() => setActiveService(key)}
-                    className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-wider transition-all border ${
-                      activeService === key
-                        ? 'bg-[#C5A059] text-white border-[#C5A059]'
-                        : 'bg-white text-stone-400 border-stone-200 hover:border-stone-400'
-                    }`}>
-                    {label}
+                    className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-wider transition-all border ${activeService === key ? 'bg-[#C5A059] text-white border-[#C5A059]' : 'bg-white text-stone-400 border-stone-200 hover:border-stone-400'}`}>
+                    {SERVICE_ICONS[key]} {t(`bp.svcFilter_${key}`)}
                   </button>
                 ))}
               </div>
-
               <div className="h-5 w-px bg-stone-200" />
-
-              <select value={activeArea} onChange={e => setActiveArea(e.target.value)}
-                className="border border-stone-200 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 focus:outline-none bg-white">
-                {AREAS.map(({ key, label }) => <option key={key} value={key}>{label}</option>)}
+              <select value={activeArea} onChange={e => setActiveArea(e.target.value)} className="border border-stone-200 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 focus:outline-none bg-white">
+                {AREA_KEYS.map(key => <option key={key} value={key}>{t(`buyers.area_${key}`)}</option>)}
               </select>
-
-              <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
-                className="border border-stone-200 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 focus:outline-none bg-white">
-                <option value="score">評分排序</option>
-                <option value="reviews">評價數排序</option>
-                <option value="experience">經驗排序</option>
+              <select value={sortBy} onChange={e => setSortBy(e.target.value as any)} className="border border-stone-200 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 focus:outline-none bg-white">
+                <option value="score">{t('buyers.sort_score')}</option>
+                <option value="reviews">{t('buyers.sort_reviews')}</option>
+                <option value="experience">{t('bp.sort_experience')}</option>
               </select>
-
               <span className="ml-auto text-[9px] font-bold text-stone-400 uppercase tracking-widest hidden lg:block">
-                {displayed.length} 位買手
+                {displayed.length} {t('buyers.count_unit')}
               </span>
             </div>
           </div>
         </section>
 
-        {/* ══ BUYER GRID ════════════════════════════════════ */}
+        {/* ══ BUYER GRID ═══════════════════════════════════ */}
         <section className="max-w-7xl mx-auto px-8 py-14">
           {displayed.length === 0 ? (
             <div className="text-center py-28 space-y-4">
               <p className="text-5xl">🔍</p>
-              <p className="text-stone-400 font-bold text-sm">找不到符合條件的買手</p>
+              <p className="text-stone-400 font-bold text-sm">{t('buyers.noResults')}</p>
               <button onClick={() => { setSearch(''); setActiveFilter('all'); setActiveArea('all'); setActiveService('all'); }}
                 className="border border-stone-300 text-stone-500 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-[#1A237E] hover:text-[#1A237E] transition-all">
-                清除篩選
+                {t('buyers.clearFilters')}
               </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
               {displayed.map(buyer => {
-                const lvl = LEVEL_STYLES[buyer.levelNum];
+                const lvl = LEVEL_STYLES[buyer.levelNum] ?? LEVEL_STYLES[1];
                 return (
                   <div key={buyer.id} className="group flex flex-col">
-                    {/* Avatar */}
                     <div className="aspect-[4/3] bg-stone-100 border border-stone-200 flex items-center justify-center relative overflow-hidden">
                       <span className="text-7xl z-10">{buyer.icon}</span>
-                      <div className="absolute inset-0 bg-[#1A237E]/0 group-hover:bg-[#1A237E]/5 transition-all duration-300" />
-                      {/* Level badge */}
-                      <div className={`absolute top-3 left-3 px-2 py-1 text-[7px] font-black uppercase tracking-[0.3em] border ${lvl.bg} ${lvl.text} ${lvl.border}`}>
-                        {buyer.level}
-                      </div>
-                      {/* Score */}
-                      <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 flex items-center gap-1">
-                        <span className="text-[#C5A059] text-xs">★</span>
-                        <span className="text-[10px] font-black text-[#1C1C1C]">{buyer.score}</span>
+                      <div className="absolute inset-0 bg-[#1A237E]/0 group-hover:bg-[#1A237E]/5 transition-all" />
+                      <div className="absolute top-3 right-3">
+                        <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-2 py-1 border ${lvl.bg} ${lvl.text} ${lvl.border}`}>
+                          {t(`buyers.level_${buyer.level}`)}
+                        </span>
                       </div>
                     </div>
-
-                    {/* Info */}
-                    <div className="border border-t-0 border-stone-200 p-5 flex flex-col gap-4 flex-1 bg-white group-hover:border-[#1A237E]/30 transition-colors">
-                      <div className="space-y-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <h3 className="font-black text-[#1C1C1C] text-sm">{buyer.name}</h3>
-                            <p className="text-[9px] text-stone-400 font-bold">{buyer.nameJp} · {buyer.location}</p>
-                          </div>
-                          <span className="text-[8px] font-bold text-stone-400 flex-shrink-0">{buyer.experience}</span>
-                        </div>
-                        <p className="text-[9px] font-black text-[#B22222] uppercase tracking-widest">{buyer.highlight}</p>
+                    <div className="border border-t-0 border-stone-200 bg-white p-5 space-y-3 flex-grow flex flex-col">
+                      <div>
+                        <h3 className="text-sm font-black text-[#1C1C1C]">{buyer.name}</h3>
+                        <p className="text-[9px] text-stone-400 font-bold">{buyer.nameJp} · {buyer.location}</p>
                       </div>
-
-                      <p className="text-[11px] text-stone-500 leading-relaxed line-clamp-2">{buyer.description}</p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1">
-                        {buyer.tags.slice(0, 3).map(tag => (
-                          <span key={tag} className="text-[8px] bg-stone-100 text-stone-500 px-1.5 py-0.5 font-bold">{tag}</span>
-                        ))}
-                        <span className="text-[8px] bg-stone-100 text-stone-400 px-1.5 py-0.5 font-bold">{buyer.specialty}</span>
+                      <div className="flex items-center gap-3 text-[10px] font-bold text-stone-500">
+                        <span className="text-[#C5A059]">★ {buyer.score}</span>
+                        <span>{buyer.reviews} {t('buyers.reviews')}</span>
+                        <span>{buyer.experience} {t('bp.years')}</span>
                       </div>
-
-                      {/* Services */}
+                      <p className="text-[11px] text-stone-500 leading-relaxed line-clamp-2">{t(buyer.descKey)}</p>
                       <div className="grid grid-cols-4 gap-1">
-                        <ServiceBadge active={buyer.services.livestream} label="直播" sub={buyer.services.livestream ? buyer.livestreamRate : undefined} />
-                        <ServiceBadge active={buyer.services.photoVideo} label="拍照" sub={buyer.photoVideoRate !== '—' ? buyer.photoVideoRate : undefined} />
-                        <ServiceBadge active={buyer.services.queueing}   label="排隊" sub={buyer.services.queueRate !== '—' ? buyer.services.queueRate : undefined} />
-                        <ServiceBadge active={buyer.services.shipping}   label="代寄" />
+                        <ServiceBadge active={buyer.services.livestream} label={t('bp.service_livestream')} sub={buyer.livestreamRate} />
+                        <ServiceBadge active={buyer.services.photoVideo} label={t('bp.service_photo')} sub={buyer.photoVideoRate} />
+                        <ServiceBadge active={buyer.services.queueing} label={t('bp.service_queue')} sub={buyer.services.queueRate || undefined} />
+                        <ServiceBadge active={buyer.services.shipping} label={t('bp.service_shipping')} />
                       </div>
-
-                      {/* Stats */}
                       <div className="grid grid-cols-3 gap-2 text-center border-t border-stone-100 pt-3">
                         {[
-                          ['佣金', buyer.commission],
-                          ['付款', buyer.services.paymentTerms],
-                          ['回覆', buyer.responseTime],
+                          [t('buyers.commission'), buyer.commission],
+                          [t('bp.paymentTerms'), buyer.services.paymentTerms === 'full' ? t('bp.payFullShort') : `${t('bp.payDepositShortPrefix')} ${buyer.services.depositRate}`],
+                          [t('buyers.response'), buyer.responseTime],
                         ].map(([label, value]) => (
                           <div key={label} className="space-y-0.5">
                             <p className="text-[8px] font-bold text-stone-400 uppercase tracking-widest">{label}</p>
@@ -670,18 +656,15 @@ export default function BuyersPage() {
                           </div>
                         ))}
                       </div>
-
-                      {/* Languages */}
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {buyer.languages.map(lang => (
                           <span key={lang} className="text-[8px] bg-blue-50 text-[#1A237E] px-1.5 py-0.5 font-bold">{lang}</span>
                         ))}
-                        <span className="ml-auto text-[9px] text-stone-400">{buyer.completedOrders.toLocaleString()} 紀錄</span>
+                        <span className="ml-auto text-[9px] text-stone-400">{buyer.completedOrders.toLocaleString()} {t('bp.records')}</span>
                       </div>
-
                       <button onClick={() => setContactBuyer(buyer)}
-                        className="w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all">
-                        聯絡買手
+                        className="mt-auto block w-full py-3 bg-[#1A237E] text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#B22222] transition-all text-center">
+                        {t('bp.contactBuyer')}
                       </button>
                     </div>
                   </div>
@@ -690,26 +673,6 @@ export default function BuyersPage() {
             </div>
           )}
         </section>
-
-        {/* ══ APPLY CTA ═════════════════════════════════════ */}
-        <section id="apply" className="bg-[#1A237E] text-white py-20 px-8">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-            <div className="space-y-4">
-              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/40">For Buyers in Japan</p>
-              <h2 className="text-3xl md:text-4xl font-black leading-tight">你也在日本？<br />加入 Michi 買手網絡</h2>
-              <p className="text-white/50 text-sm max-w-md leading-relaxed">
-                無論你在東京、大阪、京都還是其他城市，Michi 讓全球買家主動找到你。設定你的專長、服務與費用，建立你的代購品牌。
-              </p>
-            </div>
-            <button
-              onClick={() => setShowApply(true)}
-              className="flex-shrink-0 border border-white text-white px-10 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-[#1A237E] transition-all"
-            >
-              立即申請成為買手 →
-            </button>
-          </div>
-        </section>
-
       </main>
     </>
   );

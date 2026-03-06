@@ -219,7 +219,10 @@
     "applyPaymentMethods": "Accepted Payment Methods",
     "applyLanguages": "Service Languages",
     "applyPortfolio": "Portfolio / Social Media",
-    "phone": "Phone"
+    "phone": "Phone",
+    "selectCity": "Select City",
+    "selectSpecialty": "Select Specialty",
+    "customRate": "Custom %"
   },
   "pp": {
     "heroTitle1": "Latest Japan Products",

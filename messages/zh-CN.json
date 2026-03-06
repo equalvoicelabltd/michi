@@ -219,7 +219,10 @@
     "applyPaymentMethods": "接受付款方式",
     "applyLanguages": "服务语言",
     "applyPortfolio": "作品集 / 社交媒体",
-    "phone": "电话"
+    "phone": "电话",
+    "selectCity": "选择城市",
+    "selectSpecialty": "选择专长",
+    "customRate": "自定 %"
   },
   "pp": {
     "heroTitle1": "日本最新商品情报",

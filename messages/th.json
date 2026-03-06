@@ -219,7 +219,10 @@
     "applyPaymentMethods": "วิธีชำระเงินที่รับ",
     "applyLanguages": "ภาษาที่ให้บริการ",
     "applyPortfolio": "ผลงาน / โซเชียลมีเดีย",
-    "phone": "โทรศัพท์"
+    "phone": "โทรศัพท์",
+    "selectCity": "เลือกเมือง",
+    "selectSpecialty": "เลือกความเชี่ยวชาญ",
+    "customRate": "กำหนดเอง %"
   },
   "pp": {
     "heroTitle1": "สินค้าญี่ปุ่นล่าสุด",
