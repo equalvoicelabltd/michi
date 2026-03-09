@@ -1,194 +1,336 @@
-/**
- * /api/product-alerts/route.ts
- *
- * POST   → 登記商品提醒（公開）
- * DELETE → 退訂
- * GET    → verify email / trigger notifications (admin)
- */
+'use client';
 
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { useEffect, useState, useMemo } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-function generateToken(): string {
-  return Array.from(crypto.getRandomValues(new Uint8Array(24)))
-    .map(b => b.toString(16).padStart(2, '0')).join('');
+// ─────────────────────────────────────────────────────────────
+// TYPES
+// ─────────────────────────────────────────────────────────────
+interface Product {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  source: string;
+  ai_summary: string | null;
+  published_at: string;
+  image_url?: string | null;
+  source_url?: string | null;
+  ai_generated?: boolean;
 }
 
-// ═══════════════════════════════════════════════════════════
-// POST — 登記商品提醒
-// ═══════════════════════════════════════════════════════════
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
+const CATEGORY_ICONS: Record<string, string> = {
+  fashion: '👔', beauty: '🌿', anime: '⚡', food: '☕', electronics: '📷', craft: '🎋', luxury: '💎', sneakers: '👟', all: '◉',
+};
+const CAT_KEYS = ['all', 'fashion', 'beauty', 'anime', 'food', 'electronics', 'craft', 'luxury', 'sneakers'];
 
-    if (!body.email) {
-      return NextResponse.json({ success: false, error: 'Email is required' }, { status: 400 });
+const ALERT_CATEGORIES = [
+  { value: 'beauty', icon: '💄' },
+  { value: 'fashion', icon: '👗' },
+  { value: 'anime', icon: '🎌' },
+  { value: 'luxury', icon: '👜' },
+  { value: 'electronics', icon: '📱' },
+  { value: 'food', icon: '🍣' },
+  { value: 'sneakers', icon: '👟' },
+  { value: 'craft', icon: '🎨' },
+];
+
+// ─────────────────────────────────────────────────────────────
+// MAIN PAGE
+// ─────────────────────────────────────────────────────────────
+export default function ProductsPage() {
+  const locale = useLocale();
+  const t = useTranslations();
+
+  // ── Products state ─────────────────────────────────────────
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshMsg, setRefreshMsg] = useState('');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'category'>('newest');
+
+  // ── Alert signup state ─────────────────────────────────────
+  const [alertForm, setAlertForm] = useState({ email: '', name: '', categories: [] as string[], frequency: 'daily' });
+  const [alertStatus, setAlertStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [alertError, setAlertError] = useState('');
+
+  // ── Products fetching ──────────────────────────────────────
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      if (data.success) setProducts(data.products ?? []);
+      else setError(t('products.errorLoad'));
+    } catch { setError(t('products.errorNetwork')); }
+    finally { setLoading(false); }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true); setRefreshMsg('');
+    try {
+      const res = await fetch('/api/products?action=scrape');
+      const data = await res.json();
+      if (data.success) { setRefreshMsg(`✦ ${t('products.scrapeSuccess')} ${data.count ?? 0}`); await fetchProducts(); }
+      else setRefreshMsg(`⚠ ${data.error || t('products.scrapeFail')}`);
+    } catch { setRefreshMsg(`⚠ ${t('products.errorNetwork')}`); }
+    finally { setRefreshing(false); setTimeout(() => setRefreshMsg(''), 6000); }
+  };
+
+  useEffect(() => { fetchProducts(); }, []);
+
+  const displayed = useMemo(() => {
+    let list = products;
+    if (activeCategory !== 'all') list = list.filter(p => p.category === activeCategory);
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(p => p.title.toLowerCase().includes(q) || (p.ai_summary ?? '').toLowerCase().includes(q) || p.source.toLowerCase().includes(q));
     }
+    return sortBy === 'newest'
+      ? [...list].sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+      : [...list].sort((a, b) => a.category.localeCompare(b.category));
+  }, [products, activeCategory, searchQuery, sortBy]);
 
-    const categories = body.categories || [];
-    if (categories.length === 0) {
-      return NextResponse.json({ success: false, error: 'Select at least one category' }, { status: 400 });
-    }
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: products.length };
+    for (const p of products) map[p.category] = (map[p.category] ?? 0) + 1;
+    return map;
+  }, [products]);
 
-    // Check if already subscribed
-    const { data: existing } = await supabase
-      .from('product_alerts')
-      .select('id, active, verified')
-      .eq('email', body.email)
-      .single();
+  const localeMap: Record<string, string> = { zh: 'zh-TW', 'zh-CN': 'zh-CN', en: 'en-US', ja: 'ja-JP' };
+  const formatDate = (iso: string) => {
+    try { return new Date(iso).toLocaleDateString(localeMap[locale] ?? 'en-US', { month: 'short', day: 'numeric' }); }
+    catch { return ''; }
+  };
 
-    if (existing) {
-      // Update existing subscription
-      const { error } = await supabase
-        .from('product_alerts')
-        .update({
-          categories,
-          name: body.name || null,
-          frequency: body.frequency || 'daily',
-          locale: body.locale || 'zh',
-          active: true,
-        })
-        .eq('id', existing.id);
+  // ── Alert signup handler ───────────────────────────────────
+  const toggleAlertCat = (cat: string) => {
+    setAlertForm(prev => ({
+      ...prev,
+      categories: prev.categories.includes(cat) ? prev.categories.filter(c => c !== cat) : [...prev.categories, cat],
+    }));
+  };
 
-      if (error) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-      }
-
-      return NextResponse.json({
-        success: true,
-        message: 'Subscription updated',
-        already_verified: existing.verified,
+  const handleAlertSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (alertForm.categories.length === 0) { setAlertError(t('alerts.selectOne')); return; }
+    setAlertStatus('submitting'); setAlertError('');
+    try {
+      const res = await fetch('/api/product-alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...alertForm, locale }),
       });
-    }
+      const data = await res.json();
+      if (data.success) setAlertStatus('success');
+      else { setAlertError(data.error || 'Error'); setAlertStatus('error'); }
+    } catch { setAlertError('Network error'); setAlertStatus('error'); }
+  };
 
-    // New subscription
-    const verifyToken = generateToken();
-    const unsubToken = generateToken();
+  return (
+    <main className="min-h-screen bg-[#1C1C1C]">
 
-    const { data, error } = await supabase
-      .from('product_alerts')
-      .insert({
-        email: body.email,
-        name: body.name || null,
-        categories,
-        frequency: body.frequency || 'daily',
-        locale: body.locale || 'zh',
-        verified: false,
-        verify_token: verifyToken,
-        unsubscribe_token: unsubToken,
-        active: true,
-      })
-      .select('id')
-      .single();
+      {/* ══ HERO ══════════════════════════════════════════ */}
+      <section className="relative pt-20 pb-14 px-8 overflow-hidden">
+        <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 text-[28rem] font-serif text-white/[0.02] pointer-events-none select-none leading-none">情</div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="space-y-4">
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-[#C5A059]">AI · Japan Product Intelligence</p>
+              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+                {t('pp.heroTitle1')}<br /><span className="text-[#C5A059] italic font-serif font-normal text-3xl">{t('pp.heroTitle2')}</span>
+              </h1>
+              <p className="text-white/40 text-sm max-w-md leading-relaxed">{t('pp.heroDesc')}</p>
+            </div>
+            <button onClick={handleRefresh} disabled={refreshing}
+              className="flex-shrink-0 border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all disabled:opacity-50 flex items-center gap-2">
+              {refreshing ? <><span className="w-3 h-3 border border-[#C5A059] border-t-transparent rounded-full animate-spin" />{t('products.aiRefreshing')}</> : <>✦ {t('products.aiRefresh')}</>}
+            </button>
+          </div>
+          {refreshMsg && <p className="mt-4 text-[10px] font-bold text-white/50">{refreshMsg}</p>}
+        </div>
+      </section>
 
-    if (error) {
-      if (error.code === '23505') {
-        return NextResponse.json({ success: false, error: 'Email already registered' }, { status: 409 });
-      }
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-    }
+      {/* ══ SEARCH + FILTERS ══════════════════════════════ */}
+      <section className="border-t border-b border-white/10 px-8 py-6">
+        <div className="max-w-7xl mx-auto space-y-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="relative flex-1 min-w-[200px] max-w-sm">
+              <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={t('pp.searchPlaceholder')}
+                className="w-full bg-white/5 border border-white/10 text-white px-4 py-2.5 text-sm pr-8 focus:outline-none focus:border-[#C5A059] placeholder-white/30" />
+              <span className="absolute right-3 top-2.5 text-white/30 text-sm pointer-events-none">🔍</span>
+            </div>
+            <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
+              className="bg-white/5 border border-white/10 text-white/60 px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-[#C5A059]">
+              <option value="newest">{t('pp.sort_newest')}</option>
+              <option value="category">{t('pp.sort_category')}</option>
+            </select>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {CAT_KEYS.map(key => (
+              <button key={key} onClick={() => setActiveCategory(key)}
+                className={`px-4 py-2 text-[9px] font-black uppercase tracking-[0.25em] transition-all border ${
+                  activeCategory === key ? 'bg-[#C5A059] text-[#1C1C1C] border-[#C5A059]' : 'border-white/20 text-white/50 hover:border-[#C5A059] hover:text-[#C5A059]'
+                }`}>
+                {CATEGORY_ICONS[key]} {t(`products.categories.${key}`)} {counts[key] !== undefined ? `(${counts[key]})` : ''}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    // TODO: Send verification email via Resend/SendGrid
-    // For now, auto-verify
-    await supabase
-      .from('product_alerts')
-      .update({ verified: true })
-      .eq('id', data.id);
+      {/* ══ PRODUCT GRID ═══════════════════════════════════ */}
+      <section className="max-w-7xl mx-auto px-8 py-14">
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="border border-white/10 animate-pulse">
+                <div className="aspect-[4/3] bg-white/5" />
+                <div className="p-6 space-y-3"><div className="h-3 bg-white/10 rounded w-1/3" /><div className="h-4 bg-white/15 rounded w-3/4" /><div className="h-3 bg-white/10 rounded w-full" /></div>
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-28 space-y-4">
+            <p className="text-4xl">⚠️</p>
+            <p className="text-white/50 font-bold text-sm">{error}</p>
+            <button onClick={() => { setError(''); setLoading(true); fetchProducts(); }}
+              className="border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all">{t('products.retry')}</button>
+          </div>
+        ) : displayed.length === 0 ? (
+          <div className="text-center py-28 space-y-4">
+            <p className="text-5xl">📦</p>
+            <p className="text-white/40 font-bold text-sm">{t('products.noProducts')}</p>
+            <button onClick={handleRefresh} disabled={refreshing}
+              className="border border-[#C5A059] text-[#C5A059] px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#C5A059] hover:text-[#1C1C1C] transition-all disabled:opacity-50">
+              ✦ {t('products.aiRefresh')}
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayed.map(product => {
+              const catLabel = t(`products.categories.${product.category}`) || product.category;
+              const icon = CATEGORY_ICONS[product.category] ?? '✦';
+              return (
+                <article key={product.id} className="group border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#C5A059]/40 transition-all duration-300 flex flex-col">
+                  {product.image_url && (
+                    <div className="aspect-[4/3] overflow-hidden border-b border-white/10 relative">
+                      <img src={product.image_url} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      {product.ai_generated && <div className="absolute top-3 right-3 bg-[#C5A059] text-[#1C1C1C] text-[7px] font-black uppercase tracking-[0.3em] px-2 py-1">AI</div>}
+                      <div className="absolute top-3 left-3 text-white text-[7px] font-black uppercase tracking-[0.3em] px-2 py-1 bg-[#1C1C1C]/80">{icon} {catLabel}</div>
+                    </div>
+                  )}
+                  <div className="p-5 space-y-3 flex-1 flex flex-col">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[8px] font-black uppercase tracking-[0.35em] text-[#C5A059]">{catLabel}</span>
+                      <span className="text-[8px] text-white/30 font-bold">{formatDate(product.published_at)}</span>
+                    </div>
+                    <h3 className="text-sm font-black text-white leading-tight group-hover:text-[#C5A059] transition-colors line-clamp-2">{product.title}</h3>
+                    {product.ai_summary && (
+                      <div className="border-l-2 border-[#C5A059]/40 pl-3 flex-1">
+                        <p className="text-[10px] text-white/45 leading-relaxed line-clamp-4">{product.ai_summary}</p>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center text-[9px] font-bold text-white/25 uppercase tracking-widest pt-3 border-t border-white/10 mt-auto">
+                      <span>{product.source ?? 'Japan'}</span>
+                      {product.source_url ? (
+                        <a href={product.source_url} target="_blank" rel="noopener noreferrer" className="text-[#C5A059] hover:text-white transition-colors">{t('products.viewDetails')} ↗</a>
+                      ) : (
+                        <span className="text-white/15">Japan Exclusive</span>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
 
-    return NextResponse.json({
-      success: true,
-      message: 'Subscribed successfully',
-      id: data.id,
-    });
-  } catch (err) {
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
-  }
-}
+        <div className="text-center pt-12">
+          <p className="text-[9px] font-bold text-white/20 uppercase tracking-[0.4em]">{t('products.poweredBy')}</p>
+        </div>
+      </section>
 
-// ═══════════════════════════════════════════════════════════
-// DELETE — 退訂
-// ═══════════════════════════════════════════════════════════
-export async function DELETE(request: NextRequest) {
-  try {
-    const { email, token } = await request.json();
+      {/* ══ ALERT SIGNUP ══════════════════════════════════ */}
+      <section className="border-t border-white/10">
+        <div className="max-w-3xl mx-auto px-8 py-16">
+          {alertStatus === 'success' ? (
+            <div className="text-center space-y-3 py-8">
+              <p className="text-4xl">🔔</p>
+              <h3 className="text-xl font-black text-white">{t('alerts.successTitle')}</h3>
+              <p className="text-white/50 text-sm">{t('alerts.successDesc')}</p>
+              <p className="text-[9px] text-white/30">{alertForm.email}</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <span className="text-[#C5A059] text-2xl">🔔</span>
+                <div>
+                  <h3 className="text-xl font-black text-white">{t('alerts.title')}</h3>
+                  <p className="text-white/40 text-xs">{t('alerts.desc')}</p>
+                </div>
+              </div>
 
-    if (!email) {
-      return NextResponse.json({ success: false, error: 'Email required' }, { status: 400 });
-    }
+              <form onSubmit={handleAlertSubmit} className="space-y-5">
+                {/* Categories grid */}
+                <div className="space-y-2">
+                  <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40">{t('alerts.pickCategories')}</label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {ALERT_CATEGORIES.map(({ value, icon }) => {
+                      const active = alertForm.categories.includes(value);
+                      return (
+                        <button key={value} type="button" onClick={() => toggleAlertCat(value)}
+                          className={`p-3 text-center border transition-all ${active ? 'border-[#C5A059] bg-[#C5A059]/10' : 'border-white/10 hover:border-white/20'}`}>
+                          <span className="text-xl">{icon}</span>
+                          <p className={`text-[8px] font-bold uppercase tracking-wider mt-1 ${active ? 'text-[#C5A059]' : 'text-white/40'}`}>
+                            {t(`alerts.cat_${value}`)}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-    const query = supabase
-      .from('product_alerts')
-      .update({ active: false })
-      .eq('email', email);
+                {/* Email + Name */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Email *</label>
+                    <input required type="email" value={alertForm.email} onChange={e => setAlertForm({ ...alertForm, email: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-[#C5A059] placeholder-white/20"
+                      placeholder="your@email.com" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40">{t('alerts.nameOptional')}</label>
+                    <input value={alertForm.name} onChange={e => setAlertForm({ ...alertForm, name: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-[#C5A059] placeholder-white/20" />
+                  </div>
+                </div>
 
-    // If token provided, verify it matches
-    if (token) {
-      query.eq('unsubscribe_token', token);
-    }
+                {/* Frequency */}
+                <div className="flex gap-3">
+                  {(['daily', 'weekly'] as const).map(freq => (
+                    <button key={freq} type="button" onClick={() => setAlertForm({ ...alertForm, frequency: freq })}
+                      className={`px-5 py-2 text-[9px] font-black uppercase tracking-[0.2em] border transition-all ${alertForm.frequency === freq ? 'border-[#C5A059] text-[#C5A059]' : 'border-white/10 text-white/30'}`}>
+                      {t(`alerts.freq_${freq}`)}
+                    </button>
+                  ))}
+                </div>
 
-    const { error } = await query;
+                {alertError && <p className="text-red-400 text-xs">{alertError}</p>}
 
-    if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-    }
+                <button type="submit" disabled={alertStatus === 'submitting'}
+                  className="w-full py-3.5 bg-[#C5A059] text-[#1C1C1C] text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all disabled:opacity-50">
+                  {alertStatus === 'submitting' ? '⏳...' : t('alerts.subscribe')}
+                </button>
 
-    return NextResponse.json({ success: true, message: 'Unsubscribed' });
-  } catch (err) {
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
-// GET — verify email or trigger notifications (admin)
-// ═══════════════════════════════════════════════════════════
-export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const action = url.searchParams.get('action');
-
-  // Email verification
-  if (action === 'verify') {
-    const token = url.searchParams.get('token');
-    if (!token) {
-      return NextResponse.json({ error: 'Missing token' }, { status: 400 });
-    }
-
-    const { error } = await supabase
-      .from('product_alerts')
-      .update({ verified: true })
-      .eq('verify_token', token);
-
-    if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, message: 'Email verified' });
-  }
-
-  // Admin: get subscriber count
-  if (action === 'stats') {
-    const adminKey = request.headers.get('x-admin-key');
-    if (adminKey !== process.env.ADMIN_API_KEY) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { count: total } = await supabase
-      .from('product_alerts')
-      .select('*', { count: 'exact', head: true })
-      .eq('active', true);
-
-    const { count: verified } = await supabase
-      .from('product_alerts')
-      .select('*', { count: 'exact', head: true })
-      .eq('active', true)
-      .eq('verified', true);
-
-    return NextResponse.json({ success: true, total, verified });
-  }
-
-  return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+                <p className="text-[8px] text-white/20 text-center">{t('alerts.privacy')}</p>
+              </form>
+            </div>
+          )}
+        </div>
+      </section>
+    </main>
+  );
 }
