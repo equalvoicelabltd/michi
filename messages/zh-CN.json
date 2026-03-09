@@ -10,7 +10,8 @@
     "language": "语言",
     "applyBuyer": "申请成为买手",
     "disclaimer": "MICHI · 代购买手资讯平台 · 平台不参与任何交易",
-    "premium": "职人推介"
+    "premium": "职人推介",
+    "quote": "报价工具"
   },
   "hero": {
     "title": "みち — 通往日本好物的道路",
@@ -509,5 +510,39 @@
     "buyer1_desc": "东京原宿时尚职人，8 年代购经验。深耕 Vintage、限定球鞋及潮牌联名，每周直播带货。1,200+ 成功订单。",
     "buyer2_desc": "东京美妆第一买手，专攻百货限定套装及药妆新品。@cosme 排名即时追踪。2,100+ 成交记录。",
     "buyer3_desc": "福冈球鞋及手袋达人，精通 Asics、Porter、Onitsuka Tiger 及 Bao Bao Issey Miyake。擅长地方限定款搜罗。"
+  },
+  "quote": {
+    "heroTitle": "代购报价计算器",
+    "heroDesc": "输入商品价格，自动计算佣金、运费及总价。生成报价单分享给客人。",
+    "section1": "商品资料",
+    "section2": "代购佣金",
+    "section3": "国际运费 (EMS)",
+    "section4": "显示货币",
+    "productName": "商品名称",
+    "productPlaceholder": "例：SK-II 神仙水 230ml",
+    "unitPrice": "单价",
+    "quantity": "数量",
+    "includeShipping": "包含运费",
+    "destination": "目的地",
+    "weight": "包裹重量",
+    "optional": "可选资料",
+    "shopperName": "买手名称",
+    "buyerName": "客人名称",
+    "notes": "备注",
+    "notesPlaceholder": "预计到货时间、特别要求等...",
+    "quoteLabel": "Michi 报价单",
+    "from": "买手",
+    "to": "客人",
+    "untitled": "（未命名商品）",
+    "subtotal": "商品小计",
+    "commission": "代购佣金",
+    "shipping": "国际运费",
+    "total": "总计",
+    "fxNote": "汇率仅供参考，实际以付款时为准",
+    "print": "打印报价单",
+    "copy": "复制报价文字",
+    "tip": "提示",
+    "tipDesc": "这个报价单可以直接分享给客人。打印时只输出报价卡，方便截图或保存为 PDF。",
+    "disclaimer": "本报价由 Michi 报价工具生成，仅供参考。Michi 不参与交易，实际价格以买手与客人协商为准。"
   }
 }

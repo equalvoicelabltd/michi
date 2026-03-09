@@ -2,6 +2,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { SessionProvider } from './providers';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import './globals.css';
 
 const locales = ['zh', 'zh-CN', 'en', 'ja', 'th'];
@@ -12,17 +14,15 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params: { locale }
+  params: { locale },
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  // 驗證 locale
   if (!locales.includes(locale as any)) {
     notFound();
   }
 
-  // 獲取翻譯訊息
   const messages = await getMessages();
 
   return (
@@ -30,7 +30,9 @@ export default async function LocaleLayout({
       <body>
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
-            {children}
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
           </NextIntlClientProvider>
         </SessionProvider>
       </body>

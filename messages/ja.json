@@ -10,7 +10,8 @@
     "language": "言語",
     "applyBuyer": "ショッパーになる",
     "disclaimer": "MICHI · 代行ショッパー情報プラットフォーム · 取引には一切関与しません",
-    "premium": "プレミアム"
+    "premium": "プレミアム",
+    "quote": "見積ツール"
   },
   "hero": {
     "title": "みち — 日本の逸品への道",
@@ -509,5 +510,39 @@
     "buyer1_desc": "東京原宿のファッション職人、8年の経験。ヴィンテージ、限定スニーカー、ストリートウェアコラボが専門。毎週ライブ配信。1,200件以上の注文完了。",
     "buyer2_desc": "東京トップのビューティーショッパー。百貨店限定やドラッグストア新商品が専門。@cosmeランキングをリアルタイム追跡。2,100件以上の実績。",
     "buyer3_desc": "福岡のスニーカー・バッグ専門家。Asics、Porter、Onitsuka Tiger、Bao Bao Issey Miyakeが得意。地方限定品の発掘に長けています。"
+  },
+  "quote": {
+    "heroTitle": "代行見積もり計算ツール",
+    "heroDesc": "商品価格を入力すると、手数料・送料・合計を自動計算。見積書を生成してクライアントに共有できます。",
+    "section1": "商品情報",
+    "section2": "代行手数料",
+    "section3": "国際送料 (EMS)",
+    "section4": "表示通貨",
+    "productName": "商品名",
+    "productPlaceholder": "例：SK-II フェイシャル トリートメント エッセンス 230ml",
+    "unitPrice": "単価",
+    "quantity": "数量",
+    "includeShipping": "送料を含む",
+    "destination": "配送先",
+    "weight": "梱包重量",
+    "optional": "任意項目",
+    "shopperName": "ショッパー名",
+    "buyerName": "クライアント名",
+    "notes": "備考",
+    "notesPlaceholder": "配送予定日、特別なリクエストなど...",
+    "quoteLabel": "Michi 見積書",
+    "from": "ショッパー",
+    "to": "クライアント",
+    "untitled": "（商品名未入力）",
+    "subtotal": "商品小計",
+    "commission": "代行手数料",
+    "shipping": "国際送料",
+    "total": "合計",
+    "fxNote": "為替レートは参考値です。実際のレートは決済時に適用されます",
+    "print": "見積書を印刷",
+    "copy": "見積もりテキストをコピー",
+    "tip": "ヒント",
+    "tipDesc": "この見積書をクライアントに直接共有できます。印刷は見積カードのみ出力されます。",
+    "disclaimer": "この見積書はMichiの見積ツールにより生成されたもので、参考用です。Michiは取引に関与しません。実際の価格は交渉により決定されます。"
   }
 }

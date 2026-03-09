@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import './globals.css';
 
-const locales = ['zh', 'zh-CN', 'en', 'ja', 'th'];
+const locales = ['zh', 'zh-CN', 'en', 'ja'];
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
