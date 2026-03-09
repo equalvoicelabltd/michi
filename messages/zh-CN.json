@@ -544,5 +544,27 @@
     "tip": "提示",
     "tipDesc": "这个报价单可以直接分享给客人。打印时只输出报价卡，方便截图或保存为 PDF。",
     "disclaimer": "本报价由 Michi 报价工具生成，仅供参考。Michi 不参与交易，实际价格以买手与客人协商为准。"
+  },
+  "alerts": {
+    "title": "日本限定品提醒",
+    "desc": "选择你感兴趣的品类，有新商品时 email 通知你。",
+    "pickCategories": "选择你想追踪的品类",
+    "cat_beauty": "美妆",
+    "cat_fashion": "时尚",
+    "cat_anime": "动漫",
+    "cat_luxury": "奢侈品",
+    "cat_electronics": "电子",
+    "cat_food": "食品",
+    "cat_sneakers": "球鞋",
+    "cat_craft": "工艺",
+    "nameOptional": "称呼（可选）",
+    "freq_daily": "每日通知",
+    "freq_weekly": "每周摘要",
+    "selectOne": "请至少选择一个品类",
+    "subscribe": "🔔 订阅限定品提醒",
+    "privacy": "你的 email 只用作商品通知，不会分享给第三方。随时可退订。",
+    "successTitle": "订阅成功！",
+    "successDesc": "有新限定品时我们会 email 通知你。",
+    "unsubscribe": "退订"
   }
 }

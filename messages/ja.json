@@ -544,5 +544,27 @@
     "tip": "ヒント",
     "tipDesc": "この見積書をクライアントに直接共有できます。印刷は見積カードのみ出力されます。",
     "disclaimer": "この見積書はMichiの見積ツールにより生成されたもので、参考用です。Michiは取引に関与しません。実際の価格は交渉により決定されます。"
+  },
+  "alerts": {
+    "title": "日本限定品アラート",
+    "desc": "興味のあるカテゴリを選択。新商品が見つかったらメールでお知らせします。",
+    "pickCategories": "追跡したいカテゴリを選択",
+    "cat_beauty": "ビューティー",
+    "cat_fashion": "ファッション",
+    "cat_anime": "アニメ",
+    "cat_luxury": "ラグジュアリー",
+    "cat_electronics": "電子",
+    "cat_food": "フード",
+    "cat_sneakers": "スニーカー",
+    "cat_craft": "工芸",
+    "nameOptional": "お名前（任意）",
+    "freq_daily": "毎日",
+    "freq_weekly": "週1回",
+    "selectOne": "カテゴリを1つ以上選択してください",
+    "subscribe": "🔔 アラートを登録",
+    "privacy": "メールは商品通知のみに使用。第三者に共有しません。いつでも解除可能。",
+    "successTitle": "登録完了！",
+    "successDesc": "新しい限定品が見つかったらメールでお知らせします。",
+    "unsubscribe": "解除"
   }
 }
