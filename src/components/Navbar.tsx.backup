@@ -3,25 +3,28 @@
 import React, { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/navigation';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const locale = useLocale();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const t = useTranslations('nav');
 
   const navLinks = [
-    { href: '/buyers',   label: '找買手' },
-    { href: '/products', label: '最新商品' },
-    { href: '/about',    label: '關於我們' },
+    { href: '/buyers',   label: t('buyers') },
+    { href: '/products', label: t('products') },
+    { href: '/about',    label: t('about') },
+    { href: '/premium', label: t('premium') },
   ];
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
   return (
     <>
-      {/* Top disclaimer bar */}
+      {/* Top disclaimer bar — uses translation */}
       <div className="bg-[#1C1C1C] text-[#F9F7F2]/50 py-2 px-6 text-[9px] tracking-[0.4em] text-center uppercase font-bold">
-        MICHI · 代購買手資訊平台 · 平台不參與任何交易
+        {t('disclaimer')}
       </div>
 
       <nav className="sticky top-0 z-50 bg-[#F9F7F2]/90 backdrop-blur-md border-b border-stone-200">
@@ -55,14 +58,17 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA + mobile toggle */}
+          {/* CTA + Language + mobile toggle */}
           <div className="flex items-center gap-4">
             <Link
               href="/buyers#apply"
               className="hidden lg:block text-[10px] font-black uppercase tracking-[0.3em] bg-[#1A237E] text-white px-5 py-2.5 hover:bg-[#B22222] transition-all"
             >
-              申請成為買手
+              {t('applyBuyer')}
             </Link>
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Mobile hamburger */}
             <button
@@ -77,16 +83,18 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile dropdown */}
+        {/* Mobile menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-stone-200 px-8 py-6 space-y-4">
+          <div className="lg:hidden bg-[#F9F7F2] border-t border-stone-200 px-8 py-6 space-y-4">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setMobileOpen(false)}
-                className={`block text-[10px] font-black uppercase tracking-[0.4em] py-2 ${
-                  isActive(href) ? 'text-[#1A237E]' : 'text-stone-500'
+                className={`block text-sm font-bold uppercase tracking-widest ${
+                  isActive(href)
+                    ? 'text-[#1A237E]'
+                    : 'text-stone-500'
                 }`}
               >
                 {label}
@@ -95,9 +103,9 @@ export default function Navbar() {
             <Link
               href="/buyers#apply"
               onClick={() => setMobileOpen(false)}
-              className="block text-center text-[10px] font-black uppercase tracking-[0.3em] bg-[#1A237E] text-white px-5 py-3 hover:bg-[#B22222] transition-all mt-2"
+              className="block text-sm font-bold uppercase tracking-widest text-[#B22222]"
             >
-              申請成為買手
+              {t('applyBuyer')}
             </Link>
           </div>
         )}
